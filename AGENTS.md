@@ -1,6 +1,7 @@
 
 comments and docs should be in English.
 use Xcode MCP to operate on projects.
+use RocketSim skill & CLI to do smoke tests.
 ## Technology stack
 
 - Platform: Swift, iOS 15+.

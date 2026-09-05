@@ -1,5 +1,27 @@
 # Sekai take-home — feed moderation (block & report)
 
+## iOS implementation
+
+Open `Sekai/Sekai.xcodeproj`, select the **Sekai** scheme and an iPhone simulator, then Run. Start the unchanged backend from the repository root:
+
+```bash
+python3 mock/server.py --host 127.0.0.1
+```
+
+The default API origin is `http://127.0.0.1:8787`. For a physical device, run the server with `--host 0.0.0.0`, connect to the same LAN, and set the scheme's `SEKAI_BASE_URL` environment variable to the Mac's local hostname and port. Accept the local-network prompt. `Sekai/Sekai/Info.plist` permits local networking only; public insecure HTTP origins are not enabled.
+
+Implemented: iOS 15+ SwiftUI shell/profile, paged UIKit feed, three pooled WebViews, settled playback, report/block actions, global Combine-derived visibility, durable hidden IDs, bounded pagination, generation-based stale-response rejection, and conservative loading after memory warnings. The mock's SVG covers/avatars are rendered natively using its small rect/circle/text subset; Profile creates no WebViews.
+
+Moderation saves locally before publishing removal. Disk failure leaves content unchanged and offers Retry. Network failure keeps it hidden, displays session feedback, and retries once after five seconds. A second failure waits for foregrounding or the same moderation action. Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.
+
+**Validation:** Xcode 27 beta 6 / Apple Swift 6.4 (Swift 5 language mode), simulator build and 32 XCTest cases passed with zero failures on September 5, 2026. Run tests with **Product → Test**. Coverage focuses on repositories, view models, visibility, playback selection, persistence, retries, and cancellation. See [validation evidence and remaining checks](docs/validation.md). No physical-device frame-timing or memory figures have been collected; the performance acceptance target is still unverified. No complete submission demo recording is included yet.
+
+Design and work tracking: [class/function interfaces](docs/interface-design.md), [implementation checklist](docs/implementation-todo.md), [architecture requirements](docs/technical-selection-and-architecture.md).
+
+Trade-offs: pending-operation persistence, unblock management, general-purpose SVG support, and automatic preload recovery are omitted. Raw feed metadata remains in memory for backward scrolling; the three-slot limit bounds WebView count, not runtime memory bytes. Physical-device Instruments traces and a recorded demo remain delivery work.
+
+## Original assignment
+
 Build a small app around one screen we actually ship: an infinite, snap-scrolling feed of
 WebView-hosted content, with creator blocking and content reporting.
 
