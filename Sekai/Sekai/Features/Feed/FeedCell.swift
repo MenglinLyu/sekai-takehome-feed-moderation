@@ -98,6 +98,8 @@ import WebKit
             return
         }
         if attached !== presentation.webView {
+            let phase = FeedPerformance.begin("FeedWebViewAttach", "item=\(itemID ?? "none")")
+            defer { phase?.end() }
             detach()
             let webView = presentation.webView
             webView.removeFromSuperview()
@@ -120,7 +122,11 @@ import WebKit
     }
 
     func detach() {
-        if attached?.superview === holder { attached?.removeFromSuperview() }
+        if attached?.superview === holder {
+            let phase = FeedPerformance.begin("FeedWebViewDetach", "item=\(itemID ?? "none")")
+            defer { phase?.end() }
+            attached?.removeFromSuperview()
+        }
         attached = nil
     }
 

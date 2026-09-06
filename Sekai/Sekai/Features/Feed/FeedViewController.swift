@@ -14,6 +14,7 @@ import SwiftUI
     private var foreground = true
     private var snapshotRevision = 0
     private var lastSize = CGSize.zero
+    private var scrollInterval: FeedPerformance.Interval?
 
     init(viewModel: FeedViewModel, pool: WebViewSlotPool) {
         self.viewModel = viewModel
@@ -63,6 +64,8 @@ import SwiftUI
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard collectionView.bounds.size != lastSize else { return }
+        let phase = FeedPerformance.begin("FeedLayout")
+        defer { phase?.end() }
         lastSize = collectionView.bounds.size
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = lastSize
         collectionView.collectionViewLayout.invalidateLayout()
@@ -78,10 +81,13 @@ import SwiftUI
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         displayed = false
+        finishScroll("feed disappeared")
         updateEligibility()
     }
 
     func setFeedDisplayed(_ value: Bool) {
+        if unobscured != value { FeedPerformance.event("FeedVisibility", "displayed=\(value)") }
+        if !value { finishScroll("feed obscured") }
         unobscured = value
         updateEligibility()
     }
@@ -91,6 +97,7 @@ import SwiftUI
         let oldIDs = items.map(\.id)
         let newIDs = state.items.map(\.id)
         guard oldIDs != newIDs else { return }
+        let phase = FeedPerformance.begin("FeedSnapshot", "old=\(oldIDs.count) new=\(newIDs.count) revision=\(snapshotRevision + 1)")
         let removed = Set(oldIDs).subtracting(newIDs)
         // Include prepared cells, not only currently visible cells.
         for case let cell as FeedCell in collectionView.subviews {
@@ -107,7 +114,11 @@ import SwiftUI
         snapshot.appendSections([0])
         snapshot.appendItems(newIDs)
         dataSource.apply(snapshot, animatingDifferences: false) { [weak self] in
-            guard let self, revision == self.snapshotRevision else { return }
+            guard let self, revision == self.snapshotRevision else {
+                phase?.end("superseded or released")
+                return
+            }
+            defer { phase?.end() }
             self.collectionView.layoutIfNeeded()
             self.positionCurrent()
             self.settled = !self.collectionView.isDragging && !self.collectionView.isDecelerating
@@ -123,6 +134,8 @@ import SwiftUI
     }
 
     private func assignWindow() {
+        let phase = FeedPerformance.begin("FeedAssignWindow", "item=\(currentID ?? "none")")
+        defer { phase?.end() }
         pool.assign(items: items, currentID: currentID)
         renderVisibleCells()
         if let currentID, let index = items.firstIndex(where: { $0.id == currentID }),
@@ -138,27 +151,37 @@ import SwiftUI
     }
 
     private func settle() {
+        finishScroll("settled")
+        let phase = FeedPerformance.begin("FeedSettle")
+        defer { phase?.end() }
         guard !items.isEmpty, collectionView.bounds.height > 0 else { return }
         let index = min(items.count - 1, max(0, Int(round(collectionView.contentOffset.y / collectionView.bounds.height))))
         currentID = items[index].id
+        FeedPerformance.event("FeedCurrentItem", "index=\(index) item=\(items[index].id)")
         settled = true
         assignWindow()
         updateEligibility()
     }
 
     private func renderVisibleCells() {
+        let phase = FeedPerformance.begin("FeedRenderCells")
+        defer { phase?.end() }
         for case let cell as FeedCell in collectionView.visibleCells {
             if let id = cell.itemID { cell.render(pool.presentation(for: id)) }
         }
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        finishScroll("new drag")
+        scrollInterval = FeedPerformance.begin("FeedDrag", "item=\(currentID ?? "none")")
         settled = false
         updateEligibility()
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate { settle() }
+        finishScroll("drag ended")
+        if decelerate { scrollInterval = FeedPerformance.begin("FeedDeceleration") }
+        else { settle() }
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) { settle() }
@@ -175,8 +198,22 @@ import SwiftUI
         (cell as? FeedCell)?.detach()
     }
 
-    @objc private func background() { foreground = false; updateEligibility() }
-    @objc private func active() { foreground = true; updateEligibility() }
+    private func finishScroll(_ reason: String) {
+        scrollInterval?.end(reason)
+        scrollInterval = nil
+    }
+
+    @objc private func background() {
+        FeedPerformance.event("FeedLifecycle", "inactive")
+        finishScroll("inactive")
+        foreground = false
+        updateEligibility()
+    }
+    @objc private func active() {
+        FeedPerformance.event("FeedLifecycle", "active")
+        foreground = true
+        updateEligibility()
+    }
     @objc private func memoryWarning() {
         collectionView.isPrefetchingEnabled = false
         pool.memoryWarning()

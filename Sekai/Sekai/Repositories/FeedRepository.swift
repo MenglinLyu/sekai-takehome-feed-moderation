@@ -38,6 +38,8 @@ struct FeedState: Equatable {
         self.pageSize = pageSize
         raw.combineLatest(moderation.snapshots.map(\.rules).removeDuplicates())
             .map { raw, rules in
+                let phase = FeedPerformance.begin("FeedFilter", "count=\(raw.items.count)")
+                defer { phase?.end() }
                 var state = raw
                 state.items = SekaiVisibilityPolicy.visibleItems(in: raw.items, rules: rules)
                 return state
@@ -64,13 +66,17 @@ struct FeedState: Equatable {
         raw.value.error = nil
         raw.value.needsContinue = false
         for attempt in 0..<3 {
+            let phase = FeedPerformance.begin("FeedPageLoad", "page=\(nextPage) generation=\(requestGeneration) attempt=\(attempt)")
+            defer { phase?.end() }
             let visibleIDs = Set(output.value.items.map(\.id))
             do {
                 let items = try await api.fetchFeed(page: nextPage, limit: pageSize)
                 guard generation == requestGeneration, !Task.isCancelled else {
+                    phase?.end("cancelled or superseded")
                     finishCancellation(requestGeneration)
                     return
                 }
+                FeedPerformance.event("FeedPageReceived", "page=\(nextPage) count=\(items.count)")
                 nextPage += 1
                 var state = raw.value
                 state.items = SekaiVisibilityPolicy.deduplicated(state.items + items)
@@ -80,6 +86,7 @@ struct FeedState: Equatable {
                 if gainedVisibleItems || !state.hasMore { break }
                 if attempt == 2 { raw.value.needsContinue = true }
             } catch {
+                phase?.end(Task.isCancelled ? "cancelled" : "failed")
                 guard generation == requestGeneration else { return }
                 if !Task.isCancelled { raw.value.error = DisplayFailure(message: error.localizedDescription) }
                 break
