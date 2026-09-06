@@ -1,0 +1,26 @@
+{
+  "result": "passed",
+  "play_completions_by_process": [
+    11,
+    2
+  ],
+  "retry_response_gaps_seconds": [
+    5.48833,
+    5.428786,
+    5.479548
+  ],
+  "report_requests": 4,
+  "block_requests": 2,
+  "post_warning_loads": [
+    "game_0007",
+    "game_0010",
+    "game_0011",
+    "game_0012"
+  ],
+  "dom_sample_stages": [
+    "INITIAL",
+    "PROFILE_A",
+    "PROFILE_B",
+    "RETURN"
+  ]
+}

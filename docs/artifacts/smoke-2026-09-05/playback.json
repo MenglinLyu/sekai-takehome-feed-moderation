@@ -1,0 +1,253 @@
+{
+  "launchSessionInfo": "Launch Session: Sekai, ref: 785d227480, PID: 71082, State: started",
+  "totalCount": 41,
+  "truncated": false,
+  "units": [
+    {
+      "content": "2026-09-05 16:28:42.944009-0700 [71082:1063114] [WebViewPool] Created WebView slot 0; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810343722.944088
+    },
+    {
+      "content": "2026-09-05 16:28:42.944113-0700 [71082:1063114] [WebViewPool] Created WebView slot 1; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810343722.944184
+    },
+    {
+      "content": "2026-09-05 16:28:42.944174-0700 [71082:1063114] [WebViewPool] Created WebView slot 2; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810343722.944247
+    },
+    {
+      "content": "2026-09-05 16:28:45.362883-0700 [71082:1063114] [WebViewPool] Load game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343725.362957
+    },
+    {
+      "content": "2026-09-05 16:28:45.363802-0700 [71082:1063114] [WebViewPool] Load game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343725.363851
+    },
+    {
+      "content": "2026-09-05 16:29:04.754107-0700 [71082:1063114] [WebViewPool] Play completion game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343744.754386
+    },
+    {
+      "content": "2026-09-05 16:29:37.406884-0700 [71082:1063114] [WebViewPool] Paused game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343777.41236
+    },
+    {
+      "content": "2026-09-05 16:29:37.823388-0700 [71082:1063114] [WebViewPool] Load game_0005\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343777.823808
+    },
+    {
+      "content": "2026-09-05 16:29:37.828792-0700 [71082:1063114] [WebViewPool] Play completion game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343777.841293
+    },
+    {
+      "content": "2026-09-05 16:29:38.622167-0700 [71082:1063114] [WebViewPool] Paused game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343778.626694
+    },
+    {
+      "content": "2026-09-05 16:29:39.342116-0700 [71082:1063114] [WebViewPool] Load game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343779.34328
+    },
+    {
+      "content": "2026-09-05 16:29:40.820619-0700 [71082:1063114] [WebViewPool] Canceled load game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343780.820751
+    },
+    {
+      "content": "2026-09-05 16:29:41.493906-0700 [71082:1063114] [WebViewPool] Load game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343781.494046
+    },
+    {
+      "content": "2026-09-05 16:29:41.494695-0700 [71082:1063114] [WebViewPool] Play completion game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343781.494833
+    },
+    {
+      "content": "2026-09-05 16:29:53.274837-0700 [71082:1063114] [WebViewPool] Paused game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343793.275245
+    },
+    {
+      "content": "2026-09-05 16:30:57.180406-0700 [71082:1063114] [WebViewPool] Play completion game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343857.181219
+    },
+    {
+      "content": "2026-09-05 16:30:58.171925-0700 [71082:1063114] [WebViewPool] Paused game_0004\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343858.181568
+    },
+    {
+      "content": "2026-09-05 16:30:58.627578-0700 [71082:1063114] [WebViewPool] Load game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343858.62775
+    },
+    {
+      "content": "2026-09-05 16:30:58.632302-0700 [71082:1063114] [WebViewPool] Play completion game_0005\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343858.632564
+    },
+    {
+      "content": "2026-09-05 16:30:59.472141-0700 [71082:1063114] [WebViewPool] Paused game_0005\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343859.472424
+    },
+    {
+      "content": "2026-09-05 16:31:00.060872-0700 [71082:1063114] [WebViewPool] Load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343860.062552
+    },
+    {
+      "content": "2026-09-05 16:31:01.430418-0700 [71082:1063114] [WebViewPool] Load game_0010\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343861.43168
+    },
+    {
+      "content": "2026-09-05 16:31:02.653973-0700 [71082:1063114] [WebViewPool] Canceled load game_0010\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343862.658203
+    },
+    {
+      "content": "2026-09-05 16:31:03.696929-0700 [71082:1063114] [WebViewPool] Load game_0005\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343863.699805
+    },
+    {
+      "content": "2026-09-05 16:32:32.902741-0700 [71082:1063114] [WebViewPool] Play completion game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343952.903113
+    },
+    {
+      "content": "2026-09-05 16:33:08.017801-0700 [71082:1063114] [WebViewPool] Paused game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343988.018362
+    },
+    {
+      "content": "2026-09-05 16:33:15.927270-0700 [71082:1063114] [WebViewPool] Play completion game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810343995.927469
+    },
+    {
+      "content": "2026-09-05 16:34:23.184250-0700 [71082:1063114] [WebViewPool] Memory warning: adjacent loads deferred for this session\n",
+      "kind": "oslog",
+      "severity": "default",
+      "timestamp": 810344063.184377
+    },
+    {
+      "content": "2026-09-05 16:34:39.290041-0700 [71082:1063114] [WebViewPool] Paused game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344079.300607
+    },
+    {
+      "content": "2026-09-05 16:34:39.973453-0700 [71082:1063114] [WebViewPool] Load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344079.973577
+    },
+    {
+      "content": "2026-09-05 16:34:41.454152-0700 [71082:1063114] [WebViewPool] Canceled load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344081.454735
+    },
+    {
+      "content": "2026-09-05 16:34:41.454768-0700 [71082:1063114] [WebViewPool] Load game_0010\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344081.455881
+    },
+    {
+      "content": "2026-09-05 16:34:56.765853-0700 [71082:1063114] [WebViewPool] Play completion game_0010\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344096.767008
+    },
+    {
+      "content": "2026-09-05 16:35:21.733566-0700 [71082:1063114] [WebViewPool] Paused game_0010\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344121.733849
+    },
+    {
+      "content": "2026-09-05 16:35:21.737659-0700 [71082:1063114] [WebViewPool] Load game_0011\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344121.737909
+    },
+    {
+      "content": "2026-09-05 16:35:36.635915-0700 [71082:1063114] [WebViewPool] Play completion game_0011\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344136.643875
+    },
+    {
+      "content": "2026-09-05 16:35:50.579390-0700 [71082:1063114] [WebViewPool] Paused game_0011\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344150.579531
+    },
+    {
+      "content": "2026-09-05 16:35:57.686635-0700 [71082:1063114] [WebViewPool] Play completion game_0011\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344157.686793
+    },
+    {
+      "content": "2026-09-05 16:36:10.361351-0700 [71082:1063114] [WebViewPool] Paused game_0011\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344170.361535
+    },
+    {
+      "content": "2026-09-05 16:36:36.090632-0700 [71082:1063114] [WebViewPool] Load game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344196.096344
+    },
+    {
+      "content": "2026-09-05 16:36:53.815772-0700 [71082:1063114] [WebViewPool] Play completion game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344213.815957
+    }
+  ]
+}

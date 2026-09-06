@@ -30,34 +30,40 @@ Local Xcode result bundle from this run:
 Smoke checks used RocketSim 16.4.2 on iPhone 17 Pro / iOS 26.5 against the unchanged local mock. Passing repository tests does not prove WebKit playback or native frame timing.
 
 - [x] Initial feed loads against the unchanged mock and the current item visibly displays PLAYING. [Screenshot](artifacts/feed-playing.png).
-- [ ] Normal, rapid, and reverse scrolling preserve the three-slot bound and pause off-screen content.
+- [x] Normal, rapid, and reverse scrolling preserve the three-slot bound and pause off-screen content in the recorded smoke scenarios; see follow-up evidence below.
 - [x] Feed block removes the current item; reverse paging skips it. Reporting Gagg Box as Spam confirms Content hidden and selects a survivor.
 - [x] Profile top-right Block action empties works and removes that creator from Feed. Verified Dark Prince profile becomes empty and returning Feed selects Gagg Box. [Screenshot](artifacts/profile-blocked.png).
-- [ ] Restart preserves reported and blocked IDs.
-- [ ] Forced network failure displays feedback and performs one delayed retry; foreground starts another dormant cycle.
-- [ ] Leaving Feed/backgrounding pauses; return resumes only the current ready item.
-- [ ] Simulated memory warning disables collection prefetch and defers adjacent loads.
+- [x] Restart preserves reported and blocked IDs.
+- [x] Forced network failure displays feedback and performs one delayed retry; foreground starts another dormant cycle.
+- [x] Leaving Feed/backgrounding pauses; return resumes only the current ready item.
+- [x] Simulated memory warning notification disables collection prefetch and defers adjacent loads.
 - [ ] Record the requested approximately one-minute submission demo.
 
-Observed sequence: Lo-Fi Vibe Mixer → Giggle Pop → Yaya's Room; block yaya_room; reverse paging returns to Giggle Pop; open Dark Prince profile and block; profile shows No visible sekais; return to Gagg Box; report Spam. Initial launch logs contain exactly three WebView creation events. This smoke run does not establish the full rapid-scroll/background/memory-pressure invariant.
+Initial smoke sequence: Lo-Fi Vibe Mixer → Giggle Pop → Yaya's Room; block yaya_room; reverse paging returns to Giggle Pop; open Dark Prince profile and block; profile shows No visible sekais; return to Gagg Box; report Spam. Initial launch logs contain exactly three WebView creation events. That initial run did not establish the rapid-scroll/background/memory-pressure behavior; the follow-up below adds those checks.
 
-Recording was attempted twice. RocketSim failed during MP4 export with `Invalid IPC message length` (15,301,783 bytes and 12,630,038 bytes) and produced empty output files. Those files were removed; no usable demo video is claimed. A later simulator switch prevented completing the manual restart check on the same device; persisted-state reconstruction is covered by automated tests.
+Recording was attempted twice. RocketSim failed during MP4 export with `Invalid IPC message length` (15,301,783 bytes and 12,630,038 bytes) and produced empty output files. Those files were removed; no usable demo video is claimed. A simulator switch prevented the initial manual restart check; the follow-up completed it on one device.
 
-## Physical-device performance — not measured
+### Follow-up smoke — September 5, 2026, 16:28–16:42 PDT
 
-No eligible physical-device destination was listed by Xcode during this session. Do not interpret simulator checks, payload size, or the number of WebViews as a memory/frame-timing measurement.
+Xcode MCP built/launched the Debug app on iPhone 17 Pro / iOS 26.5, UDID `FBA3761E-34B1-417A-9C6D-30E09AAA4320`. RocketSim performed gestures, navigation, Home/foreground actions, accessibility reads, and screenshots. Xcode MCP supplied logs and read-only WebKit JavaScript probes; it also injected the memory-warning notification. No application source or mock implementation changes were needed for these checks. The unchanged mock used `--host 127.0.0.1 --fail-rate 1.0`, default 350 ms moderation latency and approximately 5 MB HTML items.
 
-Acceptance target chosen before measurement: **30 seconds of continuous scrolling, fewer than five hitches, every hitch below 100 ms**. Use a Release build and Instruments Animation Hitches / Time Profiler plus memory instruments. Capture first display, normal/rapid/reverse scrolling, and memory-warning behavior. Record:
-
-| Metric | Result |
+| Check | Observed result and evidence |
 | --- | --- |
-| Device / OS / display refresh rate | Not measured |
-| Mock latency / payload / scroll path | Use defaults (approximately 5 MB per HTML item); record actual arguments |
-| Hitch count and maximum duration | Not measured; acceptance unverified |
-| Host and WebContent steady/peak memory, long-scroll trend | Not measured |
-| Three WebView creation events and lifetime count | Source bounds creation to three; trace not collected |
-| Settlement-to-visible and settlement-to-playable latency | Not measured |
-| Reassignment-canceled load count and duration | Pool logs events; trace not collected |
-| Memory warning / process termination behavior | Implementation present; manual validation pending |
+| Normal/rapid/reverse playback | 0.3-second swipes and a batch of three 0.1-second forward swipes followed by a reverse swipe. Each recorded play transition followed the previous item's pause. Exactly three creation events per process, including after navigation, memory warning, and repeated reassignment. [First process log](artifacts/smoke-2026-09-05/playback.json). |
+| Actual WebKit state | After restart, direct probes of all three documents found `game_0012` PLAYING, with `game_0007` and `game_0013` PAUSED at zero frames. In Profile, all three were PAUSED; two separate probes kept frame counts at 1492/0/0. Returning resumed only `game_0012`, reaching 1619 frames. [DOM samples and second process log](artifacts/smoke-2026-09-05/restart-runtime.json), [screenshot](artifacts/smoke-2026-09-05/restart-playing.png). |
+| Background | Home paused playing `game_0006` at 16:33:08; foreground resumed the same item at 16:33:15. The same sequence was observed for `game_0011` at 16:35:50 / 16:35:57. No intervening play events occurred. |
+| Failure and delayed retry | Reporting `game_0010` hid it and displayed both confirmation and sync-failure feedback. Report responses were logged at 23:35:22.116 and 23:35:27.604 UTC, then no more until foregrounding at approximately 23:35:57. The new cycle responded at 23:35:58.050 and 23:36:03.479, then stopped again. Response-to-response gaps were 5.488 and 5.429 seconds, including the mock's 350 ms response delay. Block also made exactly two attempts, 5.480 seconds apart. HTTP 200 is expected: the forced failure is API `code: 50000`. [Timestamped mock log](artifacts/smoke-2026-09-05/mock-failure.log), [feedback screenshot](artifacts/smoke-2026-09-05/report-failure.png). |
+| Durable restart | Existing state had blocked `creator_2` / `creator_3` and reported `game_0003`. This run added reported `game_0010` and blocked `creator_5` (bounce_kid). The on-disk JSON contained all five IDs before and after Xcode Stop/Run; PID changed from 71082 to 73089 without uninstalling or clearing storage. Feed traversal was `0000 → 0005 → 0006 → 0007 → 0012 → 0013 → 0012`, skipping reported and blocked items across `refresh=1` and reverse paging. No moderation POSTs resumed after process restart, matching the documented memory-only pending queue. [Scroll snapshots](artifacts/smoke-2026-09-05/restart-scroll.json), [blocked Profile](artifacts/smoke-2026-09-05/profile-blocked.png). |
+| Memory warning | Xcode debugger read collection prefetch as YES, posted `UIApplicationDidReceiveMemoryWarningNotification`, then read NO. Pool logged conservative mode. Subsequent content loads were only the visited/replacement current items `0007`, `0010`, `0011`, `0012`; no adjacent loads or new WebViews appeared. `0010`, `0011`, and `0012` became playable. [Debugger evidence](artifacts/smoke-2026-09-05/debugger.json), [current content after warning](artifacts/smoke-2026-09-05/memory-current.png). |
 
-Pool logs use subsystem `com.sekai.takehome`, category `WebViewPool`. Preserve traces and record optimizations/retest results before claiming the performance target is met.
+Reproduction steps and debugger probes: [smoke-testing.md](smoke-testing.md). `python3 scripts/check_smoke_evidence.py` passes against the saved scenario evidence; [summary](artifacts/smoke-2026-09-05/check-summary.json). The script checks captured evidence rather than launching or driving the app. The earlier 32-test XCTest result was not rerun for these documentation/scripts-only additions.
+
+Limits: this is finite simulator smoke coverage, not proof over all gesture schedules. Rapid gestures use RocketSim's per-command refresh/dispatch cadence. The memory check injects the notification, not actual OS memory pressure or a WebContent process kill. Debugger pauses and simulator overhead invalidate performance conclusions. Some loads visibly took a long time: in the uninterrupted post-warning interval, `game_0010` logged Load at 16:34:41.455 and Play completion at 16:34:56.766 (about 15.3 seconds). Investigate loading/readiness latency in a separate run without debugger/perception overhead; no performance target is claimed here. RocketSim accessibility snapshots sometimes retained Loading content after the screenshot and DOM showed PLAYING, so playback conclusions use DOM probes and native logs. Xcode's captured stdio timestamps can be stale; probe stage labels, not sorting stdio timestamps, define sample order.
+
+## Physical-device performance — pending
+
+Previous performance measurements are discarded. Repeat physical-device Release
+profiling before claiming the acceptance target is met. The target is **30 seconds
+of continuous scrolling, fewer than five hitches, every hitch below 100 ms**.
+Follow the architecture's performance checklist for memory, loading latency,
+WebView lifetime counts, and memory-pressure/process-termination coverage.

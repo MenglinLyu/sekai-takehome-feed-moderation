@@ -1,0 +1,77 @@
+{
+  "launchSessionInfo": "Launch Session: Sekai, ref: 785d227480, PID: 71082, State: started",
+  "totalCount": 14,
+  "truncated": false,
+  "units": [
+    {
+      "content": "(lldb) expr -l objc++ -O -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344017.558433
+    },
+    {
+      "content": "(lldb) expr -l objc++ -O -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344017.558433
+    },
+    {
+      "content": "(BOOL) YES\n",
+      "kind": "stdio",
+      "timestamp": 810344017.715463
+    },
+    {
+      "content": "(lldb) expr -l objc++ -- (void)[[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]]\n",
+      "kind": "stdio",
+      "timestamp": 810344035.327881
+    },
+    {
+      "content": "    1 | (void)[[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]]\n",
+      "kind": "stdio",
+      "timestamp": 810344035.446386
+    },
+    {
+      "content": "(lldb) expr -l objc++ -O -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344039.682819
+    },
+    {
+      "content": "(lldb) expr -l objc++ -O -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344039.682819
+    },
+    {
+      "content": "(BOOL) YES\n",
+      "kind": "stdio",
+      "timestamp": 810344039.756018
+    },
+    {
+      "content": "(lldb) expr -l objc++ -- (void)[[NSNotificationCenter defaultCenter] postNotificationName:(id)UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]]\n",
+      "kind": "stdio",
+      "timestamp": 810344063.07421
+    },
+    {
+      "content": "(lldb) expr -l objc++ -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344067.024878
+    },
+    {
+      "content": "(lldb) expr -l objc++ -- (BOOL)[(UICollectionView *)[[(UIViewController *)0x107b30000 view].subviews firstObject] isPrefetchingEnabled]\n",
+      "kind": "stdio",
+      "timestamp": 810344067.024878
+    },
+    {
+      "content": "(BOOL) $0 = NO\n",
+      "kind": "stdio",
+      "timestamp": 810344067.144564
+    },
+    {
+      "content": "{\"blockedCreatorIDs\":[\"creator_2\",\"creator_3\",\"creator_5\"],\"reportedSekaiIDs\":[\"game_0010\",\"game_0003\"]}\n",
+      "kind": "stdio",
+      "timestamp": 810344241.75425
+    },
+    {
+      "content": "{\"blockedCreatorIDs\":[\"creator_2\",\"creator_3\",\"creator_5\"],\"reportedSekaiIDs\":[\"game_0010\",\"game_0003\"]}\n",
+      "kind": "stdio",
+      "timestamp": 810344241.75425
+    }
+  ]
+}

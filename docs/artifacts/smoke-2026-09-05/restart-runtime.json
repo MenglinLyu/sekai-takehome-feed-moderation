@@ -1,0 +1,200 @@
+{
+  "launchSessionInfo": "Launch Session: Sekai, ref: 785d335380, PID: 73089, State: started",
+  "totalCount": 35,
+  "truncated": false,
+  "units": [
+    {
+      "content": "2026-09-05 16:37:56.354809-0700 [73089:1089883] [WebViewPool] Created WebView slot 0; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810344276.357582
+    },
+    {
+      "content": "2026-09-05 16:37:56.354892-0700 [73089:1089883] [WebViewPool] Created WebView slot 1; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810344276.357582
+    },
+    {
+      "content": "2026-09-05 16:37:56.354947-0700 [73089:1089883] [WebViewPool] Created WebView slot 2; capacity=3\n",
+      "kind": "oslog",
+      "severity": "info",
+      "timestamp": 810344276.357582
+    },
+    {
+      "content": "2026-09-05 16:37:57.663686-0700 [73089:1089883] [WebViewPool] Load game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344277.664062
+    },
+    {
+      "content": "2026-09-05 16:37:57.664450-0700 [73089:1089883] [WebViewPool] Load game_0005\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344277.664626
+    },
+    {
+      "content": "2026-09-05 16:38:14.374804-0700 [73089:1089883] [WebViewPool] Load game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344294.375055
+    },
+    {
+      "content": "2026-09-05 16:38:15.954541-0700 [73089:1089883] [WebViewPool] Canceled load game_0000\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344295.954822
+    },
+    {
+      "content": "2026-09-05 16:38:16.646636-0700 [73089:1089883] [WebViewPool] Load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344296.650112
+    },
+    {
+      "content": "2026-09-05 16:38:17.562802-0700 [73089:1089883] [WebViewPool] Load game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344297.562987
+    },
+    {
+      "content": "2026-09-05 16:38:19.071818-0700 [73089:1089883] [WebViewPool] Canceled load game_0006\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344299.073923
+    },
+    {
+      "content": "2026-09-05 16:38:19.447253-0700 [73089:1089883] [WebViewPool] Load game_0013\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344299.447915
+    },
+    {
+      "content": "2026-09-05 16:38:20.539072-0700 [73089:1089883] [WebViewPool] Canceled load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344300.539601
+    },
+    {
+      "content": "2026-09-05 16:38:21.080034-0700 [73089:1089883] [WebViewPool] Load game_0014\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344301.082701
+    },
+    {
+      "content": "2026-09-05 16:38:22.021636-0700 [73089:1089883] [WebViewPool] Canceled load game_0014\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344302.026411
+    },
+    {
+      "content": "2026-09-05 16:38:22.267054-0700 [73089:1089883] [WebViewPool] Load game_0007\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344302.271745
+    },
+    {
+      "content": "2026-09-05 16:38:35.696877-0700 [73089:1089883] [WebViewPool] Play completion game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344315.698919
+    },
+    {
+      "content": "SMOKE_JS slot=2 value=Optional({\"id\":\"/content/game_0013\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344443.805386
+    },
+    {
+      "content": "SMOKE_JS slot=0 value=Optional({\"id\":\"/content/game_0007\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344443.805495
+    },
+    {
+      "content": "SMOKE_JS slot=1 value=Optional({\"id\":\"/content/game_0012\",\"playing\":true,\"frames\":1231,\"status\":\"PLAYING\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344443.842402
+    },
+    {
+      "content": "2026-09-05 16:41:10.950706-0700 [73089:1089883] [WebViewPool] Paused game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344470.95096
+    },
+    {
+      "content": "SMOKE_JS PROFILE_A slot=1 value=Optional({\"id\":\"/content/game_0012\",\"playing\":false,\"frames\":1492,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344443.850455
+    },
+    {
+      "content": "SMOKE_JS PROFILE_A slot=0 value=Optional({\"id\":\"/content/game_0007\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344484.349853
+    },
+    {
+      "content": "SMOKE_JS PROFILE_A slot=2 value=Optional({\"id\":\"/content/game_0013\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344484.363182
+    },
+    {
+      "content": "SMOKE_JS PROFILE_B slot=1 value=Optional({\"id\":\"/content/game_0012\",\"playing\":false,\"frames\":1492,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344484.364442
+    },
+    {
+      "content": "SMOKE_JS PROFILE_B slot=0 value=Optional({\"id\":\"/content/game_0007\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344529.214022
+    },
+    {
+      "content": "SMOKE_JS PROFILE_B slot=2 value=Optional({\"id\":\"/content/game_0013\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344529.22182
+    },
+    {
+      "content": "2026-09-05 16:42:25.106338-0700 [73089:1089883] [WebViewPool] Play completion game_0012\n",
+      "kind": "oslog",
+      "severity": "debug",
+      "timestamp": 810344545.10658
+    },
+    {
+      "content": "SMOKE_JS RETURN slot=1 value=Optional({\"id\":\"/content/game_0012\",\"playing\":true,\"frames\":1619,\"status\":\"PLAYING\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344529.223476
+    },
+    {
+      "content": "SMOKE_JS RETURN slot=0 value=Optional({\"id\":\"/content/game_0007\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344558.312581
+    },
+    {
+      "content": "SMOKE_JS RETURN slot=2 value=Optional({\"id\":\"/content/game_0013\",\"playing\":false,\"frames\":0,\"status\":\"PAUSED\"}) error=nil\n",
+      "kind": "stdio",
+      "timestamp": 810344558.321754
+    },
+    {
+      "content": "{\"blockedCreatorIDs\":[\"creator_2\",\"creator_3\",\"creator_5\"],\"reportedSekaiIDs\":[\"game_0010\",\"game_0003\"]}\n",
+      "kind": "stdio",
+      "timestamp": 810344558.324703
+    },
+    {
+      "content": "(lldb) expr -l Swift -- for index in 0..<3 { (Mirror(reflecting: $feedObject).descendant(\"pool\", \"slots\", index, \"webView\") as! WKWebView).evaluateJavaScript(\"JSON.stringify({id:location.pathname,playing:window.playing,frames:window.frames,status:document.getElementById('state')?.textContent})\") { value, error in print(\"SMOKE_JS slot=\\(index) value=\\(String(describing: value)) error=\\(String(describing: error))\") } }\n",
+      "kind": "stdio",
+      "timestamp": 810344558.324703
+    },
+    {
+      "content": "(lldb) expr -l Swift -- for index in 0..<3 { (Mirror(reflecting: $feedObject).descendant(\"pool\", \"slots\", index, \"webView\") as! WKWebView).evaluateJavaScript(\"JSON.stringify({id:location.pathname,playing:window.playing,frames:window.frames,status:document.getElementById('state')?.textContent})\") { value, error in print(\"SMOKE_JS PROFILE_A slot=\\(index) value=\\(String(describing: value)) error=\\(String(describing: error))\") } }\n",
+      "kind": "stdio",
+      "timestamp": 810344558.324703
+    },
+    {
+      "content": "(lldb) expr -l Swift -- for index in 0..<3 { (Mirror(reflecting: $feedObject).descendant(\"pool\", \"slots\", index, \"webView\") as! WKWebView).evaluateJavaScript(\"JSON.stringify({id:location.pathname,playing:window.playing,frames:window.frames,status:document.getElementById('state')?.textContent})\") { value, error in print(\"SMOKE_JS PROFILE_B slot=\\(index) value=\\(String(describing: value)) error=\\(String(describing: error))\") } }\n",
+      "kind": "stdio",
+      "timestamp": 810344558.324703
+    },
+    {
+      "content": "(lldb) expr -l Swift -- for index in 0..<3 { (Mirror(reflecting: $feedObject).descendant(\"pool\", \"slots\", index, \"webView\") as! WKWebView).evaluateJavaScript(\"JSON.stringify({id:location.pathname,playing:window.playing,frames:window.frames,status:document.getElementById('state')?.textContent})\") { value, error in print(\"SMOKE_JS RETURN slot=\\(index) value=\\(String(describing: value)) error=\\(String(describing: error))\") } }\n",
+      "kind": "stdio",
+      "timestamp": 810344558.324703
+    }
+  ]
+}
