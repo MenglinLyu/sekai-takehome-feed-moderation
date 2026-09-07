@@ -17,12 +17,17 @@ struct RemoteArtwork: View {
         .clipped()
         .task(id: url) {
             image = nil
-            do {
-                let (data, response) = try await URLSession.shared.data(from: url)
-                guard !Task.isCancelled, (response as? HTTPURLResponse)?.statusCode == 200 else { return }
-                image = UIImage(data: data) ?? MockSVGArtwork.render(data)
-            } catch { image = nil }
+            image = try? await RemoteImageLoader.fetch(url)
         }
+    }
+}
+
+/// Shared fetch+decode used by both SwiftUI artwork views and `FeedCell`'s UIKit artwork loading.
+@MainActor enum RemoteImageLoader {
+    static func fetch(_ url: URL) async throws -> UIImage? {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
+        return UIImage(data: data) ?? MockSVGArtwork.render(data)
     }
 }
 

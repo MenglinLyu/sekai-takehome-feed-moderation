@@ -4,7 +4,13 @@ import WebKit
 @MainActor final class FeedCell: UICollectionViewCell {
     static let reuseID = "FeedCell"
     private let holder = UIView()
+    private let artworkView = UIImageView()
+    private let statusView = UIView()
     private let placeholder = UILabel()
+    private var artworkURL: URL?
+    private var artworkRequestID: UUID?
+    private var artworkTask: Task<Void, Never>?
+    private var isContentHidden = false
     private let retryButton = UIButton(type: .system)
     private let titleLabel = UILabel()
     private let creatorButton = UIButton(type: .system)
@@ -18,6 +24,18 @@ import WebKit
         holder.frame = contentView.bounds
         holder.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.addSubview(holder)
+        artworkView.frame = contentView.bounds
+        artworkView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        artworkView.contentMode = .scaleAspectFill
+        artworkView.clipsToBounds = true
+        artworkView.backgroundColor = .darkGray
+        artworkView.accessibilityIdentifier = "feed.cover"
+        contentView.addSubview(artworkView)
+        statusView.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+        statusView.layer.cornerRadius = 8
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        statusView.isUserInteractionEnabled = false
+        placeholder.accessibilityIdentifier = "feed.contentStatus"
         placeholder.textColor = .white
         placeholder.textAlignment = .center
         placeholder.numberOfLines = 0
@@ -44,14 +62,19 @@ import WebKit
         panel.backgroundColor = UIColor.black.withAlphaComponent(0.72)
         panel.translatesAutoresizingMaskIntoConstraints = false
         panel.addSubview(row)
-        contentView.addSubview(placeholder)
+        statusView.addSubview(placeholder)
+        contentView.addSubview(statusView)
         contentView.addSubview(retryButton)
         contentView.addSubview(panel)
         NSLayoutConstraint.activate([
-            placeholder.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            placeholder.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            placeholder.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -40),
-            retryButton.topAnchor.constraint(equalTo: placeholder.bottomAnchor, constant: 12),
+            statusView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            statusView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            statusView.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -40),
+            placeholder.leadingAnchor.constraint(equalTo: statusView.leadingAnchor, constant: 12),
+            placeholder.trailingAnchor.constraint(equalTo: statusView.trailingAnchor, constant: -12),
+            placeholder.topAnchor.constraint(equalTo: statusView.topAnchor, constant: 8),
+            placeholder.bottomAnchor.constraint(equalTo: statusView.bottomAnchor, constant: -8),
+            retryButton.topAnchor.constraint(equalTo: statusView.bottomAnchor, constant: 12),
             retryButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             panel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             panel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -69,8 +92,13 @@ import WebKit
 
     func configure(item: SekaiItem, pool: WebViewSlotPool, openCreator: @escaping () -> Void,
                    report: @escaping (String) -> Void, block: @escaping () -> Void) {
-        if itemID != item.id { detach() }
-        itemID = item.id
+        if itemID != item.id || artworkURL != item.coverURL {
+            detach()
+            clearArtwork()
+            itemID = item.id
+            loadArtwork(url: item.coverURL)
+        }
+        isContentHidden = false
         titleLabel.text = item.title
         creatorButton.setTitle(item.creatorName, for: .normal)
         creatorButton.removeTarget(nil, action: nil, for: .allEvents)
@@ -90,10 +118,12 @@ import WebKit
     }
 
     func render(_ presentation: WebViewSlotPool.Presentation?) {
+        guard !isContentHidden else { return }
         guard let presentation else {
             detach()
             placeholder.text = "Settle here to load content"
-            placeholder.isHidden = false
+            artworkView.isHidden = false
+            statusView.isHidden = false
             retryButton.isHidden = true
             return
         }
@@ -110,15 +140,43 @@ import WebKit
         }
         presentation.webView.isHidden = !presentation.isReady
         placeholder.text = presentation.error ?? "Loading content…"
-        placeholder.isHidden = presentation.isReady
-        retryButton.isHidden = presentation.error == nil
+        artworkView.isHidden = presentation.isReady
+        statusView.isHidden = presentation.isReady
+        retryButton.isHidden = presentation.isReady || presentation.error == nil
     }
 
     func cover() {
+        isContentHidden = true
         detach()
+        clearArtwork()
+        artworkView.isHidden = true
         placeholder.text = "Content hidden"
-        placeholder.isHidden = false
+        statusView.isHidden = false
         retryButton.isHidden = true
+    }
+
+    private func loadArtwork(url: URL) {
+        artworkURL = url
+        let requestID = UUID()
+        let boundItemID = itemID
+        artworkRequestID = requestID
+        artworkTask = Task { [weak self] in
+            let image = try? await RemoteImageLoader.fetch(url)
+            guard let self, self.artworkRequestID == requestID else { return }
+            self.artworkTask = nil
+            guard let image, self.itemID == boundItemID, self.artworkURL == url,
+                  !self.isContentHidden else { return }
+            // Readiness alone controls visibility, even when artwork finishes later.
+            self.artworkView.image = image
+        }
+    }
+
+    private func clearArtwork() {
+        artworkTask?.cancel()
+        artworkTask = nil
+        artworkRequestID = nil
+        artworkURL = nil
+        artworkView.image = nil
     }
 
     func detach() {
@@ -133,6 +191,14 @@ import WebKit
     override func prepareForReuse() {
         super.prepareForReuse()
         detach()
+        clearArtwork()
         itemID = nil
+        isContentHidden = false
+        artworkView.isHidden = false
+        statusView.isHidden = true
+        placeholder.text = nil
+        retryButton.isHidden = true
     }
+
+    deinit { artworkTask?.cancel() }
 }
