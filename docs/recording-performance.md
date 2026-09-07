@@ -48,6 +48,14 @@ current IPv4 address on `en0`, port 8788. Use `--interface` or `--port` to chang
 automatic discovery. The address is passed to the launched app through its
 `SEKAI_BASE_URL` environment variable.
 
+The resolved address is also written into the `--scheme` target's `LaunchAction`
+environment variables (`SEKAI_BASE_URL`) in its user-specific `.xcscheme`, so a
+later manual run/debug of that same scheme from Xcode uses the same server
+instead of falling back to `http://127.0.0.1:8787`. This only updates a scheme
+that already has a user-specific xcscheme file (for example, one that has been
+run from Xcode at least once); it does not create one from scratch, and it is
+skipped with a note when no such file exists yet.
+
 The existing mock on port 8788 can be reused. When it is not running, start it in
 another terminal:
 

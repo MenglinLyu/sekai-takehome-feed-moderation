@@ -2,19 +2,25 @@
 
 ## iOS implementation
 
-Open `Sekai/Sekai.xcodeproj`, select the **Sekai** scheme and an iPhone simulator, then Run. Start the unchanged backend from the repository root:
+Start the mock and configure Xcode for either a simulator or a physical iPhone:
 
 ```bash
-python3 mock/server.py --host 127.0.0.1
+python3 scripts/start_mock.py
 ```
 
-The default API origin is `http://127.0.0.1:8787`. For a physical device, run the server with `--host 0.0.0.0`, connect to the same LAN, and set the scheme's `SEKAI_BASE_URL` environment variable to the Mac's local hostname and port. Accept the local-network prompt. `Sekai/Sekai/Info.plist` permits local networking only; public insecure HTTP origins are not enabled.
+The script detects the Mac's LAN IPv4 address, starts the unchanged backend on `0.0.0.0`, and tries ports starting at 8787 until one is free. After checking `/health`, it writes the full `SEKAI_BASE_URL` (including the chosen port) into your local **Sekai Mock** scheme. Open `Sekai/Sekai.xcodeproj`, select **Sekai Mock**, choose a simulator or iPhone, and Run. If Xcode has not picked up the new scheme, reopen the project. The generated scheme lives in ignored `xcuserdata`; other schemes and environment variables are preserved.
+
+Keep the script running during testing. **Press Ctrl+C to stop its mock**; SIGTERM/SIGHUP also trigger cleanup, with forced termination only if the child does not exit within five seconds. The script prints a `kill -TERM <launcher-pid>` command for stopping it from another terminal. It never kills the process occupying a port. Avoid `kill -9` on the launcher because that bypasses cleanup. The scheme retains its last URL after stopping; rerun the script when starting a new session or changing networks, then relaunch the app from Xcode.
+
+Use `--interface en0` to select a LAN adapter or `--port 8800` to change the first candidate port. Forward mock options after `--`, for example `python3 scripts/start_mock.py -- --fail-rate 1.0`. A physical iPhone must be on the same reachable LAN as the Mac; allow the app's local-network prompt and inbound Python connections if macOS asks. The health check verifies access from the Mac, not from the phone. Xcode scheme variables apply to Xcode launches, not launches by tapping the installed app icon. The app's fallback remains `http://127.0.0.1:8787`. `Sekai/Sekai/Info.plist` permits local networking only; public insecure HTTP origins are not enabled.
 
 Implemented: iOS 15+ SwiftUI shell/profile, paged UIKit feed, three pooled WebViews, settled playback, report/block actions, global Combine-derived visibility, durable hidden IDs, bounded pagination, generation-based stale-response rejection, and conservative loading after memory warnings. The mock's SVG covers/avatars are rendered natively using its small rect/circle/text subset; Profile creates no WebViews.
 
+Web content loads directly through `WKWebView.load(URLRequest)`; all three slots share one persistent `WKWebsiteDataStore`. HTTP cache reuse depends on server headers and WebKit retention; the unchanged mock does not guarantee cache hits. See [loading design](docs/web-content-loading.md), [metrics](docs/web-content-metrics.md), and [current verification](docs/web-content-testing.md).
+
 Moderation saves locally before publishing removal. Disk failure leaves content unchanged and offers Retry. Network failure keeps it hidden, displays session feedback, and retries once after five seconds. A second failure waits for foregrounding or the same moderation action. Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.
 
-**Validation:** Xcode 27 beta 6 / Apple Swift 6.4 (Swift 5 language mode), simulator build and 32 XCTest cases passed with zero failures on September 5, 2026. Run tests with **Product → Test**. Coverage focuses on repositories, view models, visibility, playback selection, persistence, retries, and cancellation. See [validation evidence and remaining checks](docs/validation.md). No physical-device frame-timing or memory figures have been collected; the performance acceptance target is still unverified. No complete submission demo recording is included yet.
+**Validation:** Xcode 27 beta 6 / Apple Swift 6.4 (Swift 5 language mode), simulator build and 39 XCTest cases passed with zero failures on September 6, 2026. Run tests with **Product → Test**. Coverage includes repositories, view models, moderation, playback policy, new timing metrics and real WebKit cacheable/no-store revisit tests. See [current web-content verification](docs/web-content-testing.md) and [earlier validation evidence](docs/validation.md). Physical-device performance acceptance remains unverified. No complete submission demo recording is included yet.
 
 Design and work tracking: [class/function interfaces](docs/interface-design.md), [implementation checklist](docs/implementation-todo.md), [architecture requirements](docs/technical-selection-and-architecture.md).
 

@@ -20,6 +20,7 @@ import uuid
 import xml.etree.ElementTree as ET
 
 from summarize_xctrace import rows, number
+from xcscheme_env import set_scheme_env
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = "com.sekai.takehome.Sekai"
@@ -297,6 +298,14 @@ def main():
         (output / "devices.json").unlink()
         metadata["base_url"] = base_url(args)
         announce(f"Device: {metadata['device']['name']}; server: {metadata['base_url']}")
+        scheme_path = set_scheme_env(ROOT / "Sekai/Sekai.xcodeproj", args.scheme,
+                                     "SEKAI_BASE_URL", metadata["base_url"])
+        metadata["scheme_updated"] = str(scheme_path) if scheme_path else None
+        if scheme_path:
+            announce(f"Scheme '{args.scheme}' updated so manual Xcode runs use the same server: {scheme_path}")
+        else:
+            announce(f"Scheme '{args.scheme}' has no user-specific xcscheme file yet; "
+                     "run it once in Xcode to enable syncing SEKAI_BASE_URL there.")
         if args.build:
             derived = ROOT / "Sekai/DerivedData/Performance"
             run(["xcodebuild", "-project", str(ROOT / "Sekai/Sekai.xcodeproj"), "-scheme", args.scheme,
