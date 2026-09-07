@@ -60,10 +60,11 @@ Reproduction steps and debugger probes: [smoke-testing.md](smoke-testing.md). `p
 
 Limits: this is finite simulator smoke coverage, not proof over all gesture schedules. Rapid gestures use RocketSim's per-command refresh/dispatch cadence. The memory check injects the notification, not actual OS memory pressure or a WebContent process kill. Debugger pauses and simulator overhead invalidate performance conclusions. Some loads visibly took a long time: in the uninterrupted post-warning interval, `game_0010` logged Load at 16:34:41.455 and Play completion at 16:34:56.766 (about 15.3 seconds). Investigate loading/readiness latency in a separate run without debugger/perception overhead; no performance target is claimed here. RocketSim accessibility snapshots sometimes retained Loading content after the screenshot and DOM showed PLAYING, so playback conclusions use DOM probes and native logs. Xcode's captured stdio timestamps can be stale; probe stage labels, not sorting stdio timestamps, define sample order.
 
-## Physical-device performance — pending
+## Physical-device performance — September 6, 2026
 
-Previous performance measurements are discarded. Repeat physical-device Release
-profiling before claiming the acceptance target is met. The target is **30 seconds
-of continuous scrolling, fewer than five hitches, every hitch below 100 ms**.
-Follow the architecture's performance checklist for memory, loading latency,
-WebView lifetime counts, and memory-pressure/process-termination coverage.
+[Retained measurements](evidence/performance/README.md) contain the latest local
+Instruments capture. The [latest analysis](evidence/performance/20260906-191821-565605/report.md)
+records one 258.377 ms application hitch in `[10, 40)` and a WebKit activity-state
+IPC wait during WebView attachment. This is evidence of a scrolling stall.
+Build provenance and memory were not verified by this capture. Retest the
+attachment change and show memory use while scrolling, as requested by the README.

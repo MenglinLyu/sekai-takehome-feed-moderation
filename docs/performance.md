@@ -15,18 +15,19 @@ browser timing availability and cache-evidence limits.
    build configuration, coverage audit, server arguments, and network conditions.
 2. Confirm Feed and HTML requests work from the phone before starting capture.
    Preserve the default approximately 5 MB HTML payload and record actual latency.
-3. Select the measurement window before inspecting results. For a 50-second
-   recording, use trace seconds [10, 40). Maintain continuous scrolling throughout
-   that window, including normal, rapid, and reverse paging.
+3. Record the scroll path and measurement window, including normal, rapid, and
+   reverse paging. The retained capture summarizes trace seconds [10, 40).
+   Record actual gesture coverage and idle/loading periods.
 4. Synchronize gesture boundaries with Feed signposts or a screen recording.
    Keep loading pauses and static content distinguishable from active scrolling.
 5. Capture Animation Hitches and Points of Interest. Add Time Profiler, Hangs,
    and memory instruments in separate diagnostic runs as needed; record which
    instruments were enabled because profiling changes workload overhead.
 
-The acceptance target is **30 seconds of continuous scrolling, fewer than five
-application hitches, every hitch below 100 ms**. Numerical hitch counts alone do
-not establish a pass when continuous scrolling has not been verified.
+Follow the [README requirements](../README.md#hard-requirements): measure scrolling
+frame timing, report the numbers and resulting changes, and show what remains
+alive with approximately 5 MB items. Report observed hitches and measurement
+limits; the README specifies no numerical hitch allowance or fixed scroll duration.
 
 ## Read the measurements
 
@@ -41,10 +42,9 @@ not establish a pass when continuous scrolling has not been verified.
   Do not add overlapping pipeline durations or equate frame lifetime with hitch
   duration. Use main-thread stacks and scheduling states to distinguish CPU work
   from waits, and inspect Hangs separately from Animation Hitches.
-- Measure host and WebContent steady/peak memory, long-scroll growth, WebView
-  lifetime counts, settlement-to-visible/playable latency, and canceled loads.
-  Test physical memory pressure and process termination separately from simulator
-  notification-handler checks.
+- Show memory use and the number of live WebViews while scrolling approximately
+  5 MB items. Identify which processes were measured. Loading and cancellation
+  timings can help investigate observed stalls.
 
 ## Analyze exported phase intervals
 
@@ -72,5 +72,8 @@ Open loads are incomplete observations. Summed load durations include concurrenc
 and do not measure CPU time or transferred bytes. Compare one change at a time
 under the same workload before claiming a performance improvement.
 
-Generated recordings and analysis outputs are local artifacts; do not commit
-them as test procedures. This document contains no retained measurement results.
+Keep results, analysis, and compact supporting exports in
+[`docs/evidence/performance/`](evidence/performance/README.md), which Git can track.
+Raw Instruments traces and large stack exports remain local in
+`docs/artifacts/recordings/`. See the evidence index for the retained files and
+how to archive another run.

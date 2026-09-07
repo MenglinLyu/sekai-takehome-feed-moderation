@@ -1,0 +1,138 @@
+mock feed listening on http://0.0.0.0:8787  (local: http://127.0.0.1:8787; Android emulator: http://10.0.2.2:8787)
+  page size 6 · latency 350ms · item ~5MB · moderation fail rate 0.0
+  GET /health → "GET /health HTTP/1.1" 200 -
+  GET /game/feed?refresh=0&limit=1 → "GET /game/feed?refresh=0&limit=1 HTTP/1.1" 200 -
+  GET /game/feed?limit=10&refresh=0 → "GET /game/feed?limit=10&refresh=0 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /content/game_0000 → "GET /content/game_0000 HTTP/1.1" 200 -  GET /content/game_0001 → "GET /content/game_0001 HTTP/1.1" 200 -
+
+  GET /avatar/creator_2 → "GET /avatar/creator_2 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /content/game_0003 → "GET /content/game_0003 HTTP/1.1" 200 -
+  GET /avatar/creator_6 → "GET /avatar/creator_6 HTTP/1.1" 200 -
+  GET /content/game_0005 → "GET /content/game_0005 HTTP/1.1" 200 -
+  GET /avatar/creator_7 → "GET /avatar/creator_7 HTTP/1.1" 200 -
+  GET /content/game_0006 → "GET /content/game_0006 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /content/game_0003 → "GET /content/game_0003 HTTP/1.1" 200 -
+  GET /avatar/creator_2 → "GET /avatar/creator_2 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /content/game_0001 → "GET /content/game_0001 HTTP/1.1" 200 -
+  GET /content/game_0000 → "GET /content/game_0000 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /avatar/creator_6 → "GET /avatar/creator_6 HTTP/1.1" 200 -
+  GET /avatar/creator_7 → "GET /avatar/creator_7 HTTP/1.1" 200 -
+  GET /content/game_0005 → "GET /content/game_0005 HTTP/1.1" 200 -
+  GET /content/game_0003 → "GET /content/game_0003 HTTP/1.1" 200 -
+  GET /content/game_0006 → "GET /content/game_0006 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /avatar/creator_2 → "GET /avatar/creator_2 HTTP/1.1" 200 -
+  GET /game/feed?limit=10&refresh=1 → "GET /game/feed?limit=10&refresh=1 HTTP/1.1" 200 -
+  GET /content/game_0007 → "GET /content/game_0007 HTTP/1.1" 200 -
+  GET /avatar/creator_3 → "GET /avatar/creator_3 HTTP/1.1" 200 -
+  GET /content/game_0008 → "GET /content/game_0008 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /content/game_0009 → "GET /content/game_0009 HTTP/1.1" 200 -
+  GET /avatar/creator_6 → "GET /avatar/creator_6 HTTP/1.1" 200 -
+  GET /content/game_0010 → "GET /content/game_0010 HTTP/1.1" 200 -
+  GET /avatar/creator_7 → "GET /avatar/creator_7 HTTP/1.1" 200 -
+  GET /content/game_0012 → "GET /content/game_0012 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /content/game_0013 → "GET /content/game_0013 HTTP/1.1" 200 -
+  GET /avatar/creator_2 → "GET /avatar/creator_2 HTTP/1.1" 200 -
+  GET /content/game_0014 → "GET /content/game_0014 HTTP/1.1" 200 -
+  GET /avatar/creator_3 → "GET /avatar/creator_3 HTTP/1.1" 200 -
+  GET /content/game_0015 → "GET /content/game_0015 HTTP/1.1" 200 -
+  GET /content/game_0016 → "GET /content/game_0016 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /game/feed?limit=10&refresh=2 → "GET /game/feed?limit=10&refresh=2 HTTP/1.1" 200 -
+  GET /content/game_0017 → "GET /content/game_0017 HTTP/1.1" 200 -
+  GET /avatar/creator_6 → "GET /avatar/creator_6 HTTP/1.1" 200 -
+  GET /content/game_0019 → "GET /content/game_0019 HTTP/1.1" 200 -
+  GET /avatar/creator_7 → "GET /avatar/creator_7 HTTP/1.1" 200 -
+  GET /content/game_0020 → "GET /content/game_0020 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /content/game_0021 → "GET /content/game_0021 HTTP/1.1" 200 -
+  GET /avatar/creator_2 → "GET /avatar/creator_2 HTTP/1.1" 200 -
+  GET /content/game_0022 → "GET /content/game_0022 HTTP/1.1" 200 -
+  GET /avatar/creator_3 → "GET /avatar/creator_3 HTTP/1.1" 200 -
+  GET /content/game_0023 → "GET /content/game_0023 HTTP/1.1" 200 -
+  GET /avatar/creator_4 → "GET /avatar/creator_4 HTTP/1.1" 200 -
+  GET /content/game_0024 → "GET /content/game_0024 HTTP/1.1" 200 -
+  GET /avatar/creator_6 → "GET /avatar/creator_6 HTTP/1.1" 200 -
+  GET /content/game_0026 → "GET /content/game_0026 HTTP/1.1" 200 -
+  GET /avatar/creator_7 → "GET /avatar/creator_7 HTTP/1.1" 200 -
+  GET /content/game_0027 → "GET /content/game_0027 HTTP/1.1" 200 -
+  GET /avatar/creator_1 → "GET /avatar/creator_1 HTTP/1.1" 200 -
+  GET /content/game_0028 → "GET /content/game_0028 HTTP/1.1" 200 -
+  GET /game/feed?limit=10&refresh=3 → "GET /game/feed?limit=10&refresh=3 HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.200', 54751)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 498, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 464, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [Errno 54] Connection reset by peer
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.200', 54753)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 498, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 464, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [Errno 54] Connection reset by peer
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.200', 54752)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 498, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/server.py", line 464, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [Errno 54] Connection reset by peer
+----------------------------------------

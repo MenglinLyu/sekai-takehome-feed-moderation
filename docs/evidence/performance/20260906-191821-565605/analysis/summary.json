@@ -1,0 +1,573 @@
+{
+  "recording": "20260906-191821-565605",
+  "full_recording": {
+    "duration_s": 50.998136997,
+    "surfaces": 1905,
+    "average_fps": 37.35430570948235,
+    "zero_presentation_s": 4.0
+  },
+  "window_10_40": {
+    "duration_s": 30.0,
+    "surfaces": 1340,
+    "average_fps": 44.666666666666664,
+    "zero_presentation_s": 4.0
+  },
+  "hitch_rows": 2,
+  "interaction_delays": [
+    {
+      "start_s": 1.17896125,
+      "duration_ms": 61.614916,
+      "kind": "Potential Interaction Delay",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "start_s": 1.781211708,
+      "duration_ms": 34.114667,
+      "kind": "Potential Interaction Delay",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "start_s": 15.42787375,
+      "duration_ms": 254.994875,
+      "kind": "Microhang",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "start_s": 18.70320725,
+      "duration_ms": 252.893583,
+      "kind": "Microhang",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    }
+  ],
+  "thermal": [
+    {
+      "start_s": 0.0,
+      "duration_s": 50.998136997,
+      "state": "Nominal"
+    }
+  ],
+  "event_count": 858,
+  "scroll_duration_s": 14.180789586000014,
+  "scroll_duration_in_10_40_s": 8.973383962000003,
+  "scroll_segments": [
+    [
+      15.686660166,
+      16.036286166
+    ],
+    [
+      16.21192525,
+      16.636388333
+    ],
+    [
+      16.878294291,
+      17.269806958
+    ],
+    [
+      17.528378208,
+      18.703374875
+    ],
+    [
+      18.957186708,
+      18.957369
+    ],
+    [
+      20.978849708,
+      21.58721075
+    ],
+    [
+      22.045759625,
+      22.50402925
+    ],
+    [
+      25.079753958,
+      25.721406583
+    ],
+    [
+      26.930035833,
+      27.555051958
+    ],
+    [
+      28.530382541,
+      29.32185125
+    ],
+    [
+      30.280845666,
+      31.088802875
+    ],
+    [
+      32.464284291,
+      32.939301416
+    ],
+    [
+      34.147950333,
+      34.789546583
+    ],
+    [
+      35.915007916,
+      36.523278291
+    ],
+    [
+      37.448495125,
+      38.423548208
+    ],
+    [
+      40.732159708,
+      41.724066041
+    ],
+    [
+      42.83326625,
+      43.457762875
+    ],
+    [
+      44.416520208,
+      45.191285416
+    ],
+    [
+      46.333535083,
+      46.941602875
+    ],
+    [
+      47.600167208,
+      48.358503833
+    ],
+    [
+      49.217097083,
+      49.875324458
+    ],
+    [
+      50.734030333,
+      51.525659041
+    ]
+  ],
+  "longest_scroll_segment_s": 1.174996667000002,
+  "interval_stats": {
+    "FeedAssignWindow": {
+      "count": 24,
+      "median_ms": 0.06466700000018477,
+      "max_ms": 0.09299999999967667,
+      "outcomes": {
+        "completed": 24
+      }
+    },
+    "FeedDeceleration": {
+      "count": 23,
+      "median_ms": 341.720917,
+      "max_ms": 375.1202919999983,
+      "outcomes": {
+        "settled": 21,
+        "new drag": 2
+      }
+    },
+    "FeedDrag": {
+      "count": 23,
+      "median_ms": 283.2877079999996,
+      "max_ms": 650.0561670000025,
+      "outcomes": {
+        "drag ended": 23
+      }
+    },
+    "FeedFilter": {
+      "count": 10,
+      "median_ms": 0.011082999996858689,
+      "max_ms": 0.016666999997028142,
+      "outcomes": {
+        "completed": 10
+      }
+    },
+    "FeedPageLoad": {
+      "count": 2,
+      "median_ms": 486.1728125000013,
+      "max_ms": 551.714582999999,
+      "outcomes": {
+        "completed": 2
+      }
+    },
+    "FeedRenderCells": {
+      "count": 112,
+      "median_ms": 0.026020500000001334,
+      "max_ms": 251.57816699999813,
+      "outcomes": {
+        "completed": 112
+      }
+    },
+    "FeedSettle": {
+      "count": 22,
+      "median_ms": 0.17908300000080146,
+      "max_ms": 0.2327500000021132,
+      "outcomes": {
+        "completed": 22
+      }
+    },
+    "FeedSnapshot": {
+      "count": 2,
+      "median_ms": 4.272895999998028,
+      "max_ms": 4.84704199999797,
+      "outcomes": {
+        "completed": 2
+      }
+    },
+    "FeedWebViewAttach": {
+      "count": 21,
+      "median_ms": 0.7103749999970432,
+      "max_ms": 251.46487499999992,
+      "outcomes": {
+        "completed": 21
+      }
+    },
+    "FeedWebViewDetach": {
+      "count": 22,
+      "median_ms": 0.33300000000124896,
+      "max_ms": 3.312083000000854,
+      "outcomes": {
+        "completed": 22
+      }
+    },
+    "WebLoadToReady": {
+      "count": 19,
+      "median_ms": 3790.0524170000053,
+      "max_ms": 6519.6383749999995,
+      "outcomes": {
+        "reset or cancelled": 19
+      }
+    },
+    "WebPoolReconcile": {
+      "count": 67,
+      "median_ms": 0.2662079999993239,
+      "max_ms": 252.12791599999917,
+      "outcomes": {
+        "completed": 67
+      }
+    },
+    "WebSlotReset": {
+      "count": 22,
+      "median_ms": 0.2381669999973468,
+      "max_ms": 0.25787500000262753,
+      "outcomes": {
+        "completed": 22
+      }
+    }
+  },
+  "loads": [
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x7f",
+      "start_s": 16.6740175,
+      "end_s": 18.703707625,
+      "duration_ms": 2029.6901249999983,
+      "begin_message": "item=game_0000 role=adjacent slot=0",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x72",
+      "start_s": 16.295182291,
+      "end_s": 18.703908958,
+      "duration_ms": 2408.726667,
+      "begin_message": "item=game_0001 role=adjacent slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xac",
+      "start_s": 18.971432333,
+      "end_s": 21.587599375,
+      "duration_ms": 2616.167042000001,
+      "begin_message": "item=game_0003 role=adjacent slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xa1",
+      "start_s": 18.703997791,
+      "end_s": 22.504445958,
+      "duration_ms": 3800.4481670000027,
+      "begin_message": "item=game_0005 role=current slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xb0",
+      "start_s": 19.203046916,
+      "end_s": 25.722685291,
+      "duration_ms": 6519.6383749999995,
+      "begin_message": "item=game_0006 role=adjacent slot=0",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xd8",
+      "start_s": 23.264854458,
+      "end_s": 27.5562285,
+      "duration_ms": 4291.374042000001,
+      "begin_message": "item=game_0007 role=current slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xe8",
+      "start_s": 26.124970708,
+      "end_s": 29.322307958,
+      "duration_ms": 3197.3372500000005,
+      "begin_message": "item=game_0008 role=current slot=0",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0xf8",
+      "start_s": 27.930687083,
+      "end_s": 31.08927525,
+      "duration_ms": 3158.5881670000012,
+      "begin_message": "item=game_0009 role=current slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x108",
+      "start_s": 30.082726791,
+      "end_s": 32.940838333,
+      "duration_ms": 2858.1115420000033,
+      "begin_message": "item=game_0010 role=current slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x118",
+      "start_s": 31.452210083,
+      "end_s": 34.790460875,
+      "duration_ms": 3338.2507920000003,
+      "begin_message": "item=game_0012 role=current slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x128",
+      "start_s": 33.216245208,
+      "end_s": 36.5241935,
+      "duration_ms": 3307.948292000006,
+      "begin_message": "item=game_0013 role=current slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x138",
+      "start_s": 35.020421625,
+      "end_s": 38.424495625,
+      "duration_ms": 3404.0740000000014,
+      "begin_message": "item=game_0014 role=current slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x148",
+      "start_s": 36.6663605,
+      "end_s": 41.725041,
+      "duration_ms": 5058.680499999994,
+      "begin_message": "item=game_0015 role=current slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x150",
+      "start_s": 37.746249708,
+      "end_s": 43.458719458,
+      "duration_ms": 5712.469749999997,
+      "begin_message": "item=game_0016 role=adjacent slot=0",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x16a",
+      "start_s": 38.881281708,
+      "end_s": 45.192184583,
+      "duration_ms": 6310.902874999996,
+      "begin_message": "item=game_0017 role=adjacent slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x17a",
+      "start_s": 41.953915625,
+      "end_s": 46.942543458,
+      "duration_ms": 4988.627833000002,
+      "begin_message": "item=game_0019 role=adjacent slot=1",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x18a",
+      "start_s": 43.836189,
+      "end_s": 48.359482333,
+      "duration_ms": 4523.293333000005,
+      "begin_message": "item=game_0020 role=adjacent slot=0",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x19a",
+      "start_s": 46.085640416,
+      "end_s": 49.875692833,
+      "duration_ms": 3790.0524170000053,
+      "begin_message": "item=game_0021 role=adjacent slot=2",
+      "outcome": "reset or cancelled"
+    },
+    {
+      "name": "WebLoadToReady",
+      "signpost_id": "0x1aa",
+      "start_s": 47.010046,
+      "end_s": 51.526892583,
+      "duration_ms": 4516.846582999996,
+      "begin_message": "item=game_0022 role=adjacent slot=1",
+      "outcome": "reset or cancelled"
+    }
+  ],
+  "canceled_load_elapsed_sum_s": 75.83122775200002,
+  "unmatched_ends": [
+    {
+      "time_s": "15.686657375",
+      "event_type": "End",
+      "name": "FeedDrag",
+      "signpost_id": "0x62",
+      "message": "drag ended",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "time_s": "16.036723166",
+      "event_type": "End",
+      "name": "WebLoadToReady",
+      "signpost_id": "0x44",
+      "message": "reset or cancelled",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "time_s": "16.63676325",
+      "event_type": "End",
+      "name": "WebLoadToReady",
+      "signpost_id": "0x34",
+      "message": "reset or cancelled",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "time_s": "17.270196833",
+      "event_type": "End",
+      "name": "WebLoadToReady",
+      "signpost_id": "0x5f",
+      "message": "reset or cancelled",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    }
+  ],
+  "open_intervals": [
+    {
+      "time_s": "48.716082958",
+      "event_type": "Begin",
+      "name": "WebLoadToReady",
+      "signpost_id": "0x1ba",
+      "message": "item=game_0023 role=adjacent slot=0",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    },
+    {
+      "time_s": "50.033587291",
+      "event_type": "Begin",
+      "name": "WebLoadToReady",
+      "signpost_id": "0x1ca",
+      "message": "item=game_0024 role=adjacent slot=2",
+      "process": "Sekai (9071)",
+      "thread": "Main Thread (0xde42e) (Sekai, pid: 9071)"
+    }
+  ],
+  "microhang_wait_stacks": [
+    {
+      "time_s": 15.429831916,
+      "state": "Blocked",
+      "frames": [
+        "__psynch_cvwait",
+        "_pthread_cond_wait",
+        "WTF::ParkingLot::parkConditionallyImpl(void const*, WTF::ScopedLambda<bool ()> const&, WTF::ScopedLambda<void ()> const&, WTF::TimeWithDynamicClockType const&)",
+        "bool WTF::Condition::waitUntilUnchecked<WTF::Lock>(WTF::Lock&, WTF::TimeWithDynamicClockType const&)",
+        "IPC::Connection::waitForMessage(IPC::MessageName, unsigned long long, IPC::Timeout, WTF::OptionSet<IPC::WaitForOption, (WTF::ConcurrencyTag)0>)",
+        "WebKit::RemoteLayerTreeDrawingAreaProxy::waitForDidUpdateActivityState(unsigned long long)",
+        "WebKit::WebPageProxy::dispatchActivityStateChange()",
+        "WebKit::WebPageProxy::activityStateDidChange(WTF::OptionSet<WebCore::ActivityState, (WTF::ConcurrencyTag)0>, WebKit::WebPageProxy::ActivityStateChangeDispatchMode, WebKit::WebPageProxy::ActivityStateChangeReplyMode)",
+        "-[WKWebView(WKViewInternalIOS) didMoveToWindow]",
+        "-[UIView(Internal) _didMoveFromWindow:toWindow:]",
+        "__45-[UIView(Hierarchy) _postMovedFromSuperview:]_block_invoke",
+        "-[UIView _postMovedFromSuperview:]",
+        "-[UIView(Internal) _addSubview:positioned:relativeTo:]",
+        "FeedCell.render(_:)",
+        "FeedViewController.collectionView(_:willDisplay:forItemAt:)",
+        "@objc FeedViewController.collectionView(_:willDisplay:forItemAt:)",
+        "-[UICollectionView _notifyWillDisplayCellIfNeeded:forIndexPath:]",
+        "-[UICollectionView _createVisibleViewsForSingleCategoryAttributes:limitCreation:fadeForBoundsChange:]",
+        "-[UICollectionView _createVisibleViewsForAttributes:fadeForBoundsChange:notifyLayoutForVisibleCellsPass:]",
+        "-[UICollectionView _updateVisibleCellsNow:]",
+        "-[UICollectionView layoutSubviews]",
+        "0x1893aa364",
+        "0x1893a9e04",
+        "-[UIView(CALayerDelegate) layoutSublayersOfLayer:]",
+        "-[CALayer layoutSublayers]",
+        "CA::Layer::perform_update_(CA::Layer*, CALayer*, unsigned int, CA::LayerUpdateReason, CA::Transaction*)",
+        "CA::Layer::update_if_needed_(CA::Transaction*, CA::LayerUpdateReason)",
+        "CA::Layer::layout_and_display_if_needed(CA::Transaction*)",
+        "CA::Context::commit_transaction(CA::Transaction*, double, double*)",
+        "CA::Transaction::commit()",
+        "CA::Transaction::flush()",
+        "CA::Transaction::flush_as_runloop_observer(bool)",
+        "_UIApplicationFlushCATransaction",
+        "__setupUpdateSequence_block_invoke_2",
+        "_UIUpdateSequenceRunNext",
+        "schedulerStepScheduledMainSectionContinue",
+        "UC::DriverCore::continueProcessing()",
+        "__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__",
+        "__CFRunLoopDoSource0",
+        "__CFRunLoopDoSources0",
+        "__CFRunLoopRun",
+        "_CFRunLoopRunSpecificWithOptions",
+        "GSEventRunModal",
+        "UIApplicationMain",
+        "closure #1 in KitRendererCommon(_:)",
+        "runApp<A>(_:)",
+        "static App.main()",
+        "static SekaiApp.$main()",
+        "__debug_main_executable_dylib_entry_point",
+        "start"
+      ]
+    },
+    {
+      "time_s": 18.704880083,
+      "state": "Blocked",
+      "frames": [
+        "__psynch_cvwait",
+        "WTF::ParkingLot::parkConditionallyImpl(void const*, WTF::ScopedLambda<bool ()> const&, WTF::ScopedLambda<void ()> const&, WTF::TimeWithDynamicClockType const&)",
+        "bool WTF::Condition::waitUntilUnchecked<WTF::Lock>(WTF::Lock&, WTF::TimeWithDynamicClockType const&)",
+        "IPC::Connection::waitForMessage(IPC::MessageName, unsigned long long, IPC::Timeout, WTF::OptionSet<IPC::WaitForOption, (WTF::ConcurrencyTag)0>)",
+        "WebKit::RemoteLayerTreeDrawingAreaProxy::waitForDidUpdateActivityState(unsigned long long)",
+        "WebKit::WebPageProxy::dispatchActivityStateChange()",
+        "WebKit::WebPageProxy::activityStateDidChange(WTF::OptionSet<WebCore::ActivityState, (WTF::ConcurrencyTag)0>, WebKit::WebPageProxy::ActivityStateChangeDispatchMode, WebKit::WebPageProxy::ActivityStateChangeReplyMode)",
+        "-[WKWebView(WKViewInternalIOS) didMoveToWindow]",
+        "-[UIView(Internal) _didMoveFromWindow:toWindow:]",
+        "__45-[UIView(Hierarchy) _postMovedFromSuperview:]_block_invoke",
+        "-[UIView _postMovedFromSuperview:]",
+        "-[UIView(Internal) _addSubview:positioned:relativeTo:]",
+        "FeedCell.render(_:)",
+        "FeedViewController.renderVisibleCells()",
+        "closure #2 in FeedViewController.viewDidLoad()",
+        "WebViewSlotPool.reconcile()",
+        "closure #1 in WebViewSlotPool.schedule()",
+        "partial apply for closure #1 in WebViewSlotPool.schedule()",
+        "thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)",
+        "partial apply for thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)",
+        "completeTaskWithClosure(swift::AsyncContext*, swift::SwiftError*)"
+      ]
+    }
+  ],
+  "limitations": [
+    "FPS is display presentation rate, not scrolling-only frame rate.",
+    "Open loads are right-censored at trace end, not failed loads.",
+    "Summed load elapsed time includes concurrency and is not CPU time or transferred bytes.",
+    "record-installed metadata does not verify Release configuration, coverage, or source revision."
+  ]
+}

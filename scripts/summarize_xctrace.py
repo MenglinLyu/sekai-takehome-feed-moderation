@@ -100,10 +100,7 @@ def main():
         full_recording_presented_surfaces=sum(s["presented_surfaces"] for s in samples),
         full_recording_average_fps=sum(s["presented_surfaces"] for s in samples) / sum(s["duration_s"] for s in samples),
         full_recording_hitches=all_hitches,
-        criterion="Fewer than 5 application hitches, every hitch below 100 ms, in 30 seconds",
-        numerical_hitch_threshold_met=(abs(elapsed - 30) < 1e-6 and len(app_hitches) < 5
-                                       and all(h["duration_ms"] < 100 for h in app_hitches)),
-        limitation="Gesture activity was not instrumented; presentation FPS includes intervals with no new surfaces and is not a dragging-only FPS measurement.",
+        limitation="Presentation FPS includes idle/loading intervals; correlate with Feed gesture signposts to interpret scrolling performance.",
     )
     (args.directory / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=2))

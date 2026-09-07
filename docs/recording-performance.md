@@ -81,7 +81,9 @@ has a 240-second allowance, configurable with `--startup-timeout` and
 
 Default output: `docs/artifacts/recordings/YYYYMMDD-HHMMSS-microseconds/`.
 Use `--output PATH` for a new directory; existing directories are never overwritten.
-Generated recordings are ignored by Git. Each successful run contains:
+Raw recordings are ignored by Git. Copy completed results and analysis to
+[`docs/evidence/performance/`](evidence/performance/README.md) for version control.
+Each successful run contains:
 
 - `recording.trace`: Animation Hitches plus Points of Interest recording.
 - `fps.csv` / `fps.xml`: Built-In Display presented surfaces per second.
@@ -96,7 +98,7 @@ Generated recordings are ignored by Git. Each successful run contains:
 - `record.log`, `mock.log` when the script manages the local mock, plus
   `build.log` and `install.log` when building.
 
-For the predefined 30-second window in a completed 50-second run:
+For the `[10, 40)` window used in the retained capture:
 
 ```sh
 python3 scripts/summarize_xctrace.py docs/artifacts/recordings/RUN --start 10 --end 40

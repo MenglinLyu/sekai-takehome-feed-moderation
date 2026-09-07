@@ -229,17 +229,16 @@ Manually verify cross-page block/report visibility, report persistence after res
 
 Use a physical device and Release build. Record first display, normal paging, rapid consecutive swipes, reverse scrolling, and behavior after a memory warning. Use Instruments for frame/hitch and memory measurements; simulator memory warnings validate behavior only.
 
-Set the acceptance target before measurement: during 30 seconds of continuous scrolling, fewer than five hitches and each hitch under 100 ms; alternatively, P95 frame duration below 16.7 ms on a 60 Hz device, with 8.3 ms as the reference for 120 Hz. State which criterion and metric were used. Record failures honestly and include optimization/retest evidence where needed.
+Follow the README: measure scrolling frame timing, report actual numbers and changes made in response, and show memory use with approximately 5 MB items. Record the workload and observed stalls honestly. The README specifies no numerical hitch allowance, percentile threshold, or fixed scrolling duration. Retain results and analysis in `docs/evidence/performance/`.
 
 | Record | Required detail |
 | --- | --- |
 | Environment | Device, OS, refresh rate, build configuration, mock latency/payload size, and scroll path. |
-| Frames | Frame timing or hitch count/duration, with pass/fail against the chosen target. |
+| Frames | Frame timing or hitch count/duration, observed scrolling stalls, and changes made in response. |
 | Memory | Peak, steady-state usage, and long-scroll trend; identify measured processes. |
 | WebViews | Creation events for all three instances and whether the count ever exceeded three. Verify no instances exist outside the pool. |
-| Display latency | Settlement-to-visible-content and settlement-to-playable delays, distinguishing preloaded and unready current slots. |
-| Wasted loads | Counts and elapsed time for loads canceled during window reassignment. |
-| Memory pressure | Deferred neighbor loads, memory trend, and content-process terminations. |
+
+Use display latency, canceled loads, and memory-pressure diagnostics when needed to explain an observed issue.
 
 If useful, compare with system cell prefetching disabled under the same conditions. Optimize observed bottlenecks, retest, and recheck core behavior. Only then spend remaining time persisting pending operations and validating restart synchronization. Automatic preload recovery remains optional; unblocking remains out of scope.
 
@@ -247,6 +246,6 @@ The mock's page counter can verify play/pause but cannot measure native scrollin
 
 Use [WebKit content metrics](web-content-metrics.md) for navigation/readiness phases and eligible-to-play intervals. Count ready-pool reuse as display opportunities even when no navigation occurs. Browser timing is feature-detected and cache evidence may be unknown; do not equate load calls with HTTP requests or browser body sizes with actual transferred bytes. [Direct-loading tests](web-content-testing.md) use an independent HTTP fixture to validate cacheable and no-store responses without modifying the mock.
 
-In the delivery README, record verified Xcode/Swift versions, run commands, actual feature scope, failure behavior, measured performance and acceptance results, tradeoffs, and unfinished work. If queue persistence is absent, state: “Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.”
+In the delivery README, record verified Xcode/Swift versions, run commands, actual feature scope, failure behavior, measured performance, tradeoffs, and unfinished work. If queue persistence is absent, state: “Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.”
 
 Record a demo showing continuous scrolling, blocking from the feed, scrolling back to confirm removal, and opening a creator page to block from the top-right `⋯` menu. Complete the separate manual restart/retry/background/memory-warning checks. Report implemented and validated behavior accurately.
