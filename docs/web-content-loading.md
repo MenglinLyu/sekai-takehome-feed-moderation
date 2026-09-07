@@ -11,6 +11,9 @@ The pool retains exactly three WKWebViews for previous/current/next around the s
 position. It starts current before new neighbor loads. Passing items during rapid
 scrolling does not reassign the pool. Matching item ID and source URL preserve a live
 document across role changes; changed URLs cause new navigation even with identical IDs.
+All three views are mounted once in a clipped collection-content canvas. Bound views are
+positioned at their item page frames and unused views are parked outside the visible
+content area. Cell reuse and scrolling never reparent a WebView or change its window.
 
 The pool bounds live documents; WebKit caches HTTP resources independently. Resetting
 a slot replaces its document with a blank page without clearing website data. A revisit
@@ -34,7 +37,12 @@ validators and versioned static resources.
 WKNavigation identity guards native/JS callbacks, including A → B → A reuse. The mock
 starts paused; after didFinish the pool checks play/pause functions. Only the settled,
 foreground, visible, unhidden item may play after the old player acknowledges pause.
-Failed reset retains the safety barrier. stopLoading alone does not stop running scripts.
+Dragging revokes eligibility and may show a paused document while it moves with the page;
+settling back on a ready pooled document calls play again without reloading or reparenting.
+Resetting an already paused neighbor does not block playback of the ready current item,
+even if that neighbor's reset fails. A failed pause keeps the slot marked as potentially
+playing until replacement finishes, so it still blocks other playback. stopLoading alone
+does not stop running scripts. A failed reset leaves that slot unavailable until recovery.
 
 Inactive Feed cancels unfinished loads and prevents new ones; completed documents can
 remain pooled. Reassignment cancels obsolete loads. Memory warnings keep three instances

@@ -45,6 +45,9 @@ import os
     private var conservative = false
     private var dirty = false
     private var reconciliation: Task<Void, Never>?
+    private weak var webViewContainer: UIView?
+    private var itemFrames: [SekaiID: CGRect] = [:]
+    private var parkedFrame = CGRect.zero
     var onChange: (() -> Void)?
 
     init(websiteDataStore: WKWebsiteDataStore = .default()) {
@@ -53,6 +56,39 @@ import os
         for (index, slot) in slots.enumerated() {
             slot.webView.navigationDelegate = self
             log.info("Created WebView slot \(index); capacity=3")
+        }
+    }
+
+    func mountWebViews(in container: UIView) {
+        if let webViewContainer {
+            precondition(webViewContainer === container, "WebViews must keep one permanent container")
+        } else {
+            webViewContainer = container
+        }
+        for (index, slot) in slots.enumerated() where slot.webView.superview == nil {
+            let phase = FeedPerformance.begin("FeedWebViewAttach", "slot=\(index) permanent=true")
+            container.addSubview(slot.webView)
+            phase?.end()
+        }
+        positionMountedWebViews()
+    }
+
+    func positionWebViews(itemFrames: [SekaiID: CGRect], parkedFrame: CGRect) {
+        self.itemFrames = itemFrames
+        self.parkedFrame = parkedFrame
+        positionMountedWebViews()
+    }
+
+    private func positionMountedWebViews() {
+        guard webViewContainer != nil else { return }
+        for slot in slots {
+            if let id = slot.item?.id, let frame = itemFrames[id], !slot.resetting {
+                slot.webView.frame = frame
+                slot.webView.isUserInteractionEnabled = slot.ready
+            } else {
+                slot.webView.frame = parkedFrame
+                slot.webView.isUserInteractionEnabled = false
+            }
         }
     }
 
@@ -107,8 +143,7 @@ import os
         if let eligibleID, !survivingIDs.contains(eligibleID) { setEligibleTarget(nil) }
         for slot in slots {
             guard let id = slot.item?.id, !survivingIDs.contains(id) else { continue }
-            slot.webView.isHidden = true
-            slot.webView.removeFromSuperview()
+            slot.webView.isUserInteractionEnabled = false
             if !slot.playing && !slot.resetting { reset(slot) }
             else { slot.webView.stopLoading() }
         }
@@ -204,10 +239,12 @@ import os
                 }
             }
 
-            // A failed reset leaves playback stopped until that document is safely replaced.
-            if !slots.contains(where: { $0.resetting || $0.playing }),
+            // Only a potentially running document blocks another slot from playing.
+            // reset() preserves playing after a failed pause until replacement finishes;
+            // resetting an already paused neighbor must not stall the current item.
+            if !slots.contains(where: { $0.playing }),
                contentActive, let eligibleID,
-               let slot = slots.first(where: { $0.item?.id == eligibleID && $0.ready }),
+               let slot = slots.first(where: { $0.item?.id == eligibleID && $0.ready && !$0.resetting }),
                desired.contains(where: { $0.id == eligibleID }) {
                 let navigation = slot.navigation
                 slot.playing = true
@@ -227,6 +264,7 @@ import os
                     reset(slot)
                 }
             }
+            positionMountedWebViews()
             onChange?()
         }
         reconciliation = nil
@@ -264,8 +302,7 @@ import os
         slot.playAcknowledged = false
         slot.loadInterval?.end("reset or cancelled")
         slot.loadInterval = nil
-        slot.webView.isHidden = true
-        slot.webView.removeFromSuperview()
+        slot.webView.isUserInteractionEnabled = false
         if slot.navigation != nil && !slot.finished {
             log.debug("Canceled load \(slot.item?.id ?? "")")
         }
@@ -340,7 +377,8 @@ import os
     private func failed(_ webView: WKWebView, navigation: WKNavigation?, error: Error) {
         guard let slot = slot(for: webView, navigation: navigation) else { return }
         if slot.resetting {
-            // Retain the safety barrier; recovery may be retried after process termination.
+            // Keep this slot unavailable. It blocks other playback only if its old
+            // document may still be running; process termination can clear that barrier.
             log.error("Blank-document reset failed: \(error.localizedDescription)")
             return
         }

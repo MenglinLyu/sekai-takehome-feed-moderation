@@ -1,9 +1,7 @@
 import UIKit
-import WebKit
 
 @MainActor final class FeedCell: UICollectionViewCell {
     static let reuseID = "FeedCell"
-    private let holder = UIView()
     private let artworkView = UIImageView()
     private let statusView = UIView()
     private let placeholder = UILabel()
@@ -15,15 +13,13 @@ import WebKit
     private let titleLabel = UILabel()
     private let creatorButton = UIButton(type: .system)
     private let actionsButton = UIButton(type: .system)
-    private weak var attached: WKWebView?
+    private let controlsPanel = UIView()
+    private var isShowingLiveWebContent = false
     private(set) var itemID: SekaiID?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .black
-        holder.frame = contentView.bounds
-        holder.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentView.addSubview(holder)
         artworkView.frame = contentView.bounds
         artworkView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         artworkView.contentMode = .scaleAspectFill
@@ -57,14 +53,13 @@ import WebKit
         row.spacing = 12
         row.alignment = .center
         row.translatesAutoresizingMaskIntoConstraints = false
-        let panel = UIView()
-        panel.backgroundColor = UIColor.black.withAlphaComponent(0.72)
-        panel.translatesAutoresizingMaskIntoConstraints = false
-        panel.addSubview(row)
+        controlsPanel.backgroundColor = UIColor.black.withAlphaComponent(0.72)
+        controlsPanel.translatesAutoresizingMaskIntoConstraints = false
+        controlsPanel.addSubview(row)
         statusView.addSubview(placeholder)
         contentView.addSubview(statusView)
         contentView.addSubview(retryButton)
-        contentView.addSubview(panel)
+        contentView.addSubview(controlsPanel)
         NSLayoutConstraint.activate([
             statusView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             statusView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -75,13 +70,13 @@ import WebKit
             placeholder.bottomAnchor.constraint(equalTo: statusView.bottomAnchor, constant: -8),
             retryButton.topAnchor.constraint(equalTo: statusView.bottomAnchor, constant: 12),
             retryButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            panel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            panel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            panel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            row.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
-            row.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
-            row.topAnchor.constraint(equalTo: panel.topAnchor, constant: 16),
-            row.bottomAnchor.constraint(equalTo: panel.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            controlsPanel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            controlsPanel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            controlsPanel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            row.leadingAnchor.constraint(equalTo: controlsPanel.leadingAnchor, constant: 20),
+            row.trailingAnchor.constraint(equalTo: controlsPanel.trailingAnchor, constant: -20),
+            row.topAnchor.constraint(equalTo: controlsPanel.topAnchor, constant: 16),
+            row.bottomAnchor.constraint(equalTo: controlsPanel.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             actionsButton.widthAnchor.constraint(equalToConstant: 48),
             actionsButton.heightAnchor.constraint(equalToConstant: 48)
         ])
@@ -92,7 +87,6 @@ import WebKit
     func configure(item: SekaiItem, pool: WebViewSlotPool, openCreator: @escaping () -> Void,
                    report: @escaping (String) -> Void, block: @escaping () -> Void) {
         if itemID != item.id || artworkURL != item.coverURL {
-            detach()
             clearArtwork()
             itemID = item.id
             loadArtwork(url: item.coverURL)
@@ -130,25 +124,16 @@ import WebKit
     func render(_ presentation: WebViewSlotPool.Presentation?) {
         guard !isContentHidden else { return }
         guard let presentation else {
-            detach()
+            isShowingLiveWebContent = false
+            contentView.backgroundColor = .black
             placeholder.text = "Settle here to load content"
             artworkView.isHidden = false
             statusView.isHidden = false
             retryButton.isHidden = true
             return
         }
-        if attached !== presentation.webView {
-            let phase = FeedPerformance.begin("FeedWebViewAttach", "item=\(itemID ?? "none")")
-            defer { phase?.end() }
-            detach()
-            let webView = presentation.webView
-            webView.removeFromSuperview()
-            webView.frame = holder.bounds
-            webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            holder.addSubview(webView)
-            attached = webView
-        }
-        presentation.webView.isHidden = !presentation.isReady
+        isShowingLiveWebContent = presentation.isReady
+        contentView.backgroundColor = presentation.isReady ? .clear : .black
         placeholder.text = presentation.error ?? "Loading content…"
         artworkView.isHidden = presentation.isReady
         statusView.isHidden = presentation.isReady
@@ -157,7 +142,8 @@ import WebKit
 
     func cover() {
         isContentHidden = true
-        detach()
+        isShowingLiveWebContent = false
+        contentView.backgroundColor = .black
         clearArtwork()
         artworkView.isHidden = true
         placeholder.text = "Content hidden"
@@ -189,18 +175,16 @@ import WebKit
         artworkView.image = nil
     }
 
-    func detach() {
-        if attached?.superview === holder {
-            let phase = FeedPerformance.begin("FeedWebViewDetach", "item=\(itemID ?? "none")")
-            defer { phase?.end() }
-            attached?.removeFromSuperview()
-        }
-        attached = nil
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hit = super.hitTest(point, with: event)
+        guard isShowingLiveWebContent else { return hit }
+        let panelPoint = controlsPanel.convert(point, from: self)
+        if controlsPanel.point(inside: panelPoint, with: event) { return hit }
+        return nil
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        detach()
         clearArtwork()
         itemID = nil
         accessibilityIdentifier = nil
@@ -211,6 +195,8 @@ import WebKit
         retryButton.accessibilityIdentifier = nil
         actionsButton.menu = nil
         isContentHidden = false
+        isShowingLiveWebContent = false
+        contentView.backgroundColor = .black
         artworkView.isHidden = false
         statusView.isHidden = true
         placeholder.text = nil

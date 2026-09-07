@@ -5,6 +5,7 @@ import SwiftUI
     private let viewModel: FeedViewModel
     private let pool: WebViewSlotPool
     private var collectionView: UICollectionView!
+    private let webCanvas = UIView()
     private var dataSource: UICollectionViewDiffableDataSource<Int, SekaiID>!
     private var items: [SekaiItem] = []
     private var currentID: SekaiID?
@@ -42,6 +43,10 @@ import SwiftUI
         collectionView.delegate = self
         collectionView.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.reuseID)
         view.addSubview(collectionView)
+        webCanvas.backgroundColor = .clear
+        webCanvas.clipsToBounds = true
+        collectionView.insertSubview(webCanvas, at: 0)
+        pool.mountWebViews(in: webCanvas)
         dataSource = UICollectionViewDiffableDataSource<Int, SekaiID>(collectionView: collectionView) {
             [weak self] collectionView, indexPath, id in
             guard let self, let item = self.items.first(where: { $0.id == id }),
@@ -53,7 +58,7 @@ import SwiftUI
                            block: { [weak self] in self?.viewModel.blockCreator(item.creatorID) })
             return cell
         }
-        pool.onChange = { [weak self] in self?.renderVisibleCells() }
+        pool.onChange = { [weak self] in self?.updateWebContent() }
         NotificationCenter.default.addObserver(self, selector: #selector(background),
             name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(active),
@@ -71,6 +76,8 @@ import SwiftUI
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = lastSize
         collectionView.collectionViewLayout.invalidateLayout()
         positionCurrent()
+        collectionView.layoutIfNeeded()
+        layoutWebContent()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +117,7 @@ import SwiftUI
             dataSource.apply(snapshot, animatingDifferences: false)
             assignWindow()
             updateEligibility()
+            layoutWebContent()
             return
         }
         let phase = FeedPerformance.begin("FeedSnapshot", "old=\(oldIDs.count) new=\(newIDs.count) revision=\(snapshotRevision + 1)")
@@ -136,6 +144,7 @@ import SwiftUI
             defer { phase?.end() }
             self.collectionView.layoutIfNeeded()
             self.positionCurrent()
+            self.layoutWebContent()
             self.settled = !self.collectionView.isDragging && !self.collectionView.isDecelerating
             if self.settled { self.assignWindow() }
             self.updateEligibility(reason: "snapshot")
@@ -152,7 +161,7 @@ import SwiftUI
         let phase = FeedPerformance.begin("FeedAssignWindow", "item=\(currentID ?? "none")")
         defer { phase?.end() }
         pool.assign(items: items, currentID: currentID)
-        renderVisibleCells()
+        updateWebContent()
         if let currentID, let index = items.firstIndex(where: { $0.id == currentID }),
            index >= items.count - 3, !viewModel.state.needsContinue, viewModel.state.error == nil {
             viewModel.loadNextPage()
@@ -187,6 +196,30 @@ import SwiftUI
         }
     }
 
+    private func updateWebContent() {
+        layoutWebContent()
+        renderVisibleCells()
+    }
+
+    private func layoutWebContent() {
+        guard collectionView.bounds.width > 0, collectionView.bounds.height > 0 else { return }
+        let contentHeight = max(collectionView.contentSize.height,
+                                max(CGFloat(items.count) * collectionView.bounds.height,
+                                    collectionView.bounds.height))
+        webCanvas.frame = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: contentHeight)
+        collectionView.sendSubviewToBack(webCanvas)
+        var frames: [SekaiID: CGRect] = [:]
+        for (index, item) in items.enumerated() {
+            frames[item.id] = CGRect(x: 0, y: CGFloat(index) * collectionView.bounds.height,
+                                     width: collectionView.bounds.width,
+                                     height: collectionView.bounds.height)
+        }
+        let parkedFrame = CGRect(x: 0, y: contentHeight + collectionView.bounds.height,
+                                 width: collectionView.bounds.width,
+                                 height: collectionView.bounds.height)
+        pool.positionWebViews(itemFrames: frames, parkedFrame: parkedFrame)
+    }
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         finishScroll("new drag")
         scrollInterval = FeedPerformance.begin("FeedDrag", "item=\(currentID ?? "none")")
@@ -205,13 +238,9 @@ import SwiftUI
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
+        collectionView.sendSubviewToBack(webCanvas)
         guard let cell = cell as? FeedCell, let id = cell.itemID else { return }
         cell.render(pool.presentation(for: id))
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell,
-                        forItemAt indexPath: IndexPath) {
-        (cell as? FeedCell)?.detach()
     }
 
     private func finishScroll(_ reason: String) {

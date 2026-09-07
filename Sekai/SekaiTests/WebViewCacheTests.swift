@@ -83,6 +83,35 @@ import Network
     }
 }
 
+/// Holds the pool's reset completion so playback can be checked while replacement is pending.
+@MainActor private final class ResetCompletionGate: NSObject, WKNavigationDelegate {
+    let pool: WebViewSlotPool
+    let reached: XCTestExpectation
+    private var pending: (WKWebView, WKNavigation)?
+
+    init(pool: WebViewSlotPool, reached: XCTestExpectation) {
+        self.pool = pool
+        self.reached = reached
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard let navigation else { return }
+        pending = (webView, navigation)
+        reached.fulfill()
+    }
+
+    func complete(failing: Bool = false) {
+        guard let (webView, navigation) = pending else { return }
+        pending = nil
+        if failing {
+            pool.webView(webView, didFail: navigation,
+                         withError: NSError(domain: NSURLErrorDomain, code: NSURLErrorCancelled))
+        } else {
+            pool.webView(webView, didFinish: navigation)
+        }
+    }
+}
+
 @MainActor final class WebViewCacheTests: XCTestCase {
     private func items(_ base: URL) -> [SekaiItem] {
         ["a", "b", "c", "d"].map { id in
@@ -112,12 +141,29 @@ import Network
         }
     }
 
+    private func waitForPlaying(_ expected: Bool, in webView: WKWebView,
+                                file: StaticString = #filePath, line: UInt = #line) async {
+        for _ in 0..<60 {
+            if let playing = try? await webView.evaluateJavaScript(
+                "document.body.dataset.playing === 'true'"
+            ) as? Bool, playing == expected {
+                return
+            }
+            try? await Task.sleep(nanoseconds: 50_000_000)
+        }
+        XCTFail("Web content did not reach playing=\(expected)", file: file, line: line)
+    }
+
     func testFreshHTTPDocumentIsReusedAfterLeavingPoolWindow() async throws {
         let server = CacheHTTPFixture()
         let base = try await server.start()
         defer { server.stop() }
         let dataStore = WKWebsiteDataStore.default()
         let pool = WebViewSlotPool(websiteDataStore: dataStore)
+        let webCanvas = UIView()
+        pool.mountWebViews(in: webCanvas)
+        let mountedWebViews = webCanvas.subviews.compactMap { $0 as? WKWebView }
+        XCTAssertEqual(mountedWebViews.count, 3)
         let content = items(base)
         defer { pool.setContentActive(false); pool.removeHiddenItems(survivingIDs: []) }
         await ready(["a", "b"], pool: pool) {
@@ -135,6 +181,9 @@ import Network
         await ready(["a", "b"], pool: pool) { pool.assign(items: content, currentID: "a") }
         let revisited = try XCTUnwrap(pool.presentation(for: "a")?.webView)
         XCTAssertFalse(revisited.backForwardList.currentItem === firstDocument)
+        XCTAssertEqual(Set(webCanvas.subviews.compactMap { ($0 as? WKWebView).map(ObjectIdentifier.init) }),
+                       Set(mountedWebViews.map(ObjectIdentifier.init)))
+        XCTAssertTrue(mountedWebViews.allSatisfy { $0.superview === webCanvas })
         XCTAssertEqual(server.requests[base.appendingPathComponent("a").path], 1)
         XCTAssertEqual(server.requests[base.appendingPathComponent("b").path], 1)
     }
@@ -153,5 +202,114 @@ import Network
         await ready(["c", "d"], pool: pool) { pool.assign(items: content, currentID: "d") }
         await ready(["a", "b"], pool: pool) { pool.assign(items: content, currentID: "a") }
         XCTAssertEqual(server.requests[base.appendingPathComponent("a").path], 2)
+    }
+
+    func testReturningToReadyItemPlaysWhilePausedNeighborResetIsPendingOrFailed() async throws {
+        let server = CacheHTTPFixture()
+        let base = try await server.start()
+        defer { server.stop() }
+        let pool = WebViewSlotPool(websiteDataStore: .default())
+        let content = items(base)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        let host = UIViewController()
+        window.rootViewController = host
+        window.isHidden = false
+        pool.mountWebViews(in: host.view)
+        defer {
+            pool.setContentActive(false)
+            pool.removeHiddenItems(survivingIDs: [])
+            window.isHidden = true
+        }
+
+        await ready(["a", "b", "c"], pool: pool) {
+            pool.setContentActive(true)
+            pool.assign(items: content, currentID: "b")
+        }
+        let first = try XCTUnwrap(pool.presentation(for: "a")?.webView)
+        let second = try XCTUnwrap(pool.presentation(for: "b")?.webView)
+        let neighbor = try XCTUnwrap(pool.presentation(for: "c")?.webView)
+        pool.setEligibleTarget("b")
+        await waitForPlaying(true, in: second)
+        pool.setEligibleTarget(nil)
+        await waitForPlaying(false, in: second)
+
+        let reached = expectation(description: "Paused neighbor reset")
+        let gate = ResetCompletionGate(pool: pool, reached: reached)
+        neighbor.navigationDelegate = gate
+        defer { gate.complete(); neighbor.navigationDelegate = pool }
+        pool.assign(items: content, currentID: "a")
+        pool.setEligibleTarget("a")
+        await fulfillment(of: [reached], timeout: 10)
+        await waitForPlaying(true, in: first)
+        await waitForPlaying(false, in: second)
+        XCTAssertTrue(first.superview === host.view)
+
+        gate.complete(failing: true)
+        pool.setEligibleTarget(nil)
+        await waitForPlaying(false, in: first)
+        pool.setEligibleTarget("a")
+        await waitForPlaying(true, in: first)
+    }
+
+    func testFailedPauseStillBlocksNextItemUntilResetCompletes() async throws {
+        let server = CacheHTTPFixture()
+        let base = try await server.start()
+        defer { server.stop() }
+        let pool = WebViewSlotPool(websiteDataStore: .default())
+        let content = items(base)
+        defer { pool.setContentActive(false); pool.removeHiddenItems(survivingIDs: []) }
+        await ready(["a", "b"], pool: pool) {
+            pool.setContentActive(true)
+            pool.assign(items: content, currentID: "a")
+        }
+        let first = try XCTUnwrap(pool.presentation(for: "a")?.webView)
+        let second = try XCTUnwrap(pool.presentation(for: "b")?.webView)
+        pool.setEligibleTarget("a")
+        await waitForPlaying(true, in: first)
+        _ = try await first.evaluateJavaScript(
+            "window.sekaiPause = function() { throw new Error('Injected pause failure'); }; true;"
+        )
+
+        let reached = expectation(description: "Unconfirmed pause requires reset")
+        let gate = ResetCompletionGate(pool: pool, reached: reached)
+        first.navigationDelegate = gate
+        defer { gate.complete(); first.navigationDelegate = pool }
+        pool.setEligibleTarget("b")
+        await fulfillment(of: [reached], timeout: 10)
+        let playing = try await second.evaluateJavaScript("document.body.dataset.playing === 'true'")
+        XCTAssertEqual(playing as? Bool, false)
+        gate.complete()
+        await waitForPlaying(true, in: second)
+    }
+
+    func testSettlingBackOnReadyDocumentResumesPlayback() async throws {
+        let server = CacheHTTPFixture()
+        let base = try await server.start()
+        defer { server.stop() }
+        let pool = WebViewSlotPool(websiteDataStore: .default())
+        let content = items(base)
+        defer { pool.setContentActive(false); pool.removeHiddenItems(survivingIDs: []) }
+
+        await ready(["a", "b"], pool: pool) {
+            pool.setContentActive(true)
+            pool.assign(items: content, currentID: "a")
+        }
+        let first = try XCTUnwrap(pool.presentation(for: "a")?.webView)
+        let second = try XCTUnwrap(pool.presentation(for: "b")?.webView)
+
+        pool.setEligibleTarget("a", reason: "settled")
+        await waitForPlaying(true, in: first)
+        pool.setEligibleTarget(nil, reason: "drag")
+        await waitForPlaying(false, in: first)
+
+        pool.assign(items: content, currentID: "b")
+        pool.setEligibleTarget("b", reason: "settled")
+        await waitForPlaying(true, in: second)
+        pool.setEligibleTarget(nil, reason: "drag")
+        await waitForPlaying(false, in: second)
+
+        pool.assign(items: content, currentID: "a")
+        pool.setEligibleTarget("a", reason: "settled")
+        await waitForPlaying(true, in: first)
     }
 }

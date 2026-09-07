@@ -14,7 +14,7 @@ Work within approximately six focused hours. Complete and verify core functional
 - Isolate page repositories, view models, the Combine state adapter, and all UIKit/WebKit operations to `@MainActor`. Derive visible lists inside repositories from fetched content and moderation rules using `combineLatest`.
 - Persist blocked and reported IDs before publishing the local change; restore them before displaying content. Keep content hidden after network failure and perform one delayed retry per attempt cycle. Pending-operation persistence is optional; unblocking is out of scope.
 - Create exactly three application-owned `WKWebView` instances in `WebViewSlotPool`. Assign them to previous/current/next items around the settled feed position. Pool ownership and loading must be independent of cell reuse and prefetch callbacks.
-- Let `FeedViewController` choose playback eligibility, the pool own navigation callbacks/readiness and execute play/pause, and cells attach pooled views and render state. Allow playback only for the settled, visible, ready item while the feed is displayed and the app is foregrounded.
+- Let `FeedViewController` choose playback eligibility and own one collection-content canvas, let the pool permanently mount its views in that canvas and own navigation callbacks/readiness/playback, and let cells render only native state and controls. Allow playback only for the settled, visible, ready item while the feed is displayed and the app is foregrounded.
 - Implement conservative loading after a memory warning. Automatic restoration of adjacent preloading is optional.
 
 For a shorter repository instruction block, copy [the AGENTS.md snippet](agents-core-instructions.md).
@@ -28,7 +28,7 @@ Organize code under `App/Composition`, `Features`, `Repositories`, `Services`, a
 | Application | Construct one moderation repository, moderation state adapter, storage service, sync worker, API client, and WebView pool in `AppCompositionRoot`. Inject the same moderation dependencies into every page. |
 | Feed session | Keep `FeedRepository`, `FeedViewModel`, and `FeedViewController` alive under one stable feed host. SwiftUI redraws must not recreate them. |
 | Profile page session | `CreatorProfileFactory.make(creatorID:)` creates a fresh repository/view-model pair bound to an immutable creator ID. Do not share mutable pagination state between separate pages, even for the same creator. The factory does not cache instances. |
-| Cell | Attach a pool-owned WebView when assigned. Never create, destroy, or own an independent WebView. |
+| Cell | Reveal or cover the matching canvas-backed WebView and render native controls. Never create, attach, detach, destroy, or own a WebView. |
 | Test | Inject in-memory storage, controllable APIs, and clocks through protocols and initializers without starting the app composition root. |
 
 Run asynchronous restoration after constructing the composition root. Show a startup/loading state until restoration completes. Do not synchronously wait for disk or network work in initializers.
@@ -49,9 +49,9 @@ Keep SwiftUI view-model identity stable, for example with `@StateObject`. Do not
 | `FeedRepository` | `@MainActor` | Raw items, cursor, loading/errors, request generation, and Combine subscriptions. Publish `FeedState`; handle `loadNextPage`, `refresh`, `report`, and `blockCreator`. |
 | `CreatorProfileRepository` | `@MainActor` | Immutable creator ID, profile data, raw works, pagination, request generation, and subscriptions. Publish `CreatorProfileState`; handle initial loading, pagination, retry, and blocking. |
 | Feed/Profile view models | `@MainActor` | `ObservableObject` adapters for repository output; forward actions and manage page tasks, navigation, and user feedback. |
-| `FeedViewController` / `FeedContainerView` | `@MainActor` | Collection view, snapshots, SwiftUI bridge, settled target, playback eligibility, and pool reassignment. |
-| `WebViewSlotPool` | `@MainActor` | Three WebViews, slot bindings, navigation delegates, readiness, loading/cancellation, and serialized play/pause execution. |
-| `FeedCell` | `@MainActor` | Attach/detach the assigned pooled WebView and render exposed slot state. Do not receive raw navigation callbacks, maintain readiness, or select playback targets. |
+| `FeedViewController` / `FeedContainerView` | `@MainActor` | Collection view, permanent WebView canvas, snapshots, SwiftUI bridge, settled target, playback eligibility, pool positioning, and reassignment. |
+| `WebViewSlotPool` | `@MainActor` | Three permanently mounted WebViews, slot bindings, content-coordinate frames, navigation delegates, readiness, loading/cancellation, and serialized play/pause execution. |
+| `FeedCell` | `@MainActor` | Render exposed slot state and native controls above the canvas. Pass non-control touches through to the WebView; do not own or reparent it. |
 | `CreatorProfileFactory` / `CreatorProfileView` | `@MainActor` | Construct page-scoped dependencies / display profile and paged covers/titles with the top-right Block action. |
 
 Use this flow:
@@ -65,7 +65,8 @@ Fetched items + ModerationStateStore rules → combineLatest → SekaiVisibility
 Settled position + visible items + lifecycle → FeedViewController eligibility
 Settled position + visible items → WebViewSlotPool assignments
 Current navigation + eligibility → pool readiness and play/pause
-Pool WebView + exposed state → FeedCell presentation
+Pool WebView + content-coordinate frame → permanent collection canvas
+Pool exposed state → FeedCell cover and controls
 ```
 
 Expose `AnyPublisher<FeedState, Never>` and `AnyPublisher<CreatorProfileState, Never>` with visible items, loading/pagination state, and displayable errors. Keep raw arrays and mutable subjects private. Represent network failures in state without terminating these streams. View models must neither filter moderation state again nor call the moderation repository directly.
@@ -183,7 +184,7 @@ Use `WKNavigation` object identity, including an A → B → A sequence. Do not 
 
 The mock defines `window.sekaiPlay()` and `window.sekaiPause()` synchronously and starts paused. Checking these functions after `didFinish` is sufficient for this assignment. A separate readiness protocol for asynchronously initialized production pages is out of scope.
 
-### Reassignment and cells
+### Reassignment, permanent canvas, and cells
 
 When the settled position or its visible-item window changes:
 
@@ -192,9 +193,9 @@ When the settled position or its visible-item window changes:
 3. Revoke eligibility, pause, cancel loading, and invalidate bindings outside the new window; rebind available slots to missing targets and start permitted loads.
 4. Drive reassignment from controller state, without relying on `willDisplay` or `didEndDisplaying`. Merely passing intermediate items during a fast swipe must not reassign the pool.
 
-In `willDisplay`, attach the assigned WebView; request a pool-managed fallback load if necessary after cancellation, failure, or deferred loading. If an item has no assigned slot, show a lightweight placeholder. Never create a fourth WebView. Ensure a displayed placeholder attaches the assigned view when settlement updates the pool.
+Mount all three WebViews once into a transparent canvas owned by `FeedViewController`. The canvas is a collection-view child in content coordinates and stays behind cells. Position a bound slot at its item's full-page frame; park an unbound/resetting slot outside the clipped content area. Never remove or re-add a pooled view during scrolling, reuse, reassignment, or moderation. This avoids repeated `didMoveToWindow` activity-state synchronization on the main thread.
 
-In `didEndDisplaying`, detach the view and clear the cell's attachment reference. Do not make pool cancellation, pause, or destruction depend on this callback. Pool lifecycle ownership must remain valid even if a prepared cell never displays.
+Cells use transparent content while their slot is ready, keep native controls above the canvas, and pass non-control hit testing through to the underlying WebView. Loading, failure, missing-slot, and moderated states remain opaque native covers. `willDisplay` may refresh presentation state but must not attach a WebView; `didEndDisplaying` has no WebView lifecycle responsibility. Never create a fourth WebView.
 
 ## 7. Prefetching and memory pressure
 
