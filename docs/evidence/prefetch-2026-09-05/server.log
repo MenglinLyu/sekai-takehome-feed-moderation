@@ -1,0 +1,8 @@
+Command: ['/opt/homebrew/opt/python@3.14/bin/python3.14', '-u', '/Users/menglinlyu/Develop/sekai-takehome-feed-moderation/mock/server.py', '--host', '127.0.0.1', '--fail-rate', '0']
+2026-09-06T01:37:04.351708+00:00 mock feed on http://127.0.0.1:8787  (emulator: http://10.0.2.2:8787)
+2026-09-06T01:37:04.352559+00:00   page size 6 · latency 350ms · item ~5MB · moderation fail rate 0.0
+2026-09-06T01:37:14.264281+00:00   GET /game/feed?limit=10&refresh=0 → "GET /game/feed?limit=10&refresh=0 HTTP/1.1" 200 -
+2026-09-06T01:37:15.219818+00:00   GET /content/game_0000 → "GET /content/game_0000 HTTP/1.1" 200 -
+2026-09-06T01:37:15.356723+00:00   GET /content/game_0001 → "GET /content/game_0001 HTTP/1.1" 200 -
+2026-09-06T01:37:15.745477+00:00   GET /content/game_0002 → "GET /content/game_0002 HTTP/1.1" 200 -
+2026-09-06T01:37:18.266699+00:00   GET /content/game_0003 → "GET /content/game_0003 HTTP/1.1" 200 -

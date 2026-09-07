@@ -1,0 +1,273 @@
+[ConsoleFoundation] Initialization successful2026-09-05 18:37:11.094788-0700 [5677:1431020] [WebViewPool] Created WebView slot 0; capacity=3
+2026-09-05 18:37:11.094989-0700 [5677:1431020] [WebViewPool] Created WebView slot 1; capacity=3
+2026-09-05 18:37:11.095098-0700 [5677:1431020] [WebViewPool] Created WebView slot 2; capacity=3
+2026-09-05 18:37:11.260318-0700 [5677:1432379] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-09-05 18:37:11.276863-0700 [5677:1431020] [XPCErrors] non-launching port is incompatible with service identifier "com.apple.PointerUI.pointeruid.default-service"
+2026-09-05 18:37:11.792613-0700 [5677:1431020] [API] cannot add handler to 0 from 0 - dropping
+2026-09-05 18:37:11.795056-0700 [5677:1431020] [API] cannot add handler to 0 from 0 - dropping
+2026-09-05 18:37:11.795228-0700 [5677:1431020] [API] cannot add handler to 0 from 0 - dropping
+2026-09-05 18:37:11.870981-0700 [5677:1432314] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-09-05 18:37:12.105803-0700 [5677:1431020] [Process] WebContent process (0x1140a8c40) took 1.006467 seconds to launch
+Test Suite 'ModerationRepositoryTests' started at 2026-09-05 18:37:13.511.
+Test Case '-[SekaiTests.ModerationRepositoryTests testAcceptedCommitSurvivesOriginatingTaskCancellation]' started.
+
+2026-09-05 18:37:13.514503-0700 [5677:1431020] [Process] Networking process (0x11418c180) took 1.716974 seconds to launch
+Test Case '-[SekaiTests.ModerationRepositoryTests testAcceptedCommitSurvivesOriginatingTaskCancellation]' passed (0.017 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testAdapterRejectsStaleRevisions]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testAdapterRejectsStaleRevisions]' passed (0.001 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testAtomicFileStoreRoundTripAndCorruptionIsAnError]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testAtomicFileStoreRoundTripAndCorruptionIsAnError]' passed (0.009 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testBlockAndReportRestoreBothSetsWithoutReconstructingPendingRequests]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testBlockAndReportRestoreBothSetsWithoutReconstructingPendingRequests]' passed (0.002 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testCommitQueuePreventsLostUpdateAcrossSuspendedSaveAndPublishesInOrder]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testCommitQueuePreventsLostUpdateAcrossSuspendedSaveAndPublishesInOrder]' passed (0.006 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testDiskFailureDoesNotPublishHideOrStartNetworkAndNextCommandStillWorks]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testDiskFailureDoesNotPublishHideOrStartNetworkAndNextCommandStillWorks]' passed (0.012 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testDuplicateIntentUsesOneOperationAndOneDelayedRetryThenForegroundCanRestart]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testDuplicateIntentUsesOneOperationAndOneDelayedRetryThenForegroundCanRestart]' passed (0.009 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testLateResultsFromCompletedOperationCannotChangeAnotherPendingOperation]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testLateResultsFromCompletedOperationCannotChangeAnotherPendingOperation]' passed (0.002 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testOutOfOrderSyncResultsOnlyRemoveTheMatchingOperation]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testOutOfOrderSyncResultsOnlyRemoveTheMatchingOperation]' passed (0.003 seconds).
+Test Case '-[SekaiTests.ModerationRepositoryTests testRestoreFailureCanBeRetriedWithoutOverwritingSavedState]' started.
+Test Case '-[SekaiTests.ModerationRepositoryTests testRestoreFailureCanBeRetriedWithoutOverwritingSavedState]' passed (0.001 seconds).
+Test Suite 'ModerationRepositoryTests' passed at 2026-09-05 18:37:13.578.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.062 (0.067) seconds
+Test Suite 'PageRepositoryTests' started at 2026-09-05 18:37:13.677.
+Test Case '-[SekaiTests.PageRepositoryTests testBlockedProfileHasExplicitEmptyStateAndBoundedPagination]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testBlockedProfileHasExplicitEmptyStateAndBoundedPagination]' passed (0.006 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testFeedCancellationAndErrorRecoveryKeepStreamAlive]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testFeedCancellationAndErrorRecoveryKeepStreamAlive]' passed (0.012 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testFeedDeduplicatesStableOrderAndUsesRawResponseCountForCompletion]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testFeedDeduplicatesStableOrderAndUsesRawResponseCountForCompletion]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testFeedSuppressesParallelPaginationAndIgnoresStaleResponseAfterRefresh]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testFeedSuppressesParallelPaginationAndIgnoresStaleResponseAfterRefresh]' passed (0.006 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testFullyHiddenFeedPagesAreBoundedAndContinueResumesNextCursor]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testFullyHiddenFeedPagesAreBoundedAndContinueResumesNextCursor]' passed (0.002 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testPageModerationCommandsForwardCorrectIdentityAndReason]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testPageModerationCommandsForwardCorrectIdentityAndReason]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testProfileCancellationRejectsLateInitialResponse]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testProfileCancellationRejectsLateInitialResponse]' passed (0.006 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testProfileInitialErrorRetryAndIndependentSessions]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testProfileInitialErrorRetryAndIndependentSessions]' passed (0.007 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testProfileUsesBackendHasMoreAndDeduplicates]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testProfileUsesBackendHasMoreAndDeduplicates]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PageRepositoryTests testSharedModerationFiltersFeedAndProfileIncludingLaterRedelivery]' started.
+Test Case '-[SekaiTests.PageRepositoryTests testSharedModerationFiltersFeedAndProfileIncludingLaterRedelivery]' passed (0.002 seconds).
+Test Suite 'PageRepositoryTests' passed at 2026-09-05 18:37:13.724.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.044 (0.047) seconds
+Test Suite 'ViewModelTests' started at 2026-09-05 18:37:13.849.
+Test Case '-[SekaiTests.ViewModelTests testCancelledOldFeedTaskCannotClearNewTaskOwnership]' started.
+Test Case '-[SekaiTests.ViewModelTests testCancelledOldFeedTaskCannotClearNewTaskOwnership]' passed (0.006 seconds).
+Test Case '-[SekaiTests.ViewModelTests testFeedAdoptsSuppliedStateAndNavigation]' started.
+Test Case '-[SekaiTests.ViewModelTests testFeedAdoptsSuppliedStateAndNavigation]' passed (0.001 seconds).
+Test Case '-[SekaiTests.ViewModelTests testFeedFailedActionCanRetrySameIdentityAndReason]' started.
+Test Case '-[SekaiTests.ViewModelTests testFeedFailedActionCanRetrySameIdentityAndReason]' passed (0.003 seconds).
+Test Case '-[SekaiTests.ViewModelTests testFeedForwardsReportAndBlockAndShowsLocalConfirmationWithoutEditingList]' started.
+Test Case '-[SekaiTests.ViewModelTests testFeedForwardsReportAndBlockAndShowsLocalConfirmationWithoutEditingList]' passed (0.001 seconds).
+Test Case '-[SekaiTests.ViewModelTests testFeedOwnsOnePageTaskAndRefreshCancelsPreviousRequest]' started.
+Test Case '-[SekaiTests.ViewModelTests testFeedOwnsOnePageTaskAndRefreshCancelsPreviousRequest]' passed (0.003 seconds).
+Test Case '-[SekaiTests.ViewModelTests testProfileAdoptsPublisherStateAndImmutableCreatorIdentity]' started.
+Test Case '-[SekaiTests.ViewModelTests testProfileAdoptsPublisherStateAndImmutableCreatorIdentity]' passed (0.001 seconds).
+Test Case '-[SekaiTests.ViewModelTests testProfileFailedBlockCanRetryAndDismissFeedback]' started.
+Test Case '-[SekaiTests.ViewModelTests testProfileFailedBlockCanRetryAndDismissFeedback]' passed (0.002 seconds).
+Test Case '-[SekaiTests.ViewModelTests testProfileForwardsLoadingAndBlockThenReliesOnRepositoryForEmptyState]' started.
+Test Case '-[SekaiTests.ViewModelTests testProfileForwardsLoadingAndBlockThenReliesOnRepositoryForEmptyState]' passed (0.001 seconds).
+Test Suite 'ViewModelTests' passed at 2026-09-05 18:37:13.869.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.018 (0.021) seconds
+Test Suite 'PolicyTests' started at 2026-09-05 18:37:13.970.
+Test Case '-[SekaiTests.PolicyTests testEveryControllerPlaybackGateMustPass]' started.
+Test Case '-[SekaiTests.PolicyTests testEveryControllerPlaybackGateMustPass]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PolicyTests testFeedWireDTOUsesSnakeCaseAndBareArray]' started.
+Test Case '-[SekaiTests.PolicyTests testFeedWireDTOUsesSnakeCaseAndBareArray]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PolicyTests testReplacementChoosesFirstSurvivingSuccessorThenPredecessor]' started.
+Test Case '-[SekaiTests.PolicyTests testReplacementChoosesFirstSurvivingSuccessorThenPredecessor]' passed (0.001 seconds).
+Test Case '-[SekaiTests.PolicyTests testVisibilityExcludesBothRulesAndPreservesStableOrder]' started.
+Test Case '-[SekaiTests.PolicyTests testVisibilityExcludesBothRulesAndPreservesStableOrder]' passed (0.001 seconds).
+Test Suite 'PolicyTests' passed at 2026-09-05 18:37:13.974.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'WebContentTests' started at 2026-09-05 18:37:13.999.
+Test Case '-[SekaiTests.WebContentTests testCorruptFileRedownloadsAndPinnedFileSurvivesInvalidation]' started.
+
+2026-09-05 18:37:14.014373-0700 [5677:1432317] [WebContent] TransferStart item=a transfer=A2A1E696-FF7E-4F10-8ADD-4B02C3823FCE priority=0 active=1
+2026-09-05 18:37:14.348623-0700 [5677:1432310] [WebContent] FileAvailable item=a transfer=A2A1E696-FF7E-4F10-8ADD-4B02C3823FCE bytes=100
+2026-09-05 18:37:14.585428-0700 [5677:1432314] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:14.585607-0700 [5677:1432314] [WebContent] LeaseRelease item=a
+2026-09-05 18:37:14.687493-0700 [5677:1432355] [WebContent] TransferStart item=game_0000 transfer=DA368726-4667-49B3-8BF5-5C333ED99196 priority=0 active=1
+2026-09-05 18:37:14.688103-0700 [5677:1432355] [WebContent] TransferStart item=game_0001 transfer=AF3911CF-D74D-44FE-A33D-37C5DB3EA892 priority=1 active=2
+2026-09-05 18:37:14.725528-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/com.apple.Accessibility.plist due to No such file or directory
+2026-09-05 18:37:14.725764-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/com.apple.Accessibility.plist due to No such file or directory
+2026-09-05 18:37:14.726196-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/.GlobalPreferences.plist due to No such file or directory
+2026-09-05 18:37:14.728107-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/com.apple.Accessibility..plist due to No such file or directory
+2026-09-05 18:37:14.728226-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/.GlobalPreferences..plist due to No such file or directory
+2026-09-05 18:37:14.730609-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:14.730804-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:14.730922-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:14.734023-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:14.734081-0700 [5677:1431020] [cfprefsd] WebContent[5785] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/com.apple.WebKit.WebContent..plist due to No such file or directory
+2026-09-05 18:37:15.123159-0700 [5677:1432381] [WebContent] Evict item=a bytes=100 reason=invalidOrExpired
+Test Case '-[SekaiTests.WebContentTests testCorruptFileRedownloadsAndPinnedFileSurvivesInvalidation]' passed (1.133 seconds).
+Test Case '-[SekaiTests.WebContentTests testCorruptionIsNotServedAndRequiresOnlyOneReplacement]' started.
+
+2026-09-05 18:37:15.134716-0700 [5677:1432314] [WebContent] TransferStart item=a transfer=CABB17A1-9712-4AE0-9956-C7B25D92F869 priority=0 active=1
+2026-09-05 18:37:15.557466-0700 [5677:1432367] [WebContent] TransferMetrics transfer=AF3911CF-D74D-44FE-A33D-37C5DB3EA892 bytes=5338205 duration=0.867465
+2026-09-05 18:37:15.597218-0700 [5677:1432308] [WebContent] TransferMetrics transfer=DA368726-4667-49B3-8BF5-5C333ED99196 bytes=5338211 duration=0.908654
+2026-09-05 18:37:15.606175-0700 [5677:1432355] [WebContent] FileAvailable item=game_0001 transfer=AF3911CF-D74D-44FE-A33D-37C5DB3EA892 bytes=5338205
+2026-09-05 18:37:15.688720-0700 [5677:1432314] [WebContent] CacheHit item=game_0001 visited=false
+2026-09-05 18:37:15.688882-0700 [5677:1432314] [WebContent] TransferStart item=game_0002 transfer=DDDC2802-193C-4CA3-84A5-5E48F859C7F7 priority=2 active=2
+2026-09-05 18:37:15.697642-0700 [5677:1431020] [Sandbox] 0x1140a8680 - [PID=5790] WebProcessProxy::hasAssumedReadAccessToURL(4422349): no access
+2026-09-05 18:37:15.698414-0700 [5677:1431020] [WebViewPool] Load local game_0001 generation=1
+2026-09-05 18:37:15.703675-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/com.apple.Accessibility.plist due to No such file or directory
+2026-09-05 18:37:15.703804-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/com.apple.Accessibility.plist due to No such file or directory
+2026-09-05 18:37:15.704041-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/.GlobalPreferences.plist due to No such file or directory
+2026-09-05 18:37:15.704381-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/com.apple.Accessibility..plist due to No such file or directory
+2026-09-05 18:37:15.704551-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/.GlobalPreferences..plist due to No such file or directory
+2026-09-05 18:37:15.705992-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/mobile/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:15.706135-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:15.706280-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:15.706372-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/com.apple.WebKit.WebContent.plist due to No such file or directory
+2026-09-05 18:37:15.706516-0700 [5677:1431020] [cfprefsd] WebContent[5790] Couldn't open /Users/menglinlyu/Library/Developer/XCTestDevices/4D2887E7-4A0A-4B1E-BC84-32E8CD9F6946/data/Library/Preferences/ByHost/com.apple.WebKit.WebContent..plist due to No such file or directory
+2026-09-05 18:37:15.720232-0700 [5677:1432355] [WebContent] FileAvailable item=a transfer=CABB17A1-9712-4AE0-9956-C7B25D92F869 bytes=100
+2026-09-05 18:37:15.723447-0700 [5677:1432308] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:15.723546-0700 [5677:1432308] [WebContent] LeaseRelease item=a
+2026-09-05 18:37:15.728547-0700 [5677:1432307] [WebContent] Evict item=a bytes=100 reason=invalidOrExpired
+2026-09-05 18:37:15.728663-0700 [5677:1432307] [WebContent] TransferStart item=a transfer=411CDE00-1B88-4828-98A3-B8FEC37E39F9 priority=0 active=1
+2026-09-05 18:37:15.745383-0700 [5677:1432807] [ResourceLoadStatistics] WebContent[5790] Unable to filter tracking query parameters (missing data)
+2026-09-05 18:37:15.751000-0700 [5677:1432807] [cfprefsd] WebContent[5790] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Prefe
+2026-09-05 18:37:15.761137-0700 [5677:1432307] [WebContent] FileAvailable item=a transfer=411CDE00-1B88-4828-98A3-B8FEC37E39F9 bytes=100
+2026-09-05 18:37:15.762065-0700 [5677:1432381] [WebContent] CacheHit item=a visited=true
+Test Case '-[SekaiTests.WebContentTests testCorruptionIsNotServedAndRequiresOnlyOneReplacement]' passed (0.630 seconds).
+Test Case '-[SekaiTests.WebContentTests testCurrentPreemptsAndCancellationFreesCapacityBeforeNextStart]' started.
+
+2026-09-05 18:37:15.765326-0700 [5677:1432307] [WebContent] TransferStart item=a transfer=74F2160D-5DF0-4F38-B9AC-82015EE63B25 priority=0 active=1
+2026-09-05 18:37:15.765412-0700 [5677:1432307] [WebContent] TransferStart item=b transfer=7786C2FF-22AC-4324-9A8C-83986C4525E6 priority=1 active=2
+2026-09-05 18:37:15.775299-0700 [5677:1432308] [WebContent] Cancel item=a transfer=74F2160D-5DF0-4F38-B9AC-82015EE63B25 reason=obsolete
+2026-09-05 18:37:15.776839-0700 [5677:1432308] [WebContent] Cancel item=b reason=currentPreemption
+2026-09-05 18:37:15.777450-0700 [5677:1432308] [WebContent] TransferStart item=x transfer=5BD54F99-1DF0-48C3-9FA5-E062EA4AC17C priority=0 active=2
+2026-09-05 18:37:15.777586-0700 [5677:1432308] [WebContent] TransferStart item=b transfer=FE9BF4A2-4780-4897-B98B-A05EFD9B722A priority=1 active=2
+2026-09-05 18:37:15.785130-0700 [5677:1432308] [WebContent] Cancel item=b transfer=FE9BF4A2-4780-4897-B98B-A05EFD9B722A reason=obsolete
+2026-09-05 18:37:15.785198-0700 [5677:1432308] [WebContent] Cancel item=x transfer=5BD54F99-1DF0-48C3-9FA5-E062EA4AC17C reason=obsolete
+2026-09-05 18:37:15.807281-0700 [5677:1432308] [User Defaults] Could not resolve UID for user "mobile".
+Test Case '-[SekaiTests.WebContentTests testCurrentPreemptsAndCancellationFreesCapacityBeforeNextStart]' passed (0.086 seconds).
+Test Case '-[SekaiTests.WebContentTests testDepthDirectionPredictionAndEdges]' started.
+Test Case '-[SekaiTests.WebContentTests testDepthDirectionPredictionAndEdges]' passed (0.001 seconds).
+Test Case '-[SekaiTests.WebContentTests testDepthZeroEightItemRevisitUsesDiskAcrossRestart]' started.
+
+2026-09-05 18:37:15.853790-0700 [5677:1432355] [WebContent] TransferStart item=0 transfer=55EA22E1-706F-43C4-BF65-AC5A225F5514 priority=0 active=1
+2026-09-05 18:37:15.870724-0700 [5677:1432310] [WebContent] FileAvailable item=0 transfer=55EA22E1-706F-43C4-BF65-AC5A225F5514 bytes=100
+2026-09-05 18:37:15.873352-0700 [5677:1432307] [WebContent] CacheHit item=0 visited=true
+2026-09-05 18:37:15.873584-0700 [5677:1432307] [WebContent] LeaseRelease item=0
+2026-09-05 18:37:15.906658-0700 [5677:1432310] [WebContent] TransferMetrics transfer=DDDC2802-193C-4CA3-84A5-5E48F859C7F7 bytes=5338204 duration=0.217447
+2026-09-05 18:37:16.163286-0700 [5677:1432381] [WebContent] TransferStart item=1 transfer=91411E61-362C-4AB5-B0C7-0D84E006CA8A priority=0 active=1
+2026-09-05 18:37:16.604583-0700 [5677:1432317] [WebContent] FileAvailable item=1 transfer=91411E61-362C-4AB5-B0C7-0D84E006CA8A bytes=100
+2026-09-05 18:37:16.639146-0700 [5677:1432382] [WebContent] CacheHit item=1 visited=true
+2026-09-05 18:37:16.639276-0700 [5677:1432382] [WebContent] LeaseRelease item=1
+2026-09-05 18:37:16.748485-0700 [5677:1432367] [WebContent] FileAvailable item=game_0000 transfer=DA368726-4667-49B3-8BF5-5C333ED99196 bytes=5338211
+2026-09-05 18:37:16.981972-0700 [5677:1432368] [WebContent] TransferStart item=2 transfer=DAD73198-50FC-42EF-8C9A-1FC72A13980A priority=0 active=1
+2026-09-05 18:37:17.236156-0700 [5677:1432317] [WebContent] FileAvailable item=2 transfer=DAD73198-50FC-42EF-8C9A-1FC72A13980A bytes=100
+2026-09-05 18:37:17.341541-0700 [5677:1432317] [WebContent] CacheHit item=2 visited=true
+2026-09-05 18:37:17.341674-0700 [5677:1432317] [WebContent] LeaseRelease item=2
+2026-09-05 18:37:17.395988-0700 [5677:1432379] [WebContent] TransferStart item=3 transfer=D92EDAC7-D07E-4CD8-BE70-D4F1E486C95B priority=0 active=1
+2026-09-05 18:37:17.821058-0700 [5677:1432367] [WebContent] FileAvailable item=3 transfer=D92EDAC7-D07E-4CD8-BE70-D4F1E486C95B bytes=100
+2026-09-05 18:37:17.943099-0700 [5677:1432807] [ResourceLoadStatistics] WebContent[5790] Unable to hide query parameters from script (missing data)
+2026-09-05 18:37:18.229919-0700 [5677:1432308] [WebContent] CacheHit item=game_0000 visited=true
+2026-09-05 18:37:18.231234-0700 [5677:1432308] [WebContent] TransferStart item=game_0003 transfer=7B7120F3-CA1F-4E12-BCFE-128C9CD8B11F priority=3 active=2
+2026-09-05 18:37:18.231595-0700 [5677:1431020] [Sandbox] 0x1140a80c0 - [PID=5785] WebProcessProxy::hasAssumedReadAccessToURL(1540764): no access
+2026-09-05 18:37:18.234335-0700 [5677:1431020] [WebViewPool] Load local game_0000 generation=1
+2026-09-05 18:37:18.258197-0700 [5677:1432807] [ResourceLoadStatistics] WebContent[5785] Unable to filter tracking query parameters (missing data)
+2026-09-05 18:37:18.258254-0700 [5677:1432807] [cfprefsd] WebContent[5785] Couldn't open /Library/Developer/CoreSimulator/Volumes/iOS_24A5423a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/Library/Managed Prefe
+2026-09-05 18:37:18.333002-0700 [5677:1432807] [ResourceLoadStatistics] WebContent[5785] Unable to hide query parameters from script (missing data)
+2026-09-05 18:37:18.346971-0700 [5677:1432308] [WebContent] CacheHit item=3 visited=true
+2026-09-05 18:37:18.347101-0700 [5677:1432308] [WebContent] LeaseRelease item=3
+2026-09-05 18:37:18.377118-0700 [5677:1432308] [WebContent] TransferMetrics transfer=7B7120F3-CA1F-4E12-BCFE-128C9CD8B11F bytes=5338201 duration=0.145624
+2026-09-05 18:37:18.613473-0700 [5677:1432316] [WebContent] TransferStart item=4 transfer=AE2E160C-6652-4D1B-AAA4-BC2A6E16EA4D priority=0 active=1
+2026-09-05 18:37:18.880726-0700 [5677:1432355] [WebContent] FileAvailable item=4 transfer=AE2E160C-6652-4D1B-AAA4-BC2A6E16EA4D bytes=100
+2026-09-05 18:37:18.881100-0700 [5677:1432355] [WebContent] FileAvailable item=game_0002 transfer=DDDC2802-193C-4CA3-84A5-5E48F859C7F7 bytes=5338204
+2026-09-05 18:37:18.959928-0700 [5677:1432355] [WebContent] CacheHit item=4 visited=true
+2026-09-05 18:37:18.960056-0700 [5677:1432355] [WebContent] LeaseRelease item=4
+2026-09-05 18:37:18.969041-0700 [5677:1432316] [WebContent] TransferStart item=5 transfer=BC188CEF-7283-4650-9714-7E61CE0C994B priority=0 active=1
+2026-09-05 18:37:18.993046-0700 [5677:1432355] [WebContent] FileAvailable item=5 transfer=BC188CEF-7283-4650-9714-7E61CE0C994B bytes=100
+2026-09-05 18:37:18.995167-0700 [5677:1432316] [WebContent] CacheHit item=5 visited=true
+2026-09-05 18:37:18.995285-0700 [5677:1432316] [WebContent] LeaseRelease item=5
+2026-09-05 18:37:19.318312-0700 [5677:1432308] [WebContent] TransferStart item=6 transfer=29CBDA8F-BA55-428A-8231-ECFC7455606A priority=0 active=1
+2026-09-05 18:37:19.386738-0700 [5677:1432379] [WebContent] FileAvailable item=6 transfer=29CBDA8F-BA55-428A-8231-ECFC7455606A bytes=100
+2026-09-05 18:37:19.399195-0700 [5677:1432379] [WebContent] CacheHit item=6 visited=true
+2026-09-05 18:37:19.399341-0700 [5677:1432379] [WebContent] LeaseRelease item=6
+2026-09-05 18:37:19.476366-0700 [5677:1432379] [WebContent] FileAvailable item=game_0003 transfer=7B7120F3-CA1F-4E12-BCFE-128C9CD8B11F bytes=5338201
+2026-09-05 18:37:19.476783-0700 [5677:1432308] [WebContent] TransferStart item=7 transfer=5365C215-5E10-40A0-BB69-54F6B45802E8 priority=0 active=1
+2026-09-05 18:37:20.005567-0700 [5677:1432379] [WebContent] FileAvailable item=7 transfer=5365C215-5E10-40A0-BB69-54F6B45802E8 bytes=100
+2026-09-05 18:37:20.074033-0700 [5677:1432379] [WebContent] CacheHit item=7 visited=true
+2026-09-05 18:37:20.074157-0700 [5677:1432379] [WebContent] LeaseRelease item=7
+2026-09-05 18:37:20.976434-0700 [5677:1432307] [WebContent] CacheHit item=7 visited=true
+2026-09-05 18:37:20.976553-0700 [5677:1432307] [WebContent] LeaseRelease item=7
+2026-09-05 18:37:21.271946-0700 [5677:1432307] [WebContent] CacheHit item=6 visited=true
+2026-09-05 18:37:21.272073-0700 [5677:1432307] [WebContent] LeaseRelease item=6
+2026-09-05 18:37:21.773154-0700 [5677:1432367] [WebContent] CacheHit item=5 visited=true
+2026-09-05 18:37:21.773320-0700 [5677:1432367] [WebContent] LeaseRelease item=5
+2026-09-05 18:37:22.065319-0700 [5677:1432307] [WebContent] CacheHit item=4 visited=true
+2026-09-05 18:37:22.065448-0700 [5677:1432307] [WebContent] LeaseRelease item=4
+2026-09-05 18:37:22.458340-0700 [5677:1432367] [WebContent] CacheHit item=3 visited=true
+2026-09-05 18:37:22.458467-0700 [5677:1432367] [WebContent] LeaseRelease item=3
+2026-09-05 18:37:22.723961-0700 [5677:1432367] [WebContent] CacheHit item=2 visited=true
+2026-09-05 18:37:22.724076-0700 [5677:1432367] [WebContent] LeaseRelease item=2
+2026-09-05 18:37:23.033910-0700 [5677:1432307] [WebContent] CacheHit item=1 visited=true
+2026-09-05 18:37:23.034034-0700 [5677:1432307] [WebContent] LeaseRelease item=1
+2026-09-05 18:37:23.052273-0700 [5677:1432308] [WebContent] CacheHit item=0 visited=true
+2026-09-05 18:37:23.052398-0700 [5677:1432308] [WebContent] LeaseRelease item=0
+Test Case '-[SekaiTests.WebContentTests testDepthZeroEightItemRevisitUsesDiskAcrossRestart]' passed (7.203 seconds).
+Test Case '-[SekaiTests.WebContentTests testExpiredPersistedEntryIsAMiss]' started.
+
+2026-09-05 18:37:23.211464-0700 [5677:1432307] [WebContent] TransferStart item=a transfer=88EDF895-3C93-4510-8556-35EE637A7D9B priority=0 active=1
+2026-09-05 18:37:23.406243-0700 [5677:1432307] [WebContent] FileAvailable item=a transfer=88EDF895-3C93-4510-8556-35EE637A7D9B bytes=100
+2026-09-05 18:37:23.411520-0700 [5677:1432307] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:23.411674-0700 [5677:1432307] [WebContent] LeaseRelease item=a
+2026-09-05 18:37:23.444087-0700 [5677:1432316] [WebContent] Evict item=a bytes=100 reason=invalidOrExpired
+2026-09-05 18:37:23.444268-0700 [5677:1432316] [WebContent] TransferStart item=a transfer=DC62ED0A-2CF0-4F15-B9DD-7ABB831864ED priority=0 active=1
+2026-09-05 18:37:23.471084-0700 [5677:1432307] [WebContent] FileAvailable item=a transfer=DC62ED0A-2CF0-4F15-B9DD-7ABB831864ED bytes=100
+2026-09-05 18:37:23.488676-0700 [5677:1432307] [WebContent] CacheHit item=a visited=true
+Test Case '-[SekaiTests.WebContentTests testExpiredPersistedEntryIsAMiss]' passed (0.436 seconds).
+Test Case '-[SekaiTests.WebContentTests testFileStoreReconcilesOrphansAndRejectsOversizeAndLengthMismatch]' started.
+Test Case '-[SekaiTests.WebContentTests testFileStoreReconcilesOrphansAndRejectsOversizeAndLengthMismatch]' passed (0.069 seconds).
+Test Case '-[SekaiTests.WebContentTests testLeasedBudgetDefersSpeculationAndRetainsHistory]' started.
+
+2026-09-05 18:37:23.605462-0700 [5677:1432367] [WebContent] TransferStart item=a transfer=FAD8FCD0-B3C3-4EB5-85E6-D22188BBB2C2 priority=0 active=1
+2026-09-05 18:37:23.686469-0700 [5677:1432317] [WebContent] FileAvailable item=a transfer=FAD8FCD0-B3C3-4EB5-85E6-D22188BBB2C2 bytes=100
+2026-09-05 18:37:23.688184-0700 [5677:1432317] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:23.697706-0700 [5677:1432316] [WebContent] TransferStart item=b transfer=20A9F304-10F9-400D-BD58-8558E1A16C81 priority=0 active=1
+2026-09-05 18:37:23.802778-0700 [5677:1432367] [WebContent] FileAvailable item=b transfer=20A9F304-10F9-400D-BD58-8558E1A16C81 bytes=100
+2026-09-05 18:37:23.805289-0700 [5677:1432316] [WebContent] CacheHit item=b visited=true
+2026-09-05 18:37:23.812465-0700 [5677:1432316] [WebContent] TransferStart item=c transfer=B8AEFA8F-D9B5-4D74-B85F-9DE338A08276 priority=0 active=1
+2026-09-05 18:37:23.830496-0700 [5677:1432316] [WebContent] FileAvailable item=c transfer=B8AEFA8F-D9B5-4D74-B85F-9DE338A08276 bytes=100
+2026-09-05 18:37:23.843508-0700 [5677:1432316] [WebContent] CacheHit item=c visited=true
+Test Case '-[SekaiTests.WebContentTests testLeasedBudgetDefersSpeculationAndRetainsHistory]' passed (0.365 seconds).
+Test Case '-[SekaiTests.WebContentTests testSharedTransferAndLeaseSurviveWindowDeparture]' started.
+
+2026-09-05 18:37:24.050561-0700 [5677:1432317] [WebContent] TransferStart item=a transfer=12B50290-08DC-46D3-BBA1-E92B4A42CD59 priority=0 active=1
+2026-09-05 18:37:25.006124-0700 [5677:1432380] [WebContent] FileAvailable item=a transfer=12B50290-08DC-46D3-BBA1-E92B4A42CD59 bytes=100
+2026-09-05 18:37:25.019268-0700 [5677:1432380] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:25.019397-0700 [5677:1432380] [WebContent] CacheHit item=a visited=true
+2026-09-05 18:37:25.019490-0700 [5677:1432380] [WebContent] LeaseRelease item=a
+2026-09-05 18:37:25.019501-0700 [5677:1432380] [WebContent] LeaseRelease item=a
+2026-09-05 18:37:25.044471-0700 [5677:1432380] [WebContent] CacheHit item=a visited=true
+Test Case '-[SekaiTests.WebContentTests testSharedTransferAndLeaseSurviveWindowDeparture]' passed (1.120 seconds).
+Test Case '-[SekaiTests.WebContentTests testSpeculativeFailureRetriesOnceOnCurrentPromotion]' started.
+
+2026-09-05 18:37:25.124710-0700 [5677:1432316] [WebContent] TransferStart item=a transfer=A373A438-9128-4E04-AFF3-23B5B5041FFE priority=0 active=1
+2026-09-05 18:37:25.124838-0700 [5677:1432316] [WebContent] TransferStart item=b transfer=A70D5F0F-E2CF-4CB2-AB2A-DE7716D41E9A priority=1 active=2
+2026-09-05 18:37:25.138026-0700 [5677:1432317] [WebContent] ContentFailed item=b error=Content could not be prepared. Tap Retry.
+2026-09-05 18:37:25.146291-0700 [5677:1432316] [WebContent] Cancel item=a transfer=A373A438-9128-4E04-AFF3-23B5B5041FFE reason=obsolete
+2026-09-05 18:37:25.146408-0700 [5677:1432316] [WebContent] TransferStart item=b transfer=D6C22609-3DD7-4BA8-BA6C-DAE4C1851250 priority=0 active=2
+2026-09-05 18:37:25.157469-0700 [5677:1432367] [WebContent] ContentFailed item=b error=Content could not be prepared. Tap Retry.
+2026-09-05 18:37:25.170022-0700 [5677:1432355] [WebContent] TransferStart item=b transfer=C85810C7-50CA-4604-AC34-B8226EC2F882 priority=0 active=1
+2026-09-05 18:37:25.186440-0700 [5677:1432367] [WebContent] FileAvailable item=b transfer=C85810C7-50CA-4604-AC34-B8226EC2F882 bytes=100
+2026-09-05 18:37:25.189904-0700 [5677:1432355] [WebContent] CacheHit item=b visited=true
+Test Case '-[SekaiTests.WebContentTests testSpeculativeFailureRetriesOnceOnCurrentPromotion]' passed (0.149 seconds).
+Test Case '-[SekaiTests.WebContentTests testStaleWindowAndModerationCannotReviveHiddenTransfer]' started.
+
+2026-09-05 18:37:25.311409-0700 [5677:1432367] [WebContent] TransferStart item=a transfer=731B1186-A978-4994-815D-009B4A51C16D priority=0 active=1
+2026-09-05 18:37:25.311667-0700 [5677:1432367] [WebContent] TransferStart item=b transfer=CB3960D5-9198-4582-92C2-D1C87622310A priority=1 active=2
+2026-09-05 18:37:25.316687-0700 [5677:1432317] [WebContent] Cancel item=a transfer=731B1186-A978-4994-815D-009B4A51C16D reason=obsolete
+2026-09-05 18:37:25.316864-0700 [5677:1432367] [WebContent] Cancel item=b transfer=CB3960D5-9198-4582-92C2-D1C87622310A reason=obsolete
+Test Case '-[SekaiTests.WebContentTests testStaleWindowAndModerationCannotReviveHiddenTransfer]' passed (0.123 seconds).
+Test Suite 'WebContentTests' passed at 2026-09-05 18:37:25.318.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 11.315 (11.319) seconds
