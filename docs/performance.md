@@ -32,6 +32,10 @@ partial signpost coverage and unverified Release/memory limitations.
 5. Capture Animation Hitches and Points of Interest. Add Time Profiler, Hangs,
    and memory instruments in separate diagnostic runs as needed; record which
    instruments were enabled because profiling changes workload overhead.
+   For memory, run `python3 scripts/record_performance.py --build --memory --duration 120`.
+   This adds Activity Monitor and exports per-process footprint samples, peaks,
+   an explicitly scoped steady-window mean, and trends. See the recording guide
+   for window controls, WebContent attribution and coverage limits.
 
 Follow the [README requirements](../README.md#hard-requirements): measure scrolling
 frame timing, report the numbers and resulting changes, and show what remains

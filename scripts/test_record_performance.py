@@ -2,6 +2,7 @@
 
 import contextlib
 import io
+import json
 import os
 from pathlib import Path
 import signal
@@ -11,7 +12,8 @@ import threading
 import unittest
 from unittest.mock import Mock, patch
 
-from record_performance import record, selected_device, export_feed_signposts, start_mock_if_needed
+from record_performance import (record, selected_device, export_feed_signposts, start_mock_if_needed,
+                                recording_command, launch_for_memory, export_memory)
 
 
 RECORDER = '''
@@ -39,14 +41,15 @@ print("Recording completed", flush=True)
 
 @unittest.skipUnless(sys.platform == "darwin", "Uses Darwin recording-start notifications")
 class RecordingLifecycleTests(unittest.TestCase):
-    def exercise(self, mode, startup=3):
+    def exercise(self, mode, startup=3, on_started=None, all_processes=False):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
             script = output / "fake_recorder.py"
             script.write_text(RECORDER)
             metadata = {}
-            record([sys.executable, str(script), mode, "--launch", "--", "fake"],
-                   output, 2, startup, 3, metadata)
+            target = ["--all-processes"] if all_processes else ["--launch", "--", "fake"]
+            record([sys.executable, str(script), mode] + target,
+                   output, 2, startup, 3, metadata, on_started)
             return metadata
 
     def test_real_start_and_end_notifications(self):
@@ -67,6 +70,22 @@ class RecordingLifecycleTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             with self.assertRaisesRegex(RuntimeError, "timed out"):
                 self.exercise("hang", startup=0.3)
+
+    def test_all_processes_launches_only_after_confirmed_start(self):
+        callback = Mock()
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.exercise("normal", on_started=callback, all_processes=True)
+        callback.assert_called_once_with()
+        callback.reset_mock()
+        with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(RuntimeError):
+            self.exercise("fail", on_started=callback, all_processes=True)
+        callback.assert_not_called()
+
+    def test_launch_failure_does_not_announce_ready_and_cleans_up(self):
+        with contextlib.redirect_stdout(io.StringIO()) as console:
+            with self.assertRaisesRegex(RuntimeError, "launch failed"):
+                self.exercise("stop", on_started=Mock(side_effect=RuntimeError("launch failed")), all_processes=True)
+        self.assertNotIn("RECORDING STARTED:", console.getvalue())
 
     def test_ctrl_c_requests_graceful_save(self):
         timer = threading.Timer(0.6, os.kill, args=(os.getpid(), signal.SIGINT))
@@ -158,6 +177,44 @@ class SignpostExportTests(unittest.TestCase):
             self.assertEqual(len(lines), 3)
             self.assertIn("1.0,Begin,FeedDrag", lines[1])
             self.assertIn("2.0,End,FeedDrag", lines[2])
+
+
+class MemoryRecordingTests(unittest.TestCase):
+    def test_memory_records_all_processes_and_default_still_launches(self):
+        output = Path("/tmp/example")
+        normal = recording_command("phone", output, 60, "http://host:8787")
+        memory = recording_command("phone", output, 60, "http://host:8787", memory=True)
+        self.assertNotIn("Activity Monitor", normal)
+        self.assertEqual(normal[-3:], ["--launch", "--", "com.sekai.takehome.Sekai"])
+        self.assertIn("Activity Monitor", memory)
+        self.assertEqual(memory[-1], "--all-processes")
+        self.assertNotIn("--env", memory)
+        self.assertNotIn("--launch", memory)
+
+    @patch("record_performance.run")
+    def test_memory_launch_retains_pid_and_passes_environment(self, run):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "launch.json").write_text(json.dumps({"result": {"process": {"processIdentifier": 42}}}))
+            metadata = {}
+            launch_for_memory("phone", output, "http://host:8787", metadata)
+            self.assertEqual(metadata["app_pid"], 42)
+            command = run.call_args.args[0]
+            self.assertEqual(json.loads(command[command.index("--environment-variables") + 1]),
+                             {"SEKAI_BASE_URL": "http://host:8787"})
+            (output / "launch.json").write_text('{"result": {}}')
+            with self.assertRaisesRegex(RuntimeError, "app PID"):
+                launch_for_memory("phone", output, "http://host:8787", {})
+
+    @patch("record_performance.summarize_memory")
+    @patch("record_performance.run")
+    def test_missing_memory_table_fails_and_valid_export_is_summarized(self, run, summarize):
+        with self.assertRaisesRegex(RuntimeError, "memory measurements are unavailable"):
+            export_memory(Path("/tmp/example"), {"hitches"})
+        run.assert_not_called()
+        export_memory(Path("/tmp/example"), {"activity-monitor-process-live"}, 5, 40, 42)
+        self.assertIn('activity-monitor-process-live', " ".join(run.call_args.args[0]))
+        summarize.assert_called_once_with(Path("/tmp/example"), steady_start=5, steady_end=40, host_pid=42)
 
 
 if __name__ == "__main__":

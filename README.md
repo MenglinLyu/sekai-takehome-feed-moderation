@@ -24,6 +24,8 @@ Moderation saves locally before publishing removal. Disk failure leaves content 
 
 Design and work tracking: [class/function interfaces](docs/interface-design.md), [implementation checklist](docs/implementation-todo.md), [architecture requirements](docs/technical-selection-and-architecture.md).
 
+To collect memory alongside FPS, run `python3 scripts/record_performance.py --build --memory --duration 120`. It exports per-process physical-footprint samples and peak/steady-window/trend summaries; see the [recording guide](docs/recording-performance.md#memory-measurements) for WebContent attribution and measurement limits. Adding this option does not supply the outstanding physical-device memory results by itself.
+
 Trade-offs: pending-operation persistence, unblock management, general-purpose SVG support, and automatic preload recovery are omitted. Raw feed metadata remains in memory for backward scrolling; the three-slot limit bounds WebView count, not runtime memory bytes. A verified Release retest covering the remaining interaction delays and content readiness, physical-device memory evidence, and a recorded demo remain delivery work.
 
 ## Original assignment

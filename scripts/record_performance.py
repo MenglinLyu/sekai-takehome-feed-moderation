@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build/install optionally, then record physical-device FPS and signposts with xctrace."""
+"""Record physical-device FPS/signposts, optionally including process memory with --memory."""
 
 import argparse
 import csv
@@ -7,6 +7,7 @@ import ctypes
 import datetime as dt
 import errno
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -24,6 +25,7 @@ import xml.etree.ElementTree as ET
 
 from summarize_xctrace import rows, number
 from xcscheme_env import set_scheme_env
+from summarize_memory import summarize_memory
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = "com.sekai.takehome.Sekai"
@@ -170,9 +172,10 @@ def base_url(args):
     return value
 
 
-def record(command, output, seconds, startup_timeout, save_timeout, metadata):
+def record(command, output, seconds, startup_timeout, save_timeout, metadata, on_started=None):
     notification = StartNotification()
-    command = command[:-3] + ["--notify-tracing-started", notification.name] + command[-3:]
+    target_index = command.index("--all-processes") if "--all-processes" in command else command.index("--launch")
+    command = command[:target_index] + ["--notify-tracing-started", notification.name] + command[target_index:]
     metadata["record_command"] = command
     announce("Preparing xctrace. Keep the iPhone unlocked; wait for RECORDING STARTED.")
     announce("$ " + shlex.join(command))
@@ -218,7 +221,10 @@ def record(command, output, seconds, startup_timeout, save_timeout, metadata):
                         metadata["capture_started_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
                         if not interrupted:
                             deadline = time.monotonic() + seconds + save_timeout
-                            announce("RECORDING STARTED: operate the Feed now. Ctrl+C stops early and saves.")
+                            if on_started:
+                                on_started()
+                            if not interrupted:
+                                announce("RECORDING STARTED: operate the Feed now. Ctrl+C stops early and saves.")
                     else:
                         chunk = os.read(process.stdout.fileno(), 65536)
                         if not chunk:
@@ -260,11 +266,52 @@ def record(command, output, seconds, startup_timeout, save_timeout, metadata):
         notification.close()
 
 
-def export_trace(output):
+def recording_command(device_udid, output, duration, server_url, memory=False):
+    command = ["xcrun", "xctrace", "record", "--template", "Animation Hitches",
+               "--instrument", "Points of Interest"]
+    if memory:
+        command += ["--instrument", "Activity Monitor"]
+    command += ["--device", device_udid, "--time-limit", f"{duration}s",
+                "--output", str(output / "recording.trace")]
+    # A launch-targeted Activity Monitor only samples the host, excluding WebContent.
+    if memory:
+        return command + ["--all-processes"]
+    return command + ["--env", f"SEKAI_BASE_URL={server_url}", "--launch", "--", BUNDLE]
+
+
+def launch_for_memory(device_udid, output, server_url, metadata):
+    command = ["xcrun", "devicectl", "device", "process", "launch", "--device", device_udid,
+               "--timeout", "30", "--environment-variables", json.dumps({"SEKAI_BASE_URL": server_url}),
+               "--json-output", str(output / "launch.json"), BUNDLE]
+    metadata["launch_command"] = command
+    run(command, output / "launch.log", timeout=35)
+    result = json.loads((output / "launch.json").read_text())
+    pid = result.get("result", {}).get("process", {}).get("processIdentifier")
+    if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
+        raise RuntimeError("devicectl did not return the launched app PID; memory attribution is unavailable.")
+    metadata["app_pid"] = pid
+    metadata["app_launched_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+
+
+def export_memory(output, schemas, steady_start=10, steady_end=None, host_pid=None):
+    schema = "activity-monitor-process-live"
+    if schema not in schemas:
+        raise RuntimeError(f"Trace is missing {schema}; memory measurements are unavailable.")
+    run(["xcrun", "xctrace", "export", "--input", str(output / "recording.trace"),
+         "--xpath", f'/trace-toc/run[@number="1"]/data/table[@schema="{schema}"]',
+         "--output", str(output / "memory.xml")])
+    return summarize_memory(output, steady_start=steady_start, steady_end=steady_end, host_pid=host_pid)
+
+
+def export_trace(output, memory=False, steady_start=10, steady_end=None, host_pid=None):
     trace = output / "recording.trace"
     run(["xcrun", "xctrace", "export", "--input", str(trace), "--toc", "--output", str(output / "toc.xml")])
     toc = ET.parse(output / "toc.xml")
     schemas = {table.get("schema") for table in toc.findall(".//run/data/table")}
+    if memory:
+        summary = export_memory(output, schemas, steady_start, steady_end, host_pid)
+        for warning in summary["warnings"]:
+            announce("MEMORY NOTE: " + warning)
     required = {"displayed-surfaces-per-second": "fps", "hitches": "hitches"}
     for schema, name in required.items():
         if schema not in schemas:
@@ -329,6 +376,11 @@ def main():
     parser.add_argument("--scheme", default="Sekai", help="Build scheme (default: Sekai)")
     parser.add_argument("--device", help="Physical-device UDID; automatically selects the sole connected iOS device if omitted")
     parser.add_argument("--duration", type=int, default=50, help="Recording duration in seconds (default: 50)")
+    parser.add_argument("--memory", action="store_true", help="Add Activity Monitor and export per-process memory measurements")
+    parser.add_argument("--memory-steady-start", type=float, default=10,
+                        help="Steady-window start in trace seconds (default: 10; used with --memory)")
+    parser.add_argument("--memory-steady-end", type=float,
+                        help="Steady-window end in trace seconds (default: observed end; used with --memory)")
     parser.add_argument("--base-url", help="Feed server URL; otherwise SEKAI_BASE_URL or current en0 address on port 8787")
     parser.add_argument("--interface", default="en0", help="Mac LAN interface for automatic server address")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -340,6 +392,11 @@ def main():
         parser.error("Duration and timeouts must be positive.")
     if not 1 <= args.port <= 65535:
         parser.error("Port must be between 1 and 65535.")
+    if not math.isfinite(args.memory_steady_start) or args.memory_steady_start < 0:
+        parser.error("Memory steady start must be finite and nonnegative.")
+    if args.memory_steady_end is not None and (not math.isfinite(args.memory_steady_end)
+                                               or args.memory_steady_end <= args.memory_steady_start):
+        parser.error("Memory steady end must be finite and exceed its start.")
     output = (args.output or ROOT / "docs/artifacts/recordings" /
               dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")).resolve()
     try:
@@ -347,7 +404,10 @@ def main():
     except OSError as error:
         parser.error(f"Cannot create a new output directory: {error}")
     metadata = dict(status="preparing", mode="build-and-record" if args.build else "record-installed",
-                    requested_duration_s=args.duration)
+                    requested_duration_s=args.duration, memory_requested=args.memory,
+                    instruments=["Animation Hitches", "Points of Interest"] + (["Activity Monitor"] if args.memory else []))
+    if args.memory:
+        metadata["memory_steady_window"] = dict(start_s=args.memory_steady_start, end_s=args.memory_steady_end)
     mock_process = None
     mock_log = None
     try:
@@ -390,17 +450,20 @@ def main():
                  "--timeout", "60", str(app)], output / "install.log")
         else:
             announce("Using installed Sekai; its build configuration/coverage is not verified. Use --build after code changes.")
-        command = ["xcrun", "xctrace", "record", "--template", "Animation Hitches",
-                   "--instrument", "Points of Interest", "--device", device_udid,
-                   "--time-limit", f"{args.duration}s", "--output", str(output / "recording.trace"),
-                   "--env", f"SEKAI_BASE_URL={metadata['base_url']}", "--launch", "--", BUNDLE]
+        command = recording_command(device_udid, output, args.duration, metadata["base_url"], args.memory)
         metadata["status"] = "recording"
-        record(command, output, args.duration, args.startup_timeout, args.save_timeout, metadata)
+        on_started = (lambda: launch_for_memory(device_udid, output, metadata["base_url"], metadata)) if args.memory else None
+        record(command, output, args.duration, args.startup_timeout, args.save_timeout, metadata, on_started)
         metadata["status"] = "exporting"
-        metadata["feed_signposts_present"] = export_trace(output)
+        metadata["feed_signposts_present"] = export_trace(
+            output, args.memory, args.memory_steady_start, args.memory_steady_end, metadata.get("app_pid"))
+        if args.memory:
+            metadata["memory_summary"] = "memory-summary.json"
         metadata["status"] = "complete"
         announce(f"SAVED: {output / 'recording.trace'}")
         announce(f"FPS CSV: {output / 'fps.csv'}; phase timeline: {output / 'feed-signposts.csv'}")
+        if args.memory:
+            announce(f"MEMORY: {output / 'memory.csv'}; report: {output / 'memory-report.md'}")
         return 0
     except (RuntimeError, OSError, subprocess.SubprocessError, ValueError, ET.ParseError) as error:
         metadata["status"] = "failed"

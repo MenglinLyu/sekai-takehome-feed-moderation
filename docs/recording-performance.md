@@ -13,12 +13,23 @@ command-line tools are required.
 
 # Change duration or provide an explicit server address after switching networks.
 ./scripts/record_performance.py --duration 60 --base-url http://YOUR_MAC_IP:8787
+
+# Add per-process memory measurements during a longer scrolling scenario.
+./scripts/record_performance.py --build --memory --duration 120
+
+# Select a repeatable steady observation window in trace-relative seconds.
+./scripts/record_performance.py --memory --duration 120 \
+  --memory-steady-start 30 --memory-steady-end 110
 ```
 
 Use `--build` for the first run after adding or changing signposts. Direct mode
 cannot verify the installed binary's configuration, coverage, or source revision.
-Both modes launch Sekai through xctrace; they do not attach to an existing PID.
-If xctrace reports that Sekai is already running, close the app and retry.
+Without `--memory`, both modes launch Sekai through xctrace; they do not attach
+to an existing PID. Memory mode starts an all-process recording, then launches
+Sekai through `devicectl` after the tracing-start notification. This includes
+observable WebKit helpers instead of limiting Activity Monitor to the host.
+The app PID returned by devicectl is retained for attribution. Close Sekai before
+recording when a fresh launch is required; the script does not terminate it for you.
 
 ## Device and server
 
@@ -85,7 +96,8 @@ Raw recordings are ignored by Git. Copy completed results and analysis to
 [`docs/evidence/performance/`](evidence/performance/README.md) for version control.
 Each successful run contains:
 
-- `recording.trace`: Animation Hitches plus Points of Interest recording.
+- `recording.trace`: Animation Hitches plus Points of Interest recording;
+  Activity Monitor is included with `--memory`.
 - `fps.csv` / `fps.xml`: Built-In Display presented surfaces per second.
 - `hitches.xml`: application and system hitch events.
 - `signposts-*.xml`: signpost tables; filter subsystem `com.sekai.takehome`.
@@ -108,6 +120,65 @@ FPS here counts display surface presentations, not JavaScript animation callback
 Static pages can produce zero presentations without a hitch. The summary is not
 automatically restricted to scrolling; correlate it with the signpost timeline.
 The first and last bins can include launch or partial-recording time.
+
+## Memory measurements
+
+`--memory` is optional; FPS and Feed exports are still produced. The additional
+instrument changes profiling overhead, so compare captures with the same options.
+All-process capture can include activity from other apps in the raw trace. The
+memory CSV/report selects only the launched app PID and observed WebKit processes.
+
+Memory mode also produces:
+
+- `memory.xml`: original `activity-monitor-process-live` table.
+- `memory.csv`: trace-relative start/duration, process name/instance/PID,
+  responsible process/PID, attribution, physical footprint, real and compressed
+  memory in bytes. Unavailable measurements remain blank.
+- `memory-summary.json`: per-process sampled peak, first/last values, delta,
+  duration-weighted mean, observed duration/coverage, and linear trend in MiB/min.
+  Full-recording and steady-window statistics are separate.
+- `memory-report.md`: readable peak/steady/trend table and measurement limits.
+- `launch.json` / `launch.log`: devicectl launch result, including the app PID.
+
+The primary metric is Activity Monitor's **physical footprint**, not virtual
+address space, allocated heap bytes, payload size, or device free memory. Real
+and compressed memory are retained separately; they are not added to footprint.
+Values in summaries use MiB (1,048,576 bytes).
+
+The steady observation window defaults to `[10, observed end)` seconds. Set
+`--memory-steady-start` and `--memory-steady-end` to match your workload. Its mean
+weights valid intervals by duration and reports actual coverage. An empty window
+(including a short Ctrl+C capture) yields `null`/`n/a`, not a fabricated number.
+A selected window is not proof that usage stabilized. The trend is a weighted
+linear fit at interval midpoints; growth alone is not a leak diagnosis.
+
+App and WebContent/helper processes are reported separately. Only an exact
+responsible-PID match is marked as associated with the app. Other observed WebKit
+processes remain `unverified`, including helpers belonging to another app or
+those whose ownership the OS does not expose. No combined memory total is claimed:
+per-process peaks need not occur together, missing processes are not zero, and
+three WebViews need not map to three WebContent processes. Missing WebContent is
+reported as a coverage limitation. Missing memory schema or valid host footprint
+samples fails the run while retaining artifacts.
+
+For a long-scroll check, use a verified Release build and approximately 5 MB mock
+content. Allow initial loading, then use repeatable normal/rapid/reverse paging
+with enough dwell time for content to play. Retain Feed signposts and describe the
+actual path. Include a final idle dwell to observe retained usage. Compare peak,
+steady-window mean, first/last delta and trend across equal workloads; sampled
+peaks can miss short spikes. This mode does not inject memory warnings or prove
+the live WebView count.
+
+Recompute a different window from the retained XML and metadata without a device:
+
+```sh
+python3 scripts/summarize_memory.py docs/artifacts/recordings/RUN \
+  --steady-start 30 --steady-end 110
+```
+
+Use `--host-pid PID` only when importing an existing all-process export without
+the recorder's `metadata.json`. The script otherwise reads the recorded PID, or
+the launched target in `toc.xml` for a launch-targeted trace.
 
 ## Feed phase markers
 
@@ -143,8 +214,13 @@ Run the script tests without a device or an actual performance capture:
 
 ```sh
 python3 -m unittest discover -s scripts -p 'test_record_performance.py' -v
+python3 -m unittest discover -s scripts -p 'test_summarize_memory.py' -v
 ```
 
 These tests cover Darwin start notifications, failed startup, Ctrl+C saving,
 timeout cleanup, device selection, and XML reference resolution/deduplication.
-They do not establish application performance.
+Memory tests cover all-process command selection, launch timing/PID attribution,
+missing-schema failures, XML references, byte units, duration weighting, missing
+values, short captures and trend calculations. They do not establish application
+performance. The parser was also exercised against a short local macOS Activity
+Monitor export; that validates the export format, not iPhone memory behavior.
