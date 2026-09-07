@@ -9,6 +9,15 @@ The current content path uses direct WebKit navigation with a shared website dat
 store. See [web content metrics](web-content-metrics.md) for load/display identities,
 browser timing availability and cache-evidence limits.
 
+## Latest result
+
+The [20260906-203252-734998 perf report](evidence/performance/20260906-203252-734998/report.md)
+compares permanent WebView mounting against the previous attachment implementation.
+The original approximately 250 ms stall did not recur; `[10, 40)` contains zero
+application hitches. The full trace still has one short hitch and two potential
+interaction delays, and content loading remains unresolved. See the report for
+partial signpost coverage and unverified Release/memory limitations.
+
 ## Capture a repeatable workload
 
 1. Record device model, OS, display refresh rate, thermal state, source revision,
@@ -67,7 +76,7 @@ python3 scripts/analyze_performance.py "$RUN"
 
 Inspect `toc.xml` first: additional diagnostic instruments must have captured the
 requested tables. The analyzer writes `analysis/summary.json` and `intervals.csv`.
-It summarizes the full recording and [10, 40); use captures that cover that window.
+It summarizes display samples over the full recording and [10, 40); use captures that cover that window. Phase statistics use the exported signpost range, which can differ from the display range. Inspect `signpost_time_range_s` before interpreting gesture coverage or absent early events. It also retains representative stacks for each potential delay and counts main-thread activity-state wait samples across the full stack export. Context-switch sample counts are not time-weighted CPU percentages.
 Open loads are incomplete observations. Summed load durations include concurrency
 and do not measure CPU time or transferred bytes. Compare one change at a time
 under the same workload before claiming a performance improvement.

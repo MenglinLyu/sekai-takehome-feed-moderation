@@ -1,0 +1,41 @@
+{
+  "status": "complete",
+  "mode": "record-installed",
+  "requested_duration_s": 50,
+  "device": {
+    "udid": "00008150-000434A90A38C01C",
+    "name": "Menglin\u2019s iPhone",
+    "model": "iPhone18,1",
+    "transport": "wired"
+  },
+  "mock_started": true,
+  "base_url": "http://192.168.1.197:8787",
+  "scheme_updated": null,
+  "record_command": [
+    "xcrun",
+    "xctrace",
+    "record",
+    "--template",
+    "Animation Hitches",
+    "--instrument",
+    "Points of Interest",
+    "--device",
+    "00008150-000434A90A38C01C",
+    "--time-limit",
+    "50s",
+    "--output",
+    "/Users/menglinlyu/Develop/sekai-takehome-feed-moderation/docs/artifacts/recordings/20260906-203252-734998/recording.trace",
+    "--env",
+    "SEKAI_BASE_URL=http://192.168.1.197:8787",
+    "--notify-tracing-started",
+    "com.sekai.recording.261f011bf0c24bd7a1a62e0978921530",
+    "--launch",
+    "--",
+    "com.sekai.takehome.Sekai"
+  ],
+  "capture_started_at": "2026-09-07T03:32:59.254476+00:00",
+  "capture_ended_at": "2026-09-07T03:33:49.261029+00:00",
+  "xctrace_exit_code": 0,
+  "stopped_early": false,
+  "feed_signposts_present": true
+}

@@ -56,3 +56,10 @@ Hidden IDs restore before Feed appears. Do not clear all browser data to hide on
 ## Verification
 
 See [metrics](web-content-metrics.md) and [tests](web-content-testing.md).
+
+The [September 6 permanent-canvas perf retest](evidence/performance/20260906-203252-734998/report.md)
+did not reproduce the previous approximately 250 ms WebKit attachment stall:
+`[10, 40)` had zero application hitches and exported `FeedRenderCells` intervals
+peaked at 0.285 ms. Remaining short interaction delays and navigation cancellations
+are documented separately in that report; this is not verified Release or memory
+acceptance evidence.

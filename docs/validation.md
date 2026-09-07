@@ -63,8 +63,23 @@ Limits: this is finite simulator smoke coverage, not proof over all gesture sche
 ## Physical-device performance — September 6, 2026
 
 [Retained measurements](evidence/performance/README.md) contain the latest local
-Instruments capture. The [latest analysis](evidence/performance/20260906-191821-565605/report.md)
-records one 258.377 ms application hitch in `[10, 40)` and a WebKit activity-state
-IPC wait during WebView attachment. This is evidence of a scrolling stall.
-Build provenance and memory were not verified by this capture. Retest the
-attachment change and show memory use while scrolling, as requested by the README.
+capture and its baseline. The [latest perf report](evidence/performance/20260906-203252-734998/report.md)
+records **zero application hitches in `[10, 40)`**, versus one 258.377 ms hitch
+before permanent WebView mounting. `FeedRenderCells` maximum fell from 251.578 ms
+to 0.285 ms, and the full sampled main-thread export contains no matching WebKit
+activity-state wait. The previously observed attachment stall did not recur.
+
+This is not a claim of zero stutter: the full 51.049 s trace has one 16.670 ms
+application hitch and potential interaction delays of 54.313 ms during early UI
+work and 57.770 ms during context-menu presentation. Neither delay overlaps the
+retained Feed gesture intervals. The window averaged 58.867 display presentations/s,
+including idle/loading periods; observed gesture coverage is 8.598 s. Feed markers
+begin only at 16.346 s, so early gesture coverage is unknown.
+
+All 20 fully paired navigation-to-ready observations ended in cancellation, though
+one successful play/pause pair for an already-ready document is present. Content
+loading remains unresolved. Build/source provenance, memory, and live WebView count
+were not verified. Repeat with a verified Release build, controlled scrolling and
+menu interactions, complete readiness metrics, and host/WebContent memory evidence.
+This update analyzes saved physical-device evidence; no app code changed and no
+XCTest or RocketSim smoke run was performed.

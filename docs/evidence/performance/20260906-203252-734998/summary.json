@@ -1,0 +1,28 @@
+{
+  "window_start_s": 10.0,
+  "window_end_s": 40.0,
+  "duration_s": 30.0,
+  "sample_count": 30,
+  "metric": "Built-In Display presented surfaces per second (xctrace)",
+  "presented_surfaces": 1766,
+  "average_fps": 58.86666666666667,
+  "median_one_second_fps": 62.0,
+  "minimum_one_second_fps": 0.0,
+  "maximum_one_second_fps": 120.0,
+  "zero_presentation_seconds": 1.0,
+  "application_hitch_count": 0,
+  "application_maximum_hitch_ms": 0,
+  "all_hitches_in_window": [],
+  "full_recording_duration_s": 51.048669099,
+  "full_recording_presented_surfaces": 2705,
+  "full_recording_average_fps": 52.988648827536004,
+  "full_recording_hitches": [
+    {
+      "start_s": 1.961240166,
+      "duration_ms": 16.6695,
+      "process": "Sekai (9781)",
+      "is_system": "0"
+    }
+  ],
+  "limitation": "Presentation FPS includes idle/loading intervals; correlate with Feed gesture signposts to interpret scrolling performance."
+}

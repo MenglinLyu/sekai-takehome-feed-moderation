@@ -85,13 +85,38 @@ for node in root.findall("node"):
 
 root, resolve = xml_rows(HERE / "context-switch-sample.xml")
 wait_stacks = []
+delay_samples = [[] for _ in hangs]
+activity_wait_sample_count = 0
 for row in root.findall(".//row"):
     values = [resolve(e) for e in row]
     t = int(values[0].text)/1e9
-    if any(h["start_s"] <= t < h["start_s"] + h["duration_ms"] / 1000 for h in hangs) and "Main Thread" in values[1].get("fmt", ""):
-        frames = [resolve(e).get("name", "") for e in values[5]]
-        if any("waitForDidUpdateActivityState" in f for f in frames):
-            wait_stacks.append(dict(time_s=t, state=values[4].get("fmt"), frames=frames))
+    if "Main Thread" not in values[1].get("fmt", ""):
+        continue
+    frames = [resolve(e).get("name", "") for e in values[5]]
+    if not frames:
+        continue
+    activity_wait = any("waitForDidUpdateActivityState" in f for f in frames)
+    activity_wait_sample_count += int(activity_wait)
+    sample = dict(time_s=t, state=values[4].get("fmt"), frames=frames)
+    for index, hang in enumerate(hangs):
+        if hang["start_s"] <= t < hang["start_s"] + hang["duration_ms"] / 1000:
+            delay_samples[index].append(sample)
+            if activity_wait:
+                wait_stacks.append(sample)
+
+# Keep representative stacks for delays unrelated to the original WebKit wait.
+# Context-switch sample counts are not time-weighted CPU measurements.
+delay_stack_summaries = []
+for hang, samples in zip(hangs, delay_samples):
+    groups = {}
+    for sample in samples:
+        key = (sample["state"], tuple(sample["frames"]))
+        if key not in groups:
+            groups[key] = dict(sample, sample_count=0)
+        groups[key]["sample_count"] += 1
+    delay_stack_summaries.append(dict(
+        start_s=hang["start_s"], sample_count=len(samples), unique_stack_count=len(groups),
+        representative_stacks=sorted(groups.values(), key=lambda s: -s["sample_count"])[:5]))
 
 loads = [i for i in intervals if i["name"] == "WebLoadToReady"]
 summary = dict(
@@ -106,6 +131,10 @@ summary = dict(
     canceled_load_elapsed_sum_s=sum(i["duration_ms"]/1000 for i in loads if i["outcome"] == "reset or cancelled"),
     unmatched_ends=unmatched_ends, open_intervals=list(pending.values()),
     microhang_wait_stacks=wait_stacks,
+    interaction_delay_stack_summaries=delay_stack_summaries,
+    main_thread_activity_wait_sample_count=activity_wait_sample_count,
+    signpost_time_range_s=[min(float(e["time_s"]) for e in events),
+                           max(float(e["time_s"]) for e in events)],
     limitations=["FPS is display presentation rate, not scrolling-only frame rate.",
                  "Open loads are right-censored at trace end, not failed loads.",
                  "Summed load elapsed time includes concurrency and is not CPU time or transferred bytes.",
