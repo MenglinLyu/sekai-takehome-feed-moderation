@@ -14,14 +14,18 @@ import os
         var item: SekaiItem?
         var navigation: WKNavigation?
         var loadInterval: FeedPerformance.Interval?
+        var measurement: WebLoadMeasurement?
+        var playAcknowledged = false
         var finished = false
         var ready = false
         var playing = false
         var resetting = false
         var error: String?
 
-        init() {
+        init(websiteDataStore: WKWebsiteDataStore) {
             let configuration = WKWebViewConfiguration()
+            configuration.websiteDataStore = websiteDataStore
+            configuration.suppressesIncrementalRendering = false
             configuration.allowsInlineMediaPlayback = true
             configuration.mediaTypesRequiringUserActionForPlayback = .all
             webView = WKWebView(frame: .zero, configuration: configuration)
@@ -32,6 +36,8 @@ import os
     }
 
     private let slots: [Slot]
+    private var contentActive = false
+    private var displayMeasurement: WebDisplayMeasurement?
     private let log = Logger(subsystem: "com.sekai.takehome", category: "WebViewPool")
     private var desired: [SekaiItem] = []
     private var currentID: SekaiID?
@@ -41,8 +47,8 @@ import os
     private var reconciliation: Task<Void, Never>?
     var onChange: (() -> Void)?
 
-    override init() {
-        slots = (0..<3).map { _ in Slot() }
+    init(websiteDataStore: WKWebsiteDataStore = .default()) {
+        slots = (0..<3).map { _ in Slot(websiteDataStore: websiteDataStore) }
         super.init()
         for (index, slot) in slots.enumerated() {
             slot.webView.navigationDelegate = self
@@ -58,10 +64,29 @@ import os
         schedule()
     }
 
-    func setEligibleTarget(_ id: SekaiID?) {
+    func setContentActive(_ active: Bool) {
+        guard contentActive != active else { return }
+        contentActive = active
+        if !active { setEligibleTarget(nil) }
+        schedule()
+    }
+
+    private func beginDisplay(_ id: SekaiID, reason: String) {
+        let slot = slots.first { $0.item?.id == id && !$0.resetting }
+        let state = slot?.ready == true ? "ready_pool" : (slot?.error != nil ? "failed" : (slot?.navigation == nil ? "unbound" : "loading"))
+        displayMeasurement = WebDisplayMeasurement(itemID: id, reason: reason,
+            initialState: state, load: slot?.measurement)
+        if slot?.error != nil { displayMeasurement?.end("failed") }
+        else if slot?.playAcknowledged == true { displayMeasurement?.end("played") }
+    }
+
+    func setEligibleTarget(_ id: SekaiID?, reason: String = "resume") {
         guard eligibleID != id else { return }
         FeedPerformance.event("FeedEligibility", "item=\(id ?? "none")")
+        displayMeasurement?.end("interrupted")
+        displayMeasurement = nil
         eligibleID = id
+        if let id { beginDisplay(id, reason: reason) }
         schedule()
     }
 
@@ -73,12 +98,13 @@ import os
     func retry(itemID: SekaiID) {
         guard let slot = slots.first(where: { $0.item?.id == itemID }), slot.error != nil else { return }
         reset(slot)
+        if eligibleID == itemID { beginDisplay(itemID, reason: "retry") }
         schedule()
     }
 
     func removeHiddenItems(survivingIDs: Set<SekaiID>) {
         desired.removeAll { !survivingIDs.contains($0.id) }
-        if let eligibleID, !survivingIDs.contains(eligibleID) { self.eligibleID = nil }
+        if let eligibleID, !survivingIDs.contains(eligibleID) { setEligibleTarget(nil) }
         for slot in slots {
             guard let id = slot.item?.id, !survivingIDs.contains(id) else { continue }
             slot.webView.isHidden = true
@@ -113,7 +139,7 @@ import os
             // No slot may start until the old running document has acknowledged pause.
             for slot in slots where slot.playing && !slot.resetting {
                 let shouldKeepPlaying = slot.item?.id == eligibleID &&
-                    desired.contains(where: { $0.id == slot.item?.id }) && slot.ready
+                    desired.contains(where: { $0.id == slot.item?.id && $0.gameURL == slot.item?.gameURL }) && slot.ready && contentActive
                 if shouldKeepPlaying { continue }
                 let id = slot.item?.id
                 let navigation = slot.navigation
@@ -121,6 +147,7 @@ import os
                     _ = try await evaluate("window.sekaiPause()", in: slot, phase: "WebPauseJS")
                     guard matches(slot, id: id, navigation: navigation) else { dirty = true; continue }
                     slot.playing = false
+                    slot.playAcknowledged = false
                     log.debug("Paused \(id ?? "")")
                 } catch {
                     // Replacing the document, not stopLoading alone, proves the old script is gone.
@@ -128,17 +155,18 @@ import os
                 }
             }
 
-            let targetIDs = Set(desired.map(\.id))
             for slot in slots where !slot.resetting {
-                if let id = slot.item?.id, !targetIDs.contains(id) {
+                if let item = slot.item, !desired.contains(where: { $0.id == item.id && $0.gameURL == item.gameURL }) {
                     reset(slot)
                 } else if conservative, slot.item?.id != currentID, slot.navigation != nil {
+                    reset(slot)
+                } else if !contentActive, slot.navigation != nil, !slot.finished {
                     reset(slot)
                 }
             }
 
-            for item in desired {
-                guard !conservative || item.id == currentID else { continue }
+            for item in desired.sorted(by: { ($0.id == currentID ? 0 : 1) < ($1.id == currentID ? 0 : 1) }) {
+                guard contentActive, !conservative || item.id == currentID else { continue }
                 if let existing = slots.first(where: { $0.item?.id == item.id && !$0.resetting }) {
                     if existing.navigation == nil && existing.error == nil { bind(item, to: existing) }
                 } else if let free = slots.first(where: { $0.item == nil && !$0.resetting }) {
@@ -151,9 +179,16 @@ import os
                 let id = slot.item?.id
                 let navigation = slot.navigation
                 do {
-                    let value = try await evaluate(
-                        "typeof window.sekaiPlay === 'function' && typeof window.sekaiPause === 'function'", in: slot, phase: "WebReadinessJS")
+                    let result = try await evaluate(WebContentMetrics.readinessScript, in: slot, phase: "WebReadinessJS")
                     guard matches(slot, id: id, navigation: navigation) else { dirty = true; continue }
+                    let payload = result as? [String: Any]
+                    let value = payload?["ready"] as? Bool == true
+                    let timing = (payload?["timing"] as? [String: Any]).map { WebNavigationTiming(values: $0) }
+                    slot.measurement?.end(value ? "ready" : "bridge_unavailable", timing: timing)
+                    if displayMeasurement?.itemID == id {
+                        displayMeasurement?.attach(slot.measurement)
+                        if !value { displayMeasurement?.end("failed") }
+                    }
                     slot.loadInterval?.end(value ? "ready" : "functions unavailable")
                     slot.loadInterval = nil
                     FeedPerformance.event("WebContentReady", "item=\(id ?? "none") ready=\(value)")
@@ -161,6 +196,8 @@ import os
                     if !slot.ready { slot.error = "Playback functions are unavailable." }
                 } catch {
                     guard matches(slot, id: id, navigation: navigation) else { continue }
+                    slot.measurement?.end("readiness_failed")
+                    if displayMeasurement?.itemID == id { displayMeasurement?.end("failed") }
                     slot.loadInterval?.end("readiness failed")
                     slot.loadInterval = nil
                     slot.error = "Could not prepare content. Tap Retry."
@@ -169,17 +206,24 @@ import os
 
             // A failed reset leaves playback stopped until that document is safely replaced.
             if !slots.contains(where: { $0.resetting || $0.playing }),
-               let eligibleID,
+               contentActive, let eligibleID,
                let slot = slots.first(where: { $0.item?.id == eligibleID && $0.ready }),
                desired.contains(where: { $0.id == eligibleID }) {
                 let navigation = slot.navigation
                 slot.playing = true
+                slot.playAcknowledged = false
+                displayMeasurement?.requestPlay()
                 do {
                     _ = try await evaluate("window.sekaiPlay()", in: slot, phase: "WebPlayJS")
-                    if !matches(slot, id: eligibleID, navigation: navigation) { reset(slot) }
-                    if self.eligibleID != eligibleID { dirty = true }
+                    guard matches(slot, id: eligibleID, navigation: navigation) else { reset(slot); continue }
+                    slot.playAcknowledged = true
+                    if self.eligibleID == eligibleID {
+                        displayMeasurement?.attach(slot.measurement)
+                        displayMeasurement?.end("played")
+                    } else { dirty = true }
                     log.debug("Play completion \(eligibleID)")
                 } catch {
+                    if displayMeasurement?.itemID == eligibleID { displayMeasurement?.end("play_failed") }
                     reset(slot)
                 }
             }
@@ -189,19 +233,35 @@ import os
     }
 
     private func bind(_ item: SekaiItem, to slot: Slot) {
+        slot.measurement?.end("rebound")
+        slot.measurement = WebLoadMeasurement(itemID: item.id,
+            slot: slots.firstIndex(where: { $0 === slot }) ?? -1,
+            role: item.id == currentID ? "current" : "adjacent")
+        if displayMeasurement?.itemID == item.id { displayMeasurement?.attach(slot.measurement) }
         slot.loadInterval?.end("rebound")
         slot.loadInterval = FeedPerformance.begin("WebLoadToReady", "item=\(item.id) role=\(item.id == currentID ? "current" : "adjacent") slot=\(slots.firstIndex(where: { $0 === slot }) ?? -1)")
         slot.item = item
         slot.ready = false
         slot.finished = false
         slot.error = nil
-        slot.navigation = slot.webView.load(URLRequest(url: item.gameURL))
+        slot.playAcknowledged = false
+        slot.navigation = slot.webView.load(URLRequest(url: item.gameURL, cachePolicy: .useProtocolCachePolicy))
+        if slot.navigation == nil {
+            slot.measurement?.end("navigation_unavailable")
+            slot.loadInterval?.end("navigation unavailable")
+            slot.loadInterval = nil
+            slot.error = "Content failed to load. Tap Retry."
+            if displayMeasurement?.itemID == item.id { displayMeasurement?.end("failed") }
+        }
         log.debug("Load \(item.id)")
     }
 
     private func reset(_ slot: Slot) {
         let phase = FeedPerformance.begin("WebSlotReset", "item=\(slot.item?.id ?? "none")")
         defer { phase?.end() }
+        slot.measurement?.end("cancelled")
+        slot.measurement = nil
+        slot.playAcknowledged = false
         slot.loadInterval?.end("reset or cancelled")
         slot.loadInterval = nil
         slot.webView.isHidden = true
@@ -230,19 +290,20 @@ import os
         return slots.first { $0.webView === webView && $0.navigation === navigation }
     }
 
-    private func evaluate(_ script: String, in slot: Slot, phase name: StaticString) async throws -> Bool {
+    private func evaluate(_ script: String, in slot: Slot, phase name: StaticString) async throws -> Any? {
         let phase = FeedPerformance.begin(name, "item=\(slot.item?.id ?? "none")")
         defer { phase?.end() }
         return try await withCheckedThrowingContinuation { continuation in
             slot.webView.evaluateJavaScript(script) { result, error in
                 if let error { continuation.resume(throwing: error) }
-                else { continuation.resume(returning: (result as? Bool) ?? false) }
+                else { continuation.resume(returning: result) }
             }
         }
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         guard let slot = slot(for: webView, navigation: navigation), !slot.resetting else { return }
+        slot.measurement?.didStart()
         slot.ready = false
         slot.finished = false
         onChange?()
@@ -250,6 +311,7 @@ import os
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         guard let slot = slot(for: webView, navigation: navigation) else { return }
+        if !slot.resetting { slot.measurement?.didCommit() }
         FeedPerformance.event("WebNavigationCommit", "item=\(slot.item?.id ?? "blank")")
     }
 
@@ -261,6 +323,7 @@ import os
             slot.navigation = nil
         } else {
             FeedPerformance.event("WebNavigationFinished", "item=\(slot.item?.id ?? "none")")
+            slot.measurement?.didFinish()
             slot.finished = true
         }
         schedule()
@@ -281,9 +344,10 @@ import os
             log.error("Blank-document reset failed: \(error.localizedDescription)")
             return
         }
+        slot.measurement?.end((error as NSError).code == NSURLErrorCancelled ? "cancelled" : "navigation_failed")
+        if displayMeasurement?.itemID == slot.item?.id { displayMeasurement?.end("failed") }
         slot.loadInterval?.end("navigation failed code=\((error as NSError).code)")
         slot.loadInterval = nil
-        guard (error as NSError).code != NSURLErrorCancelled else { return }
         slot.navigation = nil
         slot.ready = false
         slot.finished = false
@@ -293,6 +357,10 @@ import os
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         guard let slot = slots.first(where: { $0.webView === webView }) else { return }
+        slot.measurement?.end("process_terminated")
+        slot.measurement = nil
+        slot.playAcknowledged = false
+        if displayMeasurement?.itemID == slot.item?.id { displayMeasurement?.end("process_terminated") }
         slot.loadInterval?.end("process terminated")
         slot.loadInterval = nil
         FeedPerformance.event("WebProcessTerminated", "item=\(slot.item?.id ?? "none")")
@@ -303,6 +371,7 @@ import os
         slot.playing = false
         slot.resetting = false
         slot.error = slot.item?.id == currentID ? nil : "Content was released. Tap Retry."
+        if let id = eligibleID, slot.item?.id == id { beginDisplay(id, reason: "recovery") }
         schedule()
     }
 }

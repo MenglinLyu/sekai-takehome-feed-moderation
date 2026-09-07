@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import WebKit
 
 @MainActor final class FeedSession {
     let viewModel: FeedViewModel
@@ -32,7 +33,7 @@ import Combine
         let worker = ModerationSyncWorker(api: api, clock: SystemRetryClock())
         let adapter = moderationState
         moderation = ModerationRepository(storage: storage, worker: worker) { snapshot in adapter.accept(snapshot) }
-        pool = WebViewSlotPool()
+        pool = WebViewSlotPool(websiteDataStore: .default())
         profileFactory = CreatorProfileFactory(api: api, moderation: moderationState, commands: moderation)
     }
 

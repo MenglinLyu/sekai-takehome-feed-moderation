@@ -5,6 +5,10 @@ Xcode MCP; disable code coverage and disconnect the debugger before measurement.
 Use [the recording script](recording-performance.md) for command-line capture,
 export, and device selection. Keep the mock implementation unchanged.
 
+The current content path uses direct WebKit navigation with a shared website data
+store. See [web content metrics](web-content-metrics.md) for load/display identities,
+browser timing availability and cache-evidence limits.
+
 ## Capture a repeatable workload
 
 1. Record device model, OS, display refresh rate, thermal state, source revision,

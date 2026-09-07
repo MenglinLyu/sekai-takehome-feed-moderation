@@ -161,7 +161,9 @@ When moderation hides the current item:
 
 Create three `WKWebView` instances once for the pool lifetime. Maintain logical `prev`, `current`, and `next` roles around the settled index. Each slot tracks its optional item ID, current `WKNavigation`, loading state, and readiness. Share readiness logic across slots.
 
-Use `webView.load(URLRequest(url: gameURL))`. Start loading when binding a slot, without waiting for `willDisplay`. Preserve an existing target binding and its loaded content when only its logical role changes. Do not add a separate HTML download/conversion layer or data-prefetch scheduler in the core version.
+Use `webView.load(URLRequest(url: gameURL))`. Start loading when binding a slot, without waiting for `willDisplay`. Preserve an existing target binding and its loaded content when only its logical role changes.
+
+The composition root injects one `WKWebsiteDataStore.default()` into the pool. All three views use that same persistent store, `useProtocolCachePolicy`, and incremental rendering. Resetting a document does not clear browser data. Cache reuse follows HTTP rules and WebKit eviction; a shared store is not a guaranteed cache hit. Match both item ID and source URL before retaining a binding, and start current-item loads before new neighbors. Cancel unfinished loads while Feed is inactive and rebuild the settled window on return. See [the direct-loading design](web-content-loading.md).
 
 ### Navigation identity and readiness
 
@@ -242,6 +244,8 @@ Set the acceptance target before measurement: during 30 seconds of continuous sc
 If useful, compare with system cell prefetching disabled under the same conditions. Optimize observed bottlenecks, retest, and recheck core behavior. Only then spend remaining time persisting pending operations and validating restart synchronization. Automatic preload recovery remains optional; unblocking remains out of scope.
 
 The mock's page counter can verify play/pause but cannot measure native scrolling frame rate. Do not invent performance figures or claim unmeasured results.
+
+Use [WebKit content metrics](web-content-metrics.md) for navigation/readiness phases and eligible-to-play intervals. Count ready-pool reuse as display opportunities even when no navigation occurs. Browser timing is feature-detected and cache evidence may be unknown; do not equate load calls with HTTP requests or browser body sizes with actual transferred bytes. [Direct-loading tests](web-content-testing.md) use an independent HTTP fixture to validate cacheable and no-store responses without modifying the mock.
 
 In the delivery README, record verified Xcode/Swift versions, run commands, actual feature scope, failure behavior, measured performance and acceptance results, tradeoffs, and unfinished work. If queue persistence is absent, state: “Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.”
 

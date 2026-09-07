@@ -97,7 +97,21 @@ import SwiftUI
         loadViewIfNeeded()
         let oldIDs = items.map(\.id)
         let newIDs = state.items.map(\.id)
-        guard oldIDs != newIDs else { return }
+        guard items != state.items else { return }
+        if oldIDs == newIDs {
+            pool.setEligibleTarget(nil)
+            let changed = Set(zip(items, state.items).filter { $0.gameURL != $1.gameURL }.map { $0.0.id })
+            for case let cell as FeedCell in collectionView.subviews {
+                if let id = cell.itemID, changed.contains(id) { cell.cover() }
+            }
+            items = state.items
+            var snapshot = dataSource.snapshot()
+            snapshot.reconfigureItems(newIDs)
+            dataSource.apply(snapshot, animatingDifferences: false)
+            assignWindow()
+            updateEligibility()
+            return
+        }
         let phase = FeedPerformance.begin("FeedSnapshot", "old=\(oldIDs.count) new=\(newIDs.count) revision=\(snapshotRevision + 1)")
         let removed = Set(oldIDs).subtracting(newIDs)
         // Include prepared cells, not only currently visible cells.
@@ -124,7 +138,7 @@ import SwiftUI
             self.positionCurrent()
             self.settled = !self.collectionView.isDragging && !self.collectionView.isDecelerating
             if self.settled { self.assignWindow() }
-            self.updateEligibility()
+            self.updateEligibility(reason: "snapshot")
         }
     }
 
@@ -145,10 +159,11 @@ import SwiftUI
         }
     }
 
-    private func updateEligibility() {
+    private func updateEligibility(reason: String = "resume") {
+        pool.setContentActive(foreground && displayed && unobscured)
         pool.setEligibleTarget(PlaybackPolicy.eligibleTarget(
             currentID: currentID, visibleIDs: items.map(\.id), foreground: foreground,
-            displayed: displayed && unobscured, settled: settled))
+            displayed: displayed && unobscured, settled: settled), reason: reason)
     }
 
     private func settle() {
@@ -161,7 +176,7 @@ import SwiftUI
         FeedPerformance.event("FeedCurrentItem", "index=\(index) item=\(items[index].id)")
         settled = true
         assignWindow()
-        updateEligibility()
+        updateEligibility(reason: "settled")
     }
 
     private func renderVisibleCells() {

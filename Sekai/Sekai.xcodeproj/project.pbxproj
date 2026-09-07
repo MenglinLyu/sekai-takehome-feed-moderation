@@ -372,7 +372,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sekai/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to the local Sekai mock server.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to the mock server running on your Mac for development and testing.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -420,7 +420,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sekai/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to the local Sekai mock server.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to the mock server running on your Mac for development and testing.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
