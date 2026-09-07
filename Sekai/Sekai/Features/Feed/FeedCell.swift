@@ -31,7 +31,6 @@ import WebKit
         creatorButton.contentHorizontalAlignment = .leading
         actionsButton.tintColor = .white
         actionsButton.setImage(UIImage(systemName: "ellipsis.circle.fill"), for: .normal)
-        actionsButton.accessibilityLabel = "Content actions"
         actionsButton.showsMenuAsPrimaryAction = true
         let textStack = UIStackView(arrangedSubviews: [titleLabel, creatorButton])
         textStack.axis = .vertical
@@ -71,17 +70,28 @@ import WebKit
                    report: @escaping (String) -> Void, block: @escaping () -> Void) {
         if itemID != item.id { detach() }
         itemID = item.id
+        let accessibilityPrefix = "feed.item.\(item.id)"
+        accessibilityIdentifier = accessibilityPrefix
+        titleLabel.accessibilityIdentifier = "\(accessibilityPrefix).title"
+        creatorButton.accessibilityIdentifier = "\(accessibilityPrefix).creator"
+        actionsButton.accessibilityIdentifier = "\(accessibilityPrefix).actions"
+        placeholder.accessibilityIdentifier = "\(accessibilityPrefix).status"
+        retryButton.accessibilityIdentifier = "\(accessibilityPrefix).retry"
         titleLabel.text = item.title
         creatorButton.setTitle(item.creatorName, for: .normal)
         creatorButton.removeTarget(nil, action: nil, for: .allEvents)
         creatorButton.removeAction(identifiedBy: UIAction.Identifier("creator"), for: .touchUpInside)
         creatorButton.addAction(UIAction(identifier: UIAction.Identifier("creator")) { _ in openCreator() }, for: .touchUpInside)
-        actionsButton.menu = UIMenu(children: [
-            UIMenu(title: "Report content", children: ["Spam", "Abusive content", "Other"].map { reason in
-                UIAction(title: reason) { _ in report(reason.lowercased()) }
-            }),
-            UIAction(title: "Block creator", attributes: .destructive) { _ in block() }
-        ])
+        let reportReasons = [("spam", "Spam"), ("abusive", "Abusive content"), ("other", "Other")]
+        let reportMenu = UIMenu(title: "Report content", children: reportReasons.map { key, reason in
+            let action = UIAction(title: reason) { _ in report(reason.lowercased()) }
+            action.accessibilityIdentifier = "\(accessibilityPrefix).report.\(key)"
+            return action
+        })
+        reportMenu.accessibilityIdentifier = "\(accessibilityPrefix).report"
+        let blockAction = UIAction(title: "Block creator", attributes: .destructive) { _ in block() }
+        blockAction.accessibilityIdentifier = "\(accessibilityPrefix).blockCreator"
+        actionsButton.menu = UIMenu(children: [reportMenu, blockAction])
         retryButton.removeAction(identifiedBy: UIAction.Identifier("retry"), for: .touchUpInside)
         retryButton.addAction(UIAction(identifier: UIAction.Identifier("retry")) { _ in
             pool.retry(itemID: item.id)
@@ -134,5 +144,12 @@ import WebKit
         super.prepareForReuse()
         detach()
         itemID = nil
+        accessibilityIdentifier = nil
+        titleLabel.accessibilityIdentifier = nil
+        creatorButton.accessibilityIdentifier = nil
+        actionsButton.accessibilityIdentifier = nil
+        placeholder.accessibilityIdentifier = nil
+        retryButton.accessibilityIdentifier = nil
+        actionsButton.menu = nil
     }
 }

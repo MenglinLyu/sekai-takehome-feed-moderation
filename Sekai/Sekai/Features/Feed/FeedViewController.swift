@@ -35,6 +35,7 @@ import SwiftUI
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .black
+        collectionView.accessibilityIdentifier = "feed.list"
         collectionView.isPagingEnabled = true
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.showsVerticalScrollIndicator = false
