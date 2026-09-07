@@ -83,3 +83,21 @@ were not verified. Repeat with a verified Release build, controlled scrolling an
 menu interactions, complete readiness metrics, and host/WebContent memory evidence.
 This update analyzes saved physical-device evidence; no app code changed and no
 XCTest or RocketSim smoke run was performed.
+
+## Saved memory graph — September 6, 2026
+
+Offline analysis of `Sekai[10254].memgraph` confirms **exactly three live
+`WKWebView` instances** at 21:17:20.724 PDT. All three are strongly held by three
+distinct slots in the same `WebViewSlotPool`; no fourth instance was found.
+The collector confirmed that capture followed scrolling up and down through
+multiple Web Content items. Retaining only the three pool-owned instances after
+that traversal validates the pool's effectiveness in this exercised scenario.
+The host footprint is `22.7M`, with reported peak `24.9M`, excluding separate
+WebContent processes. See the [report and raw text evidence](evidence/performance/memgraph-10254/report.md)
+for addresses, ownership chains, checksum, and reproducible commands.
+
+This separate PID 10254 snapshot supplements the earlier PID 9781 frame trace;
+it does not establish that trace's memory use, a lifetime maximum WebView count,
+or a Release long-scroll memory trend. Xcode MCP was used to inspect the current
+pool construction. No app code changed and no new XCTest or RocketSim smoke run
+was performed for this saved-artifact analysis.

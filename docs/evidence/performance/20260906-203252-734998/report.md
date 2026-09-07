@@ -152,6 +152,18 @@ revision, repeatable normal/rapid/reverse paging, repeated menu opening, and mem
 measurements remains required. No app source was changed or simulator smoke test
 rerun for this analysis; RocketSim smoke results are not physical-device perf evidence.
 
+### Separate memory-graph follow-up
+
+The later [PID 10254 snapshot](../memgraph-10254/report.md), captured at
+21:17:20.724 PDT, confirms exactly three live `WKWebView` instances, all held by
+three slots in one pool. The collector confirmed that capture followed scrolling
+up and down through multiple Web Content items; the post-scrolling count validates
+the pool's effectiveness in that scenario. It reports host footprint `22.7M` and
+peak `24.9M`.
+This is a different process from this trace's PID 9781, excludes WebContent
+process memory, and does not retroactively supply memory or lifetime count
+measurements for this run.
+
 ## Reproduction and retained evidence
 
 Compact exports and generated summaries are retained beside this report; the

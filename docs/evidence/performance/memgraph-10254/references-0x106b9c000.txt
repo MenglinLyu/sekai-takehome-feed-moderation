@@ -1,0 +1,299 @@
+Tracing: <WKWebView 0x106b9c000> [2560]
+
+Found 58 roots referencing: <WKWebView 0x106b9c000> [2560]
+
+This is a reverse reference tree showing how the specified block is referenced.
+The top node is the specified block, the next level down are blocks that reference that, and so on.
+The number at the start of each line is the number of paths-to-roots going through that node.
+
+    58 <WKWebView 0x106b9c000> [2560]
+      28 <WebKit::NavigationState 0x1120f40e0> [112]    +16:  0x1120f40f0
+      + 27 0x113080000 [2560]  +1808:  0x113080710 --> offset 64
+      + ! 27 <WTF::RunLoop 0x1120080e0> [160]    +24:  0x1120080f8 --> offset 16
+      + !   11 0x112000880 [128]   +112:  0x1120008f0
+      + !   : 8 0x11201c340 [416]    +16:  0x11201c350
+      + !   : | 6 0x113000000 [2048]  +1488:  0x1130005d0
+      + !   : | + 3 <Swift._ContiguousArrayStorage<Swift.Int> 0x11967a400> [5120]   +509:  0x11967a5fd
+      + !   : | + ! 3 0x11a188000 [1536]   +328:  0x11a188148
+      + !   : | + !   2 0x106a63d40 [64]    +40:  0x106a63d68 --> offset 608
+      + !   : | + !   : 2 0x1194cb600 [64]    +16:  0x1194cb610
+      + !   : | + !   :   2 0x11a116710 [80]    +48:  0x11a116740
+      + !   : | + !   :     2 <dispatch_source_t 0x11a1af000> [128]    +88: [capture] 0x11a1af058
+      + !   : | + !   :       2 0x1194c8200 [64]     +0:  0x1194c8200
+      + !   : | + !   :         2 0x1197e1800 [512]   +216:  0x1197e18d8
+      + !   : | + !   :           2 <NWConcrete_nw_endpoint_flow 0x119640380> [896]   +608: __strong channel 0x1196405e0 --> offset 96
+      + !   : | + !   :             2 <NWConcrete_nw_endpoint_handler 0x11a0cef80> [320]   +264: __strong mode_handler 0x11a0cf088
+      + !   : | + !   :               2 0x1195955c0 [48]    +16:  0x1195955d0
+      + !   : | + !   :                 2 <NWConcrete_nw_association.connected_flow_handles (struct nw_hash_table) 0x11a185b00> [192]    +64:  0x11a185b40
+      + !   : | + !   :                   2 <NWConcrete_nw_association 0x11a15e760> [80]    +48: connected_flow_handles 0x11a15e790
+      + !   : | + !   :                     2 <Swift._ContiguousArrayStorage<(Network.__NWPathParameters, Network.Association)> 0x11a0287b0> [48]    +40:  0x11a0287d8
+      + !   : | + !   :                       2 <Endpoint 0x1069ae000> [256]   +112: __strong endpointPrivate.associations 0x1069ae070
+      + !   : | + !   :                         2 0x11a1ba8c0 [32]    +16:  0x11a1ba8d0
+      + !   : | + !   :                           2 0x11947a100 [384]   +192:  0x11947a1c0
+      + !   : | + !   :                             2 0x11a1bad40 [32]    +16:  0x11a1bad50
+      + !   : | + !   :                               2 0x106901980 [384]   +192:  0x106901a40
+      + !   : | + !   :                                 2 <NWConcrete_nw_context.cache (struct nw_context_cache) 0x106847110> [80]    +32:  0x106847130
+      + !   : | + !   :                                   2 <NWConcrete_nw_context 0x106a3d900> [160]    +24: cache 0x106a3d918
+      + !   : | + !   :                                     1 <NetworkContext 0x11a185740> [192]    +16: __strong storage._nw 0x11a185750
+      + !   : | + !   :                                     | 1 <MutableParametersStorage 0x106ab4c40> [448]   +384: __strong p.pathParameters.context 0x106ab4dc0
+      + !   : | + !   :                                     |   1 <std::__shared_ptr_emplace<SafeBrowsing::BrowsingDatabaseCoordinator> 0x11a095040> [320]   +128:  0x11a0950c0
+      + !   : | + !   :                                     |     1 <std::__shared_ptr_emplace<SafeBrowsing::LookupContext> 0x1197dce00> [224]   +144:  0x1197dce90 --> offset 24
+      + !   : | + !   :                                     |       1 <SSBLookupContext 0x11a01c400> [32]     +8: _lookupContext 0x11a01c408 --> offset 24
+      + !   : | + !   :                                     |         1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/SafariSafeBrowsing.framework/SafariSafeBrowsing __DATA_DIRTY __bss: '+[SSBLookupContext sharedLookupContext]::lookupContext' 0x2d2f2cd18
+      + !   : | + !   :                                     1 <__NSMallocBlock__ 0x11a0286c0> [48]    +32: __strong [capture] 0x11a0286e0
+      + !   : | + !   :                                       1 0x11a138d40 [64]    +40:  0x11a138d68
+      + !   : | + !   :                                         1 0x11a10b100 [128]    +40:  0x11a10b128
+      + !   : | + !   :                                           1 0x11a1a4f00 [192]   +104:  0x11a1a4f68
+      + !   : | + !   :                                             1 <dispatch_workloop_t 0x106a0c7e0> [224]    +48: [capture] 0x106a0c810
+      + !   : | + !   :                                               1 Region Stack thread 6 region + 168 0x16f966bd8
+      + !   : | + !   1 0x1197cf660 [160]     +0:  0x1197cf660
+      + !   : | + !     1 0x11a116760 [80]     +8:  0x11a116768
+      + !   : | + !       1 <NSURLStorageURLCacheDB._dbWriteConnection (struct sqlite3) 0x11a136d80> [896]   +704:  0x11a137040
+      + !   : | + !         1 <NSURLStorageURLCacheDB 0x106a0faa0> [224]    +16: _dbWriteConnection 0x106a0fab0
+      + !   : | + !           1 <std::__shared_ptr_emplace<__CFURLCache> 0x11a0d9500> [768]   +152:  0x11a0d9598
+      + !   : | + !             1 <CFURLCache 0x11a181ac0> [32]    +16:  0x11a181ad0 --> offset 24
+      + !   : | + !               1 Region __DATA_DIRTY /System/Library/Frameworks/CFNetwork.framework/CFNetwork __DATA_DIRTY __bss: 'gSharedInstance' 0x1ebb20710
+      + !   : | + 1 0x11976a000 [8192]  +1517:  0x11976a5ed
+      + !   : | + ! 1 Region __DATA_DIRTY /usr/lib/swift/libswiftCore.dylib __DATA_DIRTY __bss: 'Conformances' + 16 0x1eba63208
+      + !   : | + 1 <SVGAttribute 0x1068147e0> [112]    +76:  0x10681482c
+      + !   : | + ! 1 0x11a1fc960 [48]    +40:  0x11a1fc988
+      + !   : | + !   1 0x11a1fc990 [48]     +8:  0x11a1fc998
+      + !   : | + !     1 0x11a1fca20 [48]     +8:  0x11a1fca28
+      + !   : | + !       1 <SVGAttributeMap 0x11a117070> [80]    +56:  0x11a1170a8
+      + !   : | + !         1 <SVGRootNode 0x11a057ac0> [320]    +56:  0x11a057af8
+      + !   : | + !           1 <SVGDocument 0x11a15b750> [80]    +48:  0x11a15b780
+      + !   : | + !             1 <SVGDocument 0x11a1bb540> [32]    +16:  0x11a1bb550
+      + !   : | + !               1 <_CUIThemeVectorGlyphRendition 0x11a082580> [384]   +224: _svgDocument 0x11a082660
+      + !   : | + !                 1 <NSMutableDictionary (Storage) 0x1197dc620> [224]   +136: __strong  0x1197dc6a8
+      + !   : | + !                   1 <NSMutableDictionary 0x11a01c4a0> [32]     +8: __strong storage 0x11a01c4a8
+      + !   : | + !                     1 <CUIStructuredThemeStore 0x106a75bc0> [96]     +8: _cache 0x106a75bc8
+      + !   : | + !                       1 0x106a5c740 [32]     +0:  0x106a5c740
+      + !   : | + !                         1 <CFBasicHash 0x106a61540> [64]    +40:  0x106a61568
+      + !   : | + !                           1 <NSClassicMapTable 0x106a747e0> [96]    +80: _ht 0x106a74830
+      + !   : | + !                             1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/CoreUI.framework/CoreUI __DATA_DIRTY __bss: '__PerformBlockWithThemeRegistry.__themeRegistry' 0x1ebc1d130
+      + !   : | + 1 Region __TPRO_CONST /usr/lib/dyld __TPRO_CONST __allocator: 'lsl::sPoolBytes' + 74624 0x1eb6e2530
+      + !   : | 1 <__NSMallocBlock__ 0x11a0be6d0> [48]    +32: [capture] 0x11a0be6f0
+      + !   : | + 1 0x11a13a000 [64]    +40:  0x11a13a028
+      + !   : | +   1 0x11a115130 [80]    +40:  0x11a115158
+      + !   : | +     1 Kernel Pointers Into User Space
+      + !   : | 1 <__NSMallocBlock__ 0x11a0be7c0> [48]    +32: [capture] 0x11a0be7e0
+      + !   : |   1 0x11a1399c0 [64]    +40:  0x11a1399e8
+      + !   : |     1 0x11a0d66f0 [112]    +64:  0x11a0d6730
+      + !   : |       1 0x11a12d560 [96]    +16:  0x11a12d570
+      + !   : |         1 Region __DATA_DIRTY /usr/lib/system/libdispatch.dylib __DATA_DIRTY __bss: '_dispatch_sources' + 248 0x1eba41d68
+      + !   : 2 0x11201d380 [416]    +16:  0x11201d390
+      + !   : | 2 <__NSMallocBlock__ 0x11a358ae0> [48]    +32: [capture] 0x11a358b00
+      + !   : |   2 0x11a13a080 [64]    +40:  0x11a13a0a8
+      + !   : |     2 0x11a2a0960 [80]    +40:  0x11a2a0988
+      + !   : |       1 Region Stack thread 3 region + 152 0x16f61ec18
+      + !   : |       1 Region Stack thread 8 region + 32 0x16f7c2b90
+      + !   : 1 0x11201d860 [416]    +16:  0x11201d870
+      + !   :   1 <__NSMallocBlock__ 0x11a299b90> [48]    +32: [capture] 0x11a299bb0
+      + !   :     1 0x1194f47c0 [64]    +40:  0x1194f47e8
+      + !   :       1 0x11a2a0280 [80]    +48:  0x11a2a02b0
+      + !   :         1 Region Stack thread 4 region + 32 0x16f6aab90
+      + !   6 <WKProcessPool 0x106bd8000> [1536]   +608: _processPool + 600 0x106bd8260
+      + !   : 6 <WKProcessPoolWeakObserver.m_weakPtr (struct) 0x114001260> [16]     +8:  0x114001268 --> offset 24
+      + !   :   4 <__NSMallocBlock__ 0x106a48080> [64]    +32: [capture] 0x106a480a0
+      + !   :   | 4 0x106b86fb0 [112]    +56:  0x106b86fe8
+      + !   :   |   4 0x106872000 [8192]  +7368:  0x106873cc8 --> offset 20
+      + !   :   |     4 Region OS Alloc Once  region + 2056 0x100884808
+      + !   :   |       2 0x101c2cea0 [1280]     +0:  0x101c2cea0 --> offset 48
+      + !   :   |       + 1 0x101c2e230 [1280]     +0:  0x101c2e230
+      + !   :   |       + ! 1 Region __DATA_DIRTY /usr/lib/system/libsystem_c.dylib __DATA_DIRTY __bss: '__atexit' 0x1eba3d688
+      + !   :   |       + 1 Region libRPAC.dylib __DATA __bss: 'methodsToSwizzle.3' 0x10117cea0
+      + !   :   |       1 Region __DATA_DIRTY /usr/lib/system/libsystem_kernel.dylib __DATA_DIRTY __common: '_os_alloc_once_table' + 8 0x2748b4090 --> offset 1632
+      + !   :   |       1 Region __DATA_DIRTY /usr/lib/system/libsystem_platform.dylib __DATA_DIRTY __common: '_os_alloc_heap' 0x1eba3f3e0
+      + !   :   2 <__NSMallocBlock__ 0x106a49d80> [64]    +32: [capture] 0x106a49da0
+      + !   :     2 0x106b87170 [112]    +56:  0x106b871a8
+      + !   :       2 0x106b712c0 [64]     +8:  0x106b712c8
+      + !   :         2 0x119400000 [1536]  +1504:  0x1194005e0 --> offset 32
+      + !   :           1 0x106a5d8a0 [32]     +0:  0x106a5d8a0
+      + !   :           + 1 Region __DATA_DIRTY /System/Library/Frameworks/CoreServices.framework/CoreServices __DATA_DIRTY __bss: 'LaunchServices::URLPropertyProvider::propertyTable' 0x1ebaa15a8
+      + !   :           1 0x119405000 [4096]     +0:  0x119405000
+      + !   :             1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/CoreServicesInternal.framework/CoreServicesInternal __DATA_DIRTY __data: 'sFileProviderGlobals' + 232 0x1eba9d258
+      + !   3 <WebKit::AuthenticatorManager 0x113020000> [1024]   +920:  0x113020398
+      + !   : 3 Region WebKit Malloc WebKit Malloc_0x10927e5f8 region + 5200 0x10927fa48
+      + !   :   1 Region Stack thread 1 __psynch_cvwait (in libsystem_kernel.dylib) 0x16fa7eea0 --> offset 648
+      + !   :   1 Region __DATA_DIRTY /System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore __DATA_DIRTY __data: 'JSC::structureHeap' + 8 0x1ebe41dd8 --> offset 2472
+      + !   :   1 Thread 1  Thread_1006425: JavaScriptCore libpas scavenger $x0 --> offset 648
+      + !   2 <WebKit::WebProcessProxy 0x11209c0c0> [1472]   +192:  0x11209c180
+      + !   : 2 0x114002000 [16]     +8:  0x114002008
+      + !   :   2 <WebKit::LogStream 0x1120ac2a0> [48]    +24:  0x1120ac2b8
+      + !   :     2 <IPC::StreamServerConnection 0x112034900> [192]    +56:  0x112034938
+      + !   :       2 0x11205c480 [128]    +24:  0x11205c498
+      + !   :         2 <IPC::StreamConnectionWorkQueue 0x11205c300> [128]   +104:  0x11205c368
+      + !   :           1 <WTF::Detail::CallableWrapper<IPC::StreamConnectionWorkQueue::startProcessingThread()::$_0, void> 0x1120740e0> [16]     +8:  0x1120740e8
+      + !   :           | 1 Region Stack thread 2 semaphore_wait_trap (in libsystem_kernel.dylib) 0x16fe52f48
+      + !   :           1 Thread 2  Thread_1006531: Log work queue $x19
+      + !   1 <WKProcessPool 0x106bd8600> [1536]   +608: _processPool + 600 0x106bd8860
+      + !   : 1 <WKProcessPoolWeakObserver.m_weakPtr (struct) 0x114002510> [16]     +8:  0x114002518 --> offset 24
+      + !   :   1 <__NSMallocBlock__ 0x106a634c0> [64]    +32: [capture] 0x106a634e0
+      + !   :     1 0x1197a9d60 [160]   +128:  0x1197a9de0
+      + !   :       1 0x1197a9e00 [160]     +0:  0x1197a9e00
+      + !   :         1 0x119745800 [192]    +40:  0x119745828
+      + !   :           1 <TTenuousComponentFont 0x1196c9e00> [768]   +360:  0x1196c9f68
+      + !   :             1 <UICTFontDescriptor 0x11969fea0> [96]    +80:  0x11969fef0
+      + !   :               1 <TSplicedFont 0x1196c6d00> [640]   +552:  0x1196c6f28
+      + !   :                 1 <UICTFontDescriptor 0x11969c0c0> [96]    +80:  0x11969c110
+      + !   :                   1 <NSMutableDictionary (Storage) 0x119651500> [384]   +184: __strong  0x1196515b8
+      + !   :                     1 <NSMutableDictionary 0x1194c5f60> [32]     +8: __strong storage 0x1194c5f68
+      + !   :                       1 Region __DATA_DIRTY /System/Library/Frameworks/CoreText.framework/CoreText __DATA_DIRTY __common: 'TDescriptorSource::sSplicedFonts' 0x1ebc01b80
+      + !   1 <WebKit::WebProcessProxy 0x11209d7c0> [1472]   +192:  0x11209d880
+      + !   : 1 0x114002380 [16]     +8:  0x114002388
+      + !   :   1 <WTF::Detail::CallableWrapper<WebKit::AuxiliaryProcessProxy::didFinishLaunching(WebKit::ProcessLauncher*, IPC::Connection::Identifier&&)::$_0, void> 0x1120381c0> [16]     +8:  0x1120381c8
+      + !   :     1 0x11a13ae40 [64]    +40:  0x11a13ae68
+      + !   :       1 0x11a138cc0 [64]    +16:  0x11a138cd0
+      + !   :         1 0x11a138e40 [64]    +16:  0x11a138e50
+      + !   :           1 0x11a13ab00 [64]    +16:  0x11a13ab10
+      + !   :             1 0x11a13ab80 [64]    +16:  0x11a13ab90
+      + !   :               1 0x11a1162b0 [80]    +40:  0x11a1162d8
+      + !   :                 1 <dispatch_source_t 0x11a1ae480> [128]    +88: [capture] 0x11a1ae4d8
+      + !   :                   1 0x11947aa00 [384]   +160:  0x11947aaa0
+      + !   :                     1 0x106813d80 [96]    +56:  0x106813db8
+      + !   :                       1 0x1068135a0 [96]    +64:  0x1068135e0
+      + !   :                         1 Region __DATA_DIRTY /usr/lib/libsqlite3.dylib __DATA_DIRTY __bss + 512 0x1ebb06550
+      + !   1 <WebKit::WebProcessProxy 0x11209e340> [1472]   +192:  0x11209e400
+      + !   : 1 0x1140029c0 [16]     +8:  0x1140029c8
+      + !   :   1 <WebKit::LogStream 0x1120ac0f0> [48]    +24:  0x1120ac108
+      + !   :     1 <IPC::StreamServerConnection 0x1121fc0c0> [192]    +56:  0x1121fc0f8
+      + !   :       1 0x1120544e0 [416]     +8:  0x1120544e8 --> offset 16
+      + !   :         1 <__NSMallocBlock__ 0x11a358270> [48]    +32: [capture] 0x11a358290
+      + !   :           1 0x11a273a40 [64]    +40:  0x11a273a68
+      + !   :             1 0x11a2a0b40 [80]    +48:  0x11a2a0b70
+      + !   :               1 Region Stack thread 5 region + 232 0x16f8dac18
+      + !   1 Region __DATA_DIRTY /System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore __DATA_DIRTY __common: 'WTF::s_mainRunLoop' 0x1ec2e1148
+      + !   1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/WebCore.framework/WebCore __DATA_DIRTY __bss: '_MergedGlobals' + 120 0x1ebd5df60
+      + 1 0x114002130 [16]     +8:  0x114002138
+      +   1 0x112008860 [160]    +88:  0x1120088b8
+      +     1 Region __DATA_DIRTY /System/Library/Frameworks/WebKit.framework/WebKit __DATA_DIRTY __common: 'WebKit::navigationStates()::navigationStates' 0x1ebc5de60 --> offset 16
+      15 <WebKit::WebPageProxy::Internals 0x113081c00> [3584]  +2640:  0x113082650
+      + 15 <NSTimer 0x11a186640> [192]   +160:  0x11a1866e0 --> offset 2272
+      +   14 <CFSet (Value Storage) 0x11a29db80> [640]    +32: __strong  0x11a29dba0
+      +   ! 14 <CFSet 0x1069090b0> [48]    +40: __strong _values 0x1069090d8
+      +   !   14 <CFRunLoop 0x101c37bf0> [3072]  +2648:  0x101c38648
+      +   !     7 <UIEventDispatcher 0x1068289f0> [48]    +24: _runLoop 0x106828a08
+      +   !     : 4 <SwiftUIApplication 0x101c3b380> [512]   +160: __strong _eventDispatcher 0x101c3b420
+      +   !     : | 2 <__GCHIDEventUIKitClient 0x11943e780> [32]     +8: __strong _application 0x11943e788
+      +   !     : | + 1 <__NSMallocBlock__ 0x119638ff0> [48]    +32: __strong [capture] 0x119639010
+      +   !     : | + ! 1 <GCDisposable 0x106a4c980> [16]     +8: __strong _handler 0x106a4c988
+      +   !     : | + !   1 <_GCHIDEventUIKitClient 0x1194eb000> [48]    +40: __strong _eventObserver 0x1194eb028
+      +   !     : | + !     1 <_GCLegacyDeviceSession 0x1069ac900> [256]    +96: __strong _hidEventSource 0x1069ac960
+      +   !     : | + !       1 Region __DATA_DIRTY /System/Library/Frameworks/GameController.framework/GameController __DATA_DIRTY __bss: 'SharedManager' 0x1ec368378
+      +   !     : | + 1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/GameControllerUI.framework/GameControllerUI __DATA_DIRTY __bss: 'sharedInstance.Shared' 0x2748f0028
+      +   !     : | 1 <FBSWorkspace 0x106a00c30> [80]    +40: __strong _delegate 0x106a00c58
+      +   !     : | + 1 <FBSWorkspaceCoupler 0x106a39040> [32]     +8: __strong _lock_workspace 0x106a39048
+      +   !     : | +   1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/FrontBoardServices.framework/FrontBoardServices __DATA_DIRTY __bss: '_sharedInstance.__sharedInstance' 0x1ebbaac30
+      +   !     : | 1 <FBSWorkspaceScenesClient 0x106a3cb40> [160]    +16: __strong _workspaceDelegate 0x106a3cb50
+      +   !     : |   1 <BSXPCServiceConnectionEventHandler 0x106a186c0> [192]    +56: __strong _localInterfaceTarget 0x106a186f8
+      +   !     : |     1 <BSXPCServiceConnection 0x106a18600> [192]   +120: __strong _lock_eventHandler 0x106a18678
+      +   !     : |       1 <NSMutableArray (Storage) 0x1069b8890> [16]     +0: __strong  0x1069b8890
+      +   !     : |         1 <NSMutableArray 0x106a73420> [48]    +16: __strong storage 0x106a73430
+      +   !     : |           1 <BSXPCServiceConnection 0x106a18480> [192]    +72: __strong _lock_childConnections 0x106a184c8
+      +   !     : |             1 <__NSMallocBlock__ 0x106a352c0> [48]    +32: __strong [capture] 0x106a352e0
+      +   !     : |               1 <xpc_connection_t 0x1069bf700> [320]    +32: [capture] 0x1069bf720
+      +   !     : |                 1 0x106b701c0 [64]    +48:  0x106b701f0
+      +   !     : |                   1 <dispatch_mach_t 0x106a3d0e0> [160]    +88: [capture] 0x106a3d138
+      +   !     : |                     1 0x11a138f00 [64]    +56:  0x11a138f38
+      +   !     : |                       1 0x11a1396c0 [64]    +16:  0x11a1396d0
+      +   !     : |                         1 0x11a114ff0 [80]    +40:  0x11a115018
+      +   !     : |                           1 <dispatch_source_t 0x1194eed00> [128]    +88: [capture] 0x1194eed58
+      +   !     : |                             1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/CoreAnalytics.framework/CoreAnalytics __DATA_DIRTY __bss: '_MergedGlobals' + 24 0x1ebaa4e30
+      +   !     : 3 <UIEventFetcher 0x101c391a0> [112]     +8: __strong _eventFetcherSink 0x101c391a8
+      +   !     :   3 <IOHIDEventSystemClient 0x101c3b880> [640]   +216:  0x101c3b958
+      +   !     :     1 <CFDictionary (Value Storage) 0x106945020> [32]     +8: __strong  0x106945028
+      +   !     :     + 1 <CFDictionary 0x106825dc0> [64]    +40: __strong _values 0x106825de8
+      +   !     :     +   1 Region __DATA_DIRTY /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit __DATA_DIRTY __bss: '__ioPortCache' 0x1eba9cfa0
+      +   !     :     1 <dispatch_queue_t (serial) 0x106981980> [128]    +32: [capture] 0x1069819a0
+      +   !     :     + 1 0x106826040 [64]    +32:  0x106826060
+      +   !     :     +   1 Region __DATA_DIRTY /usr/lib/system/libsystem_trace.dylib __DATA_DIRTY __data: 'os_state_blocks' 0x1eba3b888
+      +   !     :     1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/BackBoardServices.framework/BackBoardServices __DATA_DIRTY __bss: '_getHIDEventSystemClient.__hidEventSystemClientRef' 0x1ebba86f0
+      +   !     1 0x106a31580 [32]    +16:  0x106a31590
+      +   !     : 1 <CFBag 0x106825940> [64]    +40:  0x106825968
+      +   !     :   1 <CFRunLoopSource 0x1069ec240> [192]    +96:  0x1069ec2a0
+      +   !     :     1 <BSServiceMainRunLoopQueue 0x106995bc0> [64]    +32: _source 0x106995be0
+      +   !     :       1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/BoardServices.framework/BoardServices __DATA_DIRTY __bss: '_MergedGlobals.1' + 16 0x1ebb123c0
+      +   !     1 <CFRunLoopObserver 0x106830780> [160]    +80:  0x1068307d0
+      +   !     : 1 Region __DATA_DIRTY /System/Library/Frameworks/SwiftUICore.framework/SwiftUICore __DATA_DIRTY __data: 'observer' 0x1ebb55d10
+      +   !     1 <CFRunLoopObserver 0x119590780> [160]    +80:  0x1195907d0
+      +   !     : 1 Region UIKitCore __DATA __bss: '_MergedGlobals.157' + 600 0x1e8be1cc0
+      +   !     1 <NSTimer 0x1068b9440> [192]    +88:  0x1068b9498
+      +   !     : 1 <WKStylusDeviceObserver 0x106b781a0> [32]    +24: _changeTimer 0x106b781b8
+      +   !     :   1 Region WebKit __DATA __bss: '_MergedGlobals.15' + 16 0x1e9568860
+      +   !     1 <NSTimer 0x1068b98c0> [192]    +88:  0x1068b9918
+      +   !     : 1 Region __DATA_DIRTY /System/Library/Frameworks/QuartzCore.framework/QuartzCore __DATA_DIRTY __bss: 'CA::callback_timer' 0x1ebba0f78
+      +   !     1 <RunLoopUpdateDriver 0x106bfa190> [48]    +16: __strong runloop 0x106bfa1a0
+      +   !     : 1 <GestureNodeCoordinator 0x106903d80> [384]   +216: updateDriver 0x106903e58
+      +   !     :   1 <Swift._DictionaryStorage<Gestures.GestureNodeCoordinatorID, Gestures.GestureNodeCoordinatorRegistry.(UnownedCoordinator in $18f1c42dc)> 0x106866ee0> [96]    +80:  0x106866f30
+      +   !     :     1 <GestureNodeCoordinatorRegistry 0x106a2edf0> [48]    +32: __strong data.value._rawLayout.coordinators._variant 0x106a2ee10
+      +   !     :       1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/Gestures.framework/Gestures __DATA_DIRTY __common + 32 0x1ebdbb3a0
+      +   !     1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices __DATA_DIRTY __bss: '__eventRunLoop' 0x2748b6180
+      +   1 0x10648d900 [640]   +368:  0x10648da70
+      +     1 <CFArray 0x106864840> [96]    +40:  0x106864868
+      +       1 <CFRunLoopMode 0x1068ec0e0> [224]   +120:  0x1068ec158
+      +         1 Region Stack thread 0 __CFRunLoopServiceMachPort (in CoreFoundation) + 48 0x16f595f48
+      7 0x106cf0000 [49152]  +9472:  0x106cf2500
+      + 6 <CFXNotificationRegistrar 0x101c30200> [192]   +144:  0x101c30290
+      + ! 6 <CFNotificationCenter 0x1068484e0> [48]    +16:  0x1068484f0
+      + !   5 <NSNotificationCenter 0x101c29600> [32]     +8: _impl 0x101c29608
+      + !   : 1 <NSNotificationCenter.Notifications 0x11955dcc0> [80]    +16: __strong center 0x11955dcd0
+      + !   : | 1 <Task stack 0x1069f9000> [1024]   +288: [capture] 0x1069f9120
+      + !   : |   1 <Swift Task Owned>     +0:  0xd
+      + !   : 1 <__NSObserver 0x10698b3a0> [32]     +8: nc 0x10698b3a8
+      + !   : | 1 <AppDelegate 0x106828d80> [48]    +24: __strong resourceUsageObservation 0x106828d98
+      + !   : |   1 Region __DATA_DIRTY /System/Library/Frameworks/SwiftUI.framework/SwiftUI __DATA_DIRTY __common: 'static AppDelegate.shared' 0x1ebcb5be0
+      + !   : 1 <__NSObserver 0x11943ffc0> [32]     +8: nc 0x11943ffc8
+      + !   : | 1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore __DATA_DIRTY __bss: '_MergedGlobals' + 8 0x1ebafed80
+      + !   : 1 <__NSObserver 0x119668f00> [32]     +8: nc 0x119668f08
+      + !   : | 1 <_UICache 0x106a703c0> [48]    +40: _noteObserver 0x106a703e8
+      + !   : |   1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/UIFoundation.framework/UIFoundation __DATA_DIRTY __bss: '_sharedFontCache.__sharedFontCache' 0x1ebb99a20
+      + !   : 1 Region __DATA_DIRTY /System/Library/Frameworks/Foundation.framework/Foundation __DATA_DIRTY __bss: '_MergedGlobals' + 40 0x1eba86970
+      + !   1 Region __DATA_DIRTY /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation __DATA_DIRTY __bss: '__taskCenter' 0x1eba8a1f8
+      + 1 Region Deferred Reclaim  region + 976 0x1020183d0
+      +   1 Region __DATA_DIRTY /usr/lib/system/libsystem_malloc.dylib __DATA_DIRTY __bss: 'xzm_reclaim_buffer' 0x1eba3beb0
+      4 <WebViewSlotPool.Slot 0x1069ed8c0> [192]    +16: __strong webView 0x1069ed8d0
+      + 4 <Swift._ContiguousArrayStorage<Swift.AnyObject> 0x106b70a40> [64]    +32: countAndCapacity + 16 0x106b70a60
+      +   4 <WebViewSlotPool 0x106a3d860> [160]     +8: __strong slots 0x106a3d868
+      +     3 <AppCompositionRoot 0x10681ab00> [128]   +104: __strong pool 0x10681ab68
+      +     ! 2 <Closure context (unknown layout) 0x11a165a40> [64]    +24:  0x11a165a58
+      +     ! : 2 <_UIHostingView<ModifiedContent<LazyView<ModifiedContent<ContentView, _ValueActionModifier<ScenePhase>>>, RootModifier>> 0x106b75000> [1024]   +424: __strong _rootView.content.content.context 0x106b751a8
+      +     ! :   1 <UIDropShadowView 0x106bd6a80> [640]   +424: __strong _contentView 0x106bd6c28
+      +     ! :   | 1 <_UICornerProvider 0x1068ed5e0> [224]    +16: id 0x1068ed5f0
+      +     ! :   |   1 <Swift._DictionaryStorage<Swift.UInt, (extension in UIKit):__C._UICustomTraitStorage.(TraitValue in $18b19e7dc)> 0x11a137100> [896]   +632:  0x11a137378
+      +     ! :   |     1 <_UICustomTraitStorage 0x11a01e240> [32]     +8: valuesByToken 0x11a01e248
+      +     ! :   |       1 <UITraitCollection 0x1196e8dc0> [320]   +224: _customTraits 0x1196e8ea0
+      +     ! :   |         1 <UIView 0x119450fc0> [448]    +24: __strong _cachedTraitCollection 0x119450fd8
+      +     ! :   |           1 <NSLayoutYAxisAnchor 0x11a08ff80> [64]     +8: _referenceItem 0x11a08ff88
+      +     ! :   |             1 <Swift._DictionaryStorage<Swift.String, Swift.Int> 0x11a156300> [1792]   +952:  0x11a1566b8
+      +     ! :   |               1 Region __DATA_DIRTY /System/Library/Frameworks/Network.framework/Network __DATA_DIRTY __data: 'OBJC_METACLASS_$__TtC7Network7NWArray' + 688 0x1eba8e6c0
+      +     ! :   1 <UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _ValueActionModifier<ScenePhase>>>, RootModifier>> 0x106b09900> [1280]    +24: __strong _view 0x106b09918
+      +     ! :     1 <NSKVONotifying_UIWindow 0x106b75400> [1024]   +568: __strong _rootViewController 0x106b75638
+      +     ! :       1 <AppSceneDelegate 0x106a0c460> [224]    +16: __strong window 0x106a0c470
+      +     ! :         1 <NSKVONotifying_UIWindowScene 0x101c37520> [640]    +24: __strong _delegate 0x101c37538
+      +     ! :           1 <NSMapTable (Key Storage) 0x106a5e1a0> [32]    +24: __strong  0x106a5e1b8
+      +     ! :             1 <NSMapTable 0x106abf880> [128]     +8: __strong keys.items 0x106abf888
+      +     ! :               1 <_UIKeyWindowSceneStack 0x106a72fa0> [48]     +8: __strong _recordsByWindowScene 0x106a72fa8
+      +     ! :                 1 <_UIKeyWindowEvaluator 0x106a0c620> [224]   +184: __strong _keyWindowSceneStack 0x106a0c6d8
+      +     ! :                   1 <__NSMallocBlock__ 0x106a05d70> [48]    +32: __strong [capture] 0x106a05d90
+      +     ! :                     1 <BSLogStateCaptureEntry 0x10698a1e0> [32]    +16: __strong _captureBlock 0x10698a1f0
+      +     ! :                       1 <NSMutableDictionary (Storage) 0x106a82580> [384]   +352: __strong  0x106a826e0
+      +     ! :                         1 <NSMutableDictionary 0x10698b820> [32]     +8: __strong storage 0x10698b828
+      +     ! :                           1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/BaseBoard.framework/BaseBoard __DATA_DIRTY __bss: '_MergedGlobals' + 8 0x1ebaa3738
+      +     ! 1 <SwiftUI.ModifiedContent<Sekai.ContentView, SwiftUI._ValueActionModifier<SwiftUI.ScenePhase>> 0x101459e40> [56]     +8: __strong [capture] 0x101459e48
+      +     !   1 <AttributeGraph Owned>     +0: __strong  0xc
+      +     1 <FeedViewController 0x106b0a300> [1280]  +1016: __strong pool 0x106b0a6f8
+      +       1 <SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.NavigationView<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ZStack<SwiftUI.TupleView<(Sekai.FeedContainerView, Swift.Optional<SwiftUI.VStack<SwiftUI.TupleView<(SwiftUI.ModifiedContent<SwiftUI.Text, SwiftUI.AccessibilityAttachmentModifier>, Swift.Optional<SwiftUI.ModifiedContent<SwiftUI.Button<SwiftUI.Text>, SwiftUI.AccessibilityAttachmentModifier>>)>>>, SwiftUI.VStack<SwiftUI.TupleView<(Swift.Optional<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<Sekai.FeedbackView, SwiftUI._BackgroundStyleModifier<SwiftUI.Material>>, SwiftUI._ClipEffect<SwiftUI.RoundedRectangle>>, SwiftUI._PaddingLayout>>, Swift.Optional<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.Text, SwiftUI._PaddingLayout>, SwiftUI._BackgroundStyleModifier<SwiftUI.Material>>, SwiftUI._ClipEffect<SwiftUI.RoundedRectangle>>, SwiftUI.AccessibilityAttachmentModifier>>, Swift.Optional<SwiftUI._ConditionalContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.HStack<SwiftUI.TupleView<(SwiftUI.ModifiedContent<SwiftUI.Text, SwiftUI.AccessibilityAttachmentModifier>, SwiftUI.ModifiedContent<SwiftUI.Button<SwiftUI.Text>, SwiftUI.AccessibilityAttachmentModifier>)>>, SwiftUI._PaddingLayout>, SwiftUI._BackgroundStyleModifier<SwiftUI.Material>>, SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.Button<SwiftUI.Text>, SwiftUI.AccessibilityAttachmentModifier>, SwiftUI._PaddingLayout>, SwiftUI._BackgroundStyleModifier<SwiftUI.Material>>>>, SwiftUI.Spacer, Swift.Optional<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ModifiedContent<SwiftUI.ProgressView<SwiftUI.EmptyView, SwiftUI.EmptyView>, SwiftUI._PaddingLayout>, SwiftUI._BackgroundStyleModifier<SwiftUI.Material>>, SwiftUI._ClipEffect<SwiftUI.RoundedRectangle>>, SwiftUI.AccessibilityAttachmentModifier>>)>>)>>, SwiftUI.TransactionalPreferenceTransformModifier<SwiftUI.NavigationTitleKey>>, SwiftUI._PreferenceTransformModifier<SwiftUI.ToolbarKey>>, SwiftUI.TransactionalPreferenceTransformModifier<SwiftUI.NavigationTitleKey>>, SwiftUI._PreferenceTransformModifier<SwiftUI.ToolbarKey>>, SwiftUI.ToolbarModifier<(), SwiftUI.ToolbarItemGroup<SwiftUI.ModifiedContent<SwiftUI.Button<SwiftUI.Image>, SwiftUI.AccessibilityAttachmentModifier>>>>>, SwiftUI.NavigationViewStyleModifier<SwiftUI.StackNavigationViewStyle>>, SwiftUI._AppearanceActionModifier>, SwiftUI.(SheetPresentationModifier in $190558390)<SwiftUI.PresentationConditionalProjection.Item, Swift.Optional<Sekai.CreatorProfileView>, SwiftUI.(NullSheetAnchor in $190558438)<SwiftUI.SheetPreference.Key>>> 0x1196a0000> [1792]    +16: __strong [capture] 0x1196a0010
+      +         1 0x119631000 [32]     +0:  0x119631000
+      +           1 0x11959a290 [112]     +0:  0x11959a290
+      +             1 0x1197e1400 [512]   +144:  0x1197e1490
+      +               1 0x101c2e990 [448]   +296:  0x101c2eab8
+      +                 1 Region __DATA_DIRTY /System/Library/PrivateFrameworks/AttributeGraph.framework/AttributeGraph __DATA_DIRTY __common: 'AG::Graph::_all_graphs' 0x1ebdbc608
+      2 0x11969fa20 [96]    +40:  0x11969fa48
+      + 2 0x106c60000 [49152] +16216:  0x106c63f58
+      +   1 Region Stack thread 7 region + 568 0x16f736d18 --> offset 8960
+      +   1 Region __DATA_DIRTY /usr/lib/libobjc.A.dylib __DATA_DIRTY __bss: 'objc::AssociationsManager::_mapStorage' 0x1eba3e9c8
+      1 0x1069f4000 [320]   +136:  0x1069f4088
+      + 1 0x10686e000 [8192]   +832:  0x10686e340
+      +   1 Region __DATA_DIRTY /usr/lib/dyld __DATA_DIRTY __common: '_main_thread' + 800 0x1eba52ba0
+      1 <WebKit::FullscreenClient 0x112088140> [32]     +8:  0x112088148
+        1 <WebKit Owned>     +0: __strong  0xb

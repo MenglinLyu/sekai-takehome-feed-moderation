@@ -1,0 +1,13 @@
+A reference tree is a top-down tree attempting to show the primary ownership chain
+of every malloc allocation and dynamically-allocated VM region of the process.
+This output has been filtered to only show branches containing instances
+of the specified <classes-pattern>, ending at the lowest-level such
+instance on each branch.
+
+    7 (7.59K) <WebKit Owned>
+      2 (2.53K) <WebKit::FullscreenClient 0x112088140> [32]
+      + 1 (2.50K) <WKWebView 0x106b9c000> [2560]
+      2 (2.53K) <WebKit::FullscreenClient 0x1120881c0> [32]
+      + 1 (2.50K) <WKWebView 0x106b9de00> [2560]
+      2 (2.53K) <WebKit::FullscreenClient 0x112088240> [32]
+        1 (2.50K) <WKWebView 0x106b9f200> [2560]

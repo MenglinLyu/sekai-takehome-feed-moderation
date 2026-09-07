@@ -14,6 +14,19 @@ The full trace still has one 16.670 ms hitch and 54.313/57.770 ms potential
 interaction delays. The original attachment wait did not recur, but content
 loading remains unresolved. Memory and build/source provenance were not verified.
 
+## Saved WebView-count evidence
+
+The separate [PID 10254 memory-graph report](memgraph-10254/report.md) confirms
+**exactly three live `WKWebView` instances**, each strongly held by one of three
+slots in a single pool, at 21:17:20.724 PDT on September 6. The host snapshot
+was collected after scrolling up and down through multiple Web Content items,
+as confirmed by the collector. The post-scrolling count validates the pool's
+effectiveness in that scenario. The snapshot
+reports `22.7M` footprint and `24.9M` peak. These exclude separate WebContent
+processes and are not measurements from the frame-timing trace above. The report
+retains addresses, ownership trees, input SHA-256, and reproduction commands;
+long-scroll count history and Release memory measurements remain outstanding.
+
 ## Retained evidence
 
 All paths below are relative to each retained run directory.

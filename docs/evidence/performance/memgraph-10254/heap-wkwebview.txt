@@ -1,0 +1,32 @@
+Hardware Model:  iPhone18,1
+Process:         Sekai [10254]
+Path:            /private/var/containers/Bundle/Application/2E9B9FCA-2D3C-4BC4-9E53-692B6E457224/Sekai.app/Sekai
+Load Address:    0x100868000
+Identifier:      com.sekai.takehome.Sekai
+Version:         1.0 (1)
+Code Type:       ARM64
+Platform:        iOS
+Parent Process:  debugserver [10255]
+Target Type:     live task
+
+Date/Time:       2026-09-06 21:17:20.724 -0700
+Launch Time:     2026-09-06 21:16:02.190 -0700
+OS Version:      iPhone OS 27.0 (24A5418b)
+Report Version:  104
+
+Physical footprint:         22.7M
+Physical footprint (peak):  24.9M
+Idle exit:                  untracked
+----
+
+Process 10254: 7 zones
+
+All zones: 66184 nodes malloced - Sizes: 512KB[1] 144KB[1] 48KB[11] 24KB[1] 20KB[16] 16KB[110] 14KB[1] 12KB[2] 10KB[29] 8KB[33] 7KB[2] 6KB[6] 5KB[25] 4.5KB[1] 4KB[66] 3.5KB[15] 3KB[48] 2.5KB[34] 2KB[172] 1.75KB[62] 1.5KB[37] 1.4375KB[6] 1.25KB[89] 1KB[187] 1008[1] 992[1] 896[162] 864[1] 848[1] 784[3] 768[148] 656[1] 640[220] 528[9] 512[332] 488[13] 480[4] 472[2] 448[258] 444[1] 432[10] 424[1] 416[32] 400[2] 384[412] 376[2] 368[4] 364[2] 360[2] 352[11] 347[1] 344[5] 340[3] 320[1244] 316[2] 312[1] 308[3] 307[1] 304[11] 300[3] 296[1] 292[5] 288[33] 284[2] 272[10] 268[1] 256[473] 252[2] 248[1] 244[2] 240[3] 236[2] 232[1] 228[1] 224[467] 220[2] 216[3] 212[1] 208[4] 204[1] 200[5] 199[1] 196[4] 192[786] 184[2] 180[2] 176[6] 174[1] 172[4] 168[1] 167[1] 164[4] 163[2] 160[1715] 156[1] 155[1] 152[6] 148[2] 144[44] 143[1] 140[5] 136[7] 132[3] 131[1] 128[2462] 127[3] 125[1] 124[14] 120[28] 116[7] 112[2576] 110[1] 108[10] 107[3] 106[2] 105[1] 104[29] 100[9] 98[2] 96[2122] 95[3] 92[7] 91[2] 90[2] 88[24] 84[13] 81[1] 80[3224] 78[1] 77[1] 76[12] 75[1] 73[1] 72[32] 71[5] 70[1] 68[53] 65[6] 64[8146] 63[1] 62[1] 60[73] 59[1] 58[1] 57[2] 56[58] 55[1] 54[1] 53[1] 52[44] 51[1] 50[1] 49[7] 48[9876] 47[2] 45[1] 44[10] 43[3] 42[4] 40[126] 39[6] 38[2] 37[3] 36[44] 35[5] 34[1] 33[12] 32[18367] 31[25] 30[5] 29[6] 28[313] 27[1] 26[4] 25[3] 24[201] 23[12] 22[4] 21[2] 20[42] 19[1] 18[7] 17[11] 16[9796] 15[3] 14[2] 13[16] 12[144] 11[2] 10[4] 9[10] 8[392] 4[176] 3[2] 1[56]
+
+Found:  2587 ObjC classes  1392 Swift classes  261 C++ classes  191 CFTypes
+Type names for non-objects could be derived from allocation backtraces if the process used MallocStackLogging
+
+Active blocks in all zones that match pattern 'WKWebView':
+0x106b9c000: WKWebView (2560 bytes)
+0x106b9de00: WKWebView (2560 bytes)
+0x106b9f200: WKWebView (2560 bytes)

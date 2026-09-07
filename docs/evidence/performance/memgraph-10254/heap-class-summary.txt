@@ -1,0 +1,50 @@
+Selected class rows from /usr/bin/heap --noContent (not the full class inventory).
+
+Hardware Model:  iPhone18,1
+Process:         Sekai [10254]
+Path:            /private/var/containers/Bundle/Application/2E9B9FCA-2D3C-4BC4-9E53-692B6E457224/Sekai.app/Sekai
+Load Address:    0x100868000
+Identifier:      com.sekai.takehome.Sekai
+Version:         1.0 (1)
+Code Type:       ARM64
+Platform:        iOS
+Parent Process:  debugserver [10255]
+Target Type:     live task
+
+Date/Time:       2026-09-06 21:17:20.724 -0700
+Launch Time:     2026-09-06 21:16:02.190 -0700
+OS Version:      iPhone OS 27.0 (24A5418b)
+Report Version:  104
+
+Physical footprint:         22.7M
+Physical footprint (peak):  24.9M
+Idle exit:                  untracked
+----
+
+Process 10254: 7 zones
+
+
+   COUNT      BYTES       AVG   CLASS_NAME                                        TYPE    BINARY
+       6       3840     640.0   WKWebViewConfiguration                            ObjC    WebKit
+       3      15360    5120.0   WKContentView                                     ObjC    WebKit
+       3       7680    2560.0   WKWebView                                         ObjC    WebKit
+       3       1536     512.0   WKContentView._pendingPositionInformationHandlers (struct)  C       WebKit
+       3        576     192.0   WebViewSlotPool.Slot                              Swift   Sekai.debug.dylib
+       3        432     144.0   WKContentView._applicationStateTracker (struct)   C       WebKit
+       3        384     128.0   WKWebView._visibleContentRectUpdateCallbacks (struct)  C       WebKit
+       3        240      80.0   WKContentView._gestureRecognizerConsistencyEnforcer (unique_ptr<WebKit::GestureRecognizerConsistencyEnforcer>)  C++     WebKit
+       3        144      48.0   WKWebView._pointerTouchCompatibilitySimulator (unique_ptr<WebKit::PointerTouchCompatibilitySimulator>)  C++     WebKit
+       3         96      32.0   WKWebView._iconLoadingDelegate (unique_ptr<WebKit::IconLoadingDelegate>)  C++     WebKit
+       3         96      32.0   WKWebView._resourceLoadDelegate (unique_ptr<WebKit::ResourceLoadDelegate>)  C++     WebKit
+       3         96      32.0   WKWebView._uiDelegate (unique_ptr<WebKit::UIDelegate>)  C++     WebKit
+       3         48      16.0   WKWebViewContentProviderRegistry                  ObjC    WebKit
+       2        144      72.0   SwiftUI.(BoxVTable in $18defe928)<SwiftUI.(ObservedObjectPropertyBox in $18df05ec8)<Sekai.AppCompositionRoot>>  Swift   SwiftUI
+       1        160     160.0   WebViewSlotPool                                   Swift   Sekai.debug.dylib
+       1        128     128.0   AppCompositionRoot                                Swift   Sekai.debug.dylib
+       1         96      96.0   SwiftUI.(BoxVTable in $18defe928)<SwiftUI.StateObject<Sekai.AppCompositionRoot>.(Box in $18df207c0)<>>  Swift   SwiftUI
+       1         80      80.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Swift.Bool>  Swift   libswiftCore.dylib
+       1         80      80.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Swift.Optional<Sekai.FeedSession>>  Swift   libswiftCore.dylib
+       1         80      80.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Swift.Optional<Swift.String>>  Swift   libswiftCore.dylib
+       1         48      48.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Combine.Published<Swift.Bool>>  Swift   libswiftCore.dylib
+       1         48      48.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Combine.Published<Swift.Optional<Sekai.FeedSession>>>  Swift   libswiftCore.dylib
+       1         48      48.0   Swift.ReferenceWritableKeyPath<Sekai.AppCompositionRoot, Combine.Published<Swift.Optional<Swift.String>>>  Swift   libswiftCore.dylib

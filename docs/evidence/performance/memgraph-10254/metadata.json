@@ -1,0 +1,24 @@
+{
+  "input_file": "Sekai[10254].memgraph",
+  "input_size_bytes": 2533284,
+  "input_sha256": "31535c0c4b8869756f891a30d5bcbe84ccae62ece3e931110e8e0a8e7b27f813",
+  "capture_time": "2026-09-06T21:17:20.724-07:00",
+  "process_id": 10254,
+  "hardware_model": "iPhone18,1",
+  "os_version": "iPhone OS 27.0 (24A5418b)",
+  "wkwebview_count": 3,
+  "wkwebview_addresses": [
+    "0x106b9c000",
+    "0x106b9de00",
+    "0x106b9f200"
+  ],
+  "pool_address": "0x106a3d860",
+  "host_physical_footprint_display": "22.7M",
+  "host_peak_physical_footprint_display": "24.9M",
+  "scope": "One saved Sekai host-process snapshot; no WebContent process measurements or allocation history.",
+  "workload_context": {
+    "source": "Collector confirmation in the conversation",
+    "description": "Captured after scrolling up and down through multiple Web Content items.",
+    "exact_item_ids_and_gesture_timing_recorded": false
+  }
+}

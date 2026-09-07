@@ -24,6 +24,8 @@ Moderation saves locally before publishing removal. Disk failure leaves content 
 
 Design and work tracking: [class/function interfaces](docs/interface-design.md), [implementation checklist](docs/implementation-todo.md), [architecture requirements](docs/technical-selection-and-architecture.md).
 
+The separate [`Sekai[10254].memgraph` analysis](docs/evidence/performance/memgraph-10254/report.md) confirms **exactly three live `WKWebView` instances**, all held by three slots in one pool. The collector confirmed that the graph was captured after scrolling up and down through multiple Web Content items, validating the pool's effectiveness in that scenario. The host snapshot reports `22.7M` footprint and `24.9M` peak; these exclude separate WebContent processes. This verifies the post-scrolling count at capture time, not its maximum throughout scrolling or the earlier frame trace's memory use.
+
 To collect memory alongside FPS, run `python3 scripts/record_performance.py --build --memory --duration 120`. It exports per-process physical-footprint samples and peak/steady-window/trend summaries; see the [recording guide](docs/recording-performance.md#memory-measurements) for WebContent attribution and measurement limits. Adding this option does not supply the outstanding physical-device memory results by itself.
 
 Trade-offs: pending-operation persistence, unblock management, general-purpose SVG support, and automatic preload recovery are omitted. Raw feed metadata remains in memory for backward scrolling; the three-slot limit bounds WebView count, not runtime memory bytes. A verified Release retest covering the remaining interaction delays and content readiness, physical-device memory evidence, and a recorded demo remain delivery work.
