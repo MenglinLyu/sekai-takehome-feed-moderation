@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Mock backend for the Sekai feed take-home. Python 3 only, no dependencies.
 
-    python3 mock/server.py                 # http://127.0.0.1:8787
+    python3 mock/server.py                 # binds 0.0.0.0:8787
     python3 mock/server.py --help          # latency, page size, payload size, fail rate
 
 Endpoints — paths and fields copy the shape of our production API; the content is fake:
@@ -345,8 +345,9 @@ def main() -> int:
     Handler.args = args
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     server.daemon_threads = True
-    print(f"mock feed on http://127.0.0.1:{args.port}  "
-          f"(emulator: http://10.0.2.2:{args.port})")
+    print(f"mock feed listening on http://{args.host}:{args.port}  "
+          f"(local: http://127.0.0.1:{args.port}; "
+          f"Android emulator: http://10.0.2.2:{args.port})")
     print(f"  page size {args.page_size} · latency {args.latency_ms}ms · "
           f"item ~{args.item_bytes // 1024 // 1024}MB · moderation fail rate {args.fail_rate}")
     try:

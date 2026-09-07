@@ -9,8 +9,9 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest.mock import Mock, patch
 
-from record_performance import record, selected_device, export_feed_signposts
+from record_performance import record, selected_device, export_feed_signposts, start_mock_if_needed
 
 
 RECORDER = '''
@@ -130,6 +131,15 @@ class DeviceSelectionTests(unittest.TestCase):
         device["properties"]["connection"]["state"] = "disconnected"
         with self.assertRaisesRegex(RuntimeError, "not connected"):
             selected_device([device], "test")
+
+
+class MockStartupTests(unittest.TestCase):
+    @patch("record_performance.subprocess.Popen")
+    @patch("record_performance.port_is_occupied", return_value=True)
+    def test_occupied_port_is_treated_as_running_service(self, _occupied, popen):
+        log = Mock(name="mock.log")
+        self.assertIsNone(start_mock_if_needed(8787, log))
+        popen.assert_not_called()
 
 
 class SignpostExportTests(unittest.TestCase):

@@ -13,15 +13,16 @@ for the recorded results and remaining performance work.
 2. Resolve RocketSim with `command -v rocketsim`, open RocketSim, and compare
    `rocketsim simulator focused` with Xcode's destination. The September 5 run
    used `/opt/homebrew/bin/rocketsim`, iPhone 17 Pro, iOS 26.5.
-3. Run the unchanged backend with timestamped output, using an unused port or
+3. Run the backend with timestamped output, using an unused port or
    ensuring no other server owns 8787. Configure `SEKAI_BASE_URL` if necessary:
 
    ```bash
-   python3 scripts/record_mock.py --host 127.0.0.1 --fail-rate 1.0 > /tmp/sekai-failure.log
+   python3 scripts/record_mock.py --fail-rate 1.0 > /tmp/sekai-failure.log
    ```
 
-   Leave the default payload and latency intact. The wrapper only timestamps
-   the child process's output; it does not intercept or modify responses.
+   Leave the default payload and latency intact. The wrapper forces the server
+   to bind to `0.0.0.0`, timestamps the child process's output, and does not
+   intercept or modify responses.
    Timestamps describe when stdout was received. The mock logs responses, not
    request starts, so retry intervals include response latency. Stop with Ctrl+C.
 4. Inspect existing hidden state and choose visible report/block targets.

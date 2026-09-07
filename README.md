@@ -20,11 +20,11 @@ Web content loads directly through `WKWebView.load(URLRequest)`; all three slots
 
 Moderation saves locally before publishing removal. Disk failure leaves content unchanged and offers Retry. Network failure keeps it hidden, displays session feedback, and retries once after five seconds. A second failure waits for foregrounding or the same moderation action. Hidden state is persisted. Pending operations are kept in memory only; unfinished synchronization is not guaranteed to resume after exit.
 
-**Validation:** Xcode 27 beta 6 / Apple Swift 6.4 (Swift 5 language mode), simulator build and 39 XCTest cases passed with zero failures on September 6, 2026. Run tests with **Product → Test**. Coverage includes repositories, view models, moderation, playback policy, new timing metrics and real WebKit cacheable/no-store revisit tests. See [current web-content verification](docs/web-content-testing.md) and [earlier validation evidence](docs/validation.md). Physical-device performance acceptance remains unverified. No complete submission demo recording is included yet.
+**Validation:** Xcode 27 beta 6 / Apple Swift 6.4 (Swift 5 language mode), simulator build and 39 XCTest cases passed with zero failures on September 6, 2026. Run tests with **Product → Test**. Coverage includes repositories, view models, moderation, playback policy, new timing metrics and real WebKit cacheable/no-store revisit tests. See [current web-content verification](docs/web-content-testing.md) and [earlier validation evidence](docs/validation.md). A September 6 physical-device recording did not pass the internal performance target: `[10, 40)` contained one 258.377 ms application hitch, and only 8.973 seconds were covered by Feed gesture signposts. Its main-thread stack identifies synchronous WebKit activity-state IPC while attaching a pooled `WKWebView`; the `record-installed` capture does not verify Release/source provenance and did not measure memory. The local report is `docs/artifacts/recordings/20260906-191821-565605/report.md` (recording artifacts are ignored by Git). No complete submission demo recording is included yet.
 
 Design and work tracking: [class/function interfaces](docs/interface-design.md), [implementation checklist](docs/implementation-todo.md), [architecture requirements](docs/technical-selection-and-architecture.md).
 
-Trade-offs: pending-operation persistence, unblock management, general-purpose SVG support, and automatic preload recovery are omitted. Raw feed metadata remains in memory for backward scrolling; the three-slot limit bounds WebView count, not runtime memory bytes. Physical-device Instruments traces and a recorded demo remain delivery work.
+Trade-offs: pending-operation persistence, unblock management, general-purpose SVG support, and automatic preload recovery are omitted. Raw feed metadata remains in memory for backward scrolling; the three-slot limit bounds WebView count, not runtime memory bytes. A verified Release retest after addressing the observed WebView-attachment stall, physical-device memory evidence, and a recorded demo remain delivery work.
 
 ## Original assignment
 
@@ -135,7 +135,7 @@ These are the three things we will look at first.
 `mock/server.py` is a dependency-free Python 3 server:
 
 ```bash
-python3 mock/server.py            # http://127.0.0.1:8787
+python3 mock/server.py            # binds 0.0.0.0:8787; local URL: http://127.0.0.1:8787
 python3 mock/server.py --help     # page size, latency, payload size, failure rate
 ```
 

@@ -5,6 +5,7 @@ import argparse
 import csv
 import ctypes
 import datetime as dt
+import errno
 import json
 import os
 from pathlib import Path
@@ -12,9 +13,11 @@ import re
 import selectors
 import shlex
 import signal
+import socket
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 import uuid
 import xml.etree.ElementTree as ET
@@ -24,6 +27,7 @@ from xcscheme_env import set_scheme_env
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = "com.sekai.takehome.Sekai"
+DEFAULT_PORT = 8787
 
 
 def announce(message):
@@ -39,6 +43,62 @@ def run(command, log=None, timeout=120):
             raise RuntimeError(f"Command failed ({result.returncode}); see {log}")
         return ""
     return subprocess.check_output(command, stderr=subprocess.STDOUT, text=True, timeout=timeout)
+
+
+def port_is_occupied(port):
+    """Return whether a listener already prevents binding the local mock port."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as candidate:
+        try:
+            candidate.bind(("0.0.0.0", port))
+        except OSError as error:
+            if error.errno == errno.EADDRINUSE:
+                return True
+            if error.errno in (errno.EACCES, errno.EPERM):
+                result = subprocess.run(
+                    ["/usr/sbin/lsof", "-nP", f"-iTCP:{port}", "-sTCP:LISTEN", "-t"],
+                    capture_output=True, text=True, check=False)
+                return result.returncode == 0 and bool(result.stdout.strip())
+            raise
+    return False
+
+
+def start_mock_if_needed(port, log):
+    if port_is_occupied(port):
+        announce(f"Port {port} is already occupied; assuming the mock service is running and skipping startup.")
+        return None
+
+    command = [sys.executable, "-u", str(ROOT / "mock/server.py"),
+               "--host", "0.0.0.0", "--port", str(port),
+               "--fail-rate", "0", "--seed", "42"]
+    announce("$ " + shlex.join(command))
+    process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, text=True)
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    deadline = time.monotonic() + 10
+    health_url = f"http://127.0.0.1:{port}/health"
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            raise RuntimeError(f"Mock exited during startup; see {log.name}")
+        try:
+            with opener.open(health_url, timeout=1) as response:
+                if response.status == 200:
+                    announce(f"Mock service started on port {port}.")
+                    return process
+        except (OSError, urllib.error.URLError):
+            pass
+        time.sleep(0.1)
+    stop_mock(process)
+    raise RuntimeError(f"Mock did not become reachable on port {port}; see {log.name}")
+
+
+def stop_mock(process):
+    if process is None or process.poll() is not None:
+        return
+    process.terminate()
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
 
 
 class StartNotification:
@@ -269,9 +329,9 @@ def main():
     parser.add_argument("--scheme", default="Sekai", help="Build scheme (default: Sekai)")
     parser.add_argument("--device", help="Physical-device UDID; automatically selects the sole connected iOS device if omitted")
     parser.add_argument("--duration", type=int, default=50, help="Recording duration in seconds (default: 50)")
-    parser.add_argument("--base-url", help="Feed server URL; otherwise SEKAI_BASE_URL or current en0 address on port 8788")
+    parser.add_argument("--base-url", help="Feed server URL; otherwise SEKAI_BASE_URL or current en0 address on port 8787")
     parser.add_argument("--interface", default="en0", help="Mac LAN interface for automatic server address")
-    parser.add_argument("--port", type=int, default=8788)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--output", type=Path, help="New output directory; existing directories are never overwritten")
     parser.add_argument("--startup-timeout", type=int, default=90)
     parser.add_argument("--save-timeout", type=int, default=240)
@@ -288,6 +348,8 @@ def main():
         parser.error(f"Cannot create a new output directory: {error}")
     metadata = dict(status="preparing", mode="build-and-record" if args.build else "record-installed",
                     requested_duration_s=args.duration)
+    mock_process = None
+    mock_log = None
     try:
         announce(f"Artifacts: {output}")
         run(["xcrun", "devicectl", "list", "devices", "--timeout", "15", "--json-output", str(output / "devices.json")])
@@ -296,6 +358,12 @@ def main():
         announce(f"Device: {metadata['device']['name']} (UDID: {device_udid})")
         # Retain only selected, relevant device properties in the recording metadata.
         (output / "devices.json").unlink()
+        if args.base_url is None and not os.environ.get("SEKAI_BASE_URL"):
+            mock_log = (output / "mock.log").open("w")
+            mock_process = start_mock_if_needed(args.port, mock_log)
+            metadata["mock_started"] = mock_process is not None
+        else:
+            metadata["mock_started"] = False
         metadata["base_url"] = base_url(args)
         announce(f"Device: {metadata['device']['name']}; server: {metadata['base_url']}")
         scheme_path = set_scheme_env(ROOT / "Sekai/Sekai.xcodeproj", args.scheme,
@@ -344,6 +412,9 @@ def main():
         announce("CANCELLED before recording or during export; existing artifacts are retained.")
         return 130
     finally:
+        stop_mock(mock_process)
+        if mock_log is not None:
+            mock_log.close()
         (output / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
 
 

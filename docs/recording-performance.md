@@ -12,7 +12,7 @@ command-line tools are required.
 ./scripts/record_performance.py
 
 # Change duration or provide an explicit server address after switching networks.
-./scripts/record_performance.py --duration 60 --base-url http://YOUR_MAC_IP:8788
+./scripts/record_performance.py --duration 60 --base-url http://YOUR_MAC_IP:8787
 ```
 
 Use `--build` for the first run after adding or changing signposts. Direct mode
@@ -44,7 +44,7 @@ scheme if needed. Configure signing for your own development team in Xcode MCP. 
 and installs only after a successful build. Existing signing settings are used.
 
 The server address comes from `--base-url`, then `SEKAI_BASE_URL`, then the Mac's
-current IPv4 address on `en0`, port 8788. Use `--interface` or `--port` to change
+current IPv4 address on `en0`, port 8787. Use `--interface` or `--port` to change
 automatic discovery. The address is passed to the launched app through its
 `SEKAI_BASE_URL` environment variable.
 
@@ -56,16 +56,13 @@ that already has a user-specific xcscheme file (for example, one that has been
 run from Xcode at least once); it does not create one from scratch, and it is
 skipped with a note when no such file exists yet.
 
-The existing mock on port 8788 can be reused. When it is not running, start it in
-another terminal:
-
-```sh
-python3 -u scripts/record_mock.py --host 0.0.0.0 --port 8788 --fail-rate 0 --seed 42
-```
+The script reuses any service already listening on port 8787. If the port is
+free, it starts the mock for the recording and stops only that owned process on
+exit. An explicit `--base-url` or `SEKAI_BASE_URL` remains externally managed.
 
 The phone must reach the Mac on the same network. The script checks the feed
 endpoint from the Mac before recording; that does not prove phone-to-Mac
-reachability. It does not start, stop, or reconfigure an existing server.
+reachability. It does not stop or reconfigure an existing server.
 
 ## Terminal lifecycle and output
 
@@ -96,7 +93,8 @@ Generated recordings are ignored by Git. Each successful run contains:
 - `toc.xml`: table schemas and recording metadata.
 - `metadata.json`: selected device, server, commands, lifecycle, coverage audit
   for build mode, and whether Feed signposts were found.
-- `record.log`, plus `build.log` and `install.log` when building.
+- `record.log`, `mock.log` when the script manages the local mock, plus
+  `build.log` and `install.log` when building.
 
 For the predefined 30-second window in a completed 50-second run:
 

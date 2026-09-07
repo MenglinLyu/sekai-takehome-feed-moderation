@@ -3,7 +3,7 @@
 Dependency-free Python 3. No install step.
 
 ```bash
-python3 server.py                       # http://127.0.0.1:8787
+python3 server.py                       # binds 0.0.0.0:8787; local URL: http://127.0.0.1:8787
 python3 server.py --help                # all flags
 python3 server.py --item-bytes 1048576  # 1 MB items, if you want a lighter loop while iterating
 python3 server.py --fail-rate 1.0       # every moderation call fails — useful once
